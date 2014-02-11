@@ -8,8 +8,10 @@ require 'local_pac'
 class Default < Thor
   desc 'serve', 'Serve pacfiles'
   option :logfile, type: :string, default: File.expand_path(File.join(ENV['HOME'], '.local', 'share', 'local_pac', 'access.log')), desc: 'File to write access log to'
+  option :port, type: :numeric, default: 8000, desc: 'The port the server listens on'
   def serve
     LocalPac::FileServer.use Rack::CommonLogger, LocalPac::Logger.new(options[:logfile])
+    LocalPac::FileServer.set :port, options[:port]
     LocalPac::FileServer.run!
   end
 end

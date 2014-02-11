@@ -1,0 +1,9 @@
+[Unit]
+Description=Local proxy pac-file server
+Requires=local_pac.socket
+
+[Service]
+ExecStart=/usr/bin/local_pac serve
+
+[Install]
+WantedBy=multi-user.target
