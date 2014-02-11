@@ -1,6 +1,6 @@
 # Maintainer: Max Meyer <dev@fedux.org>
 pkgname=local_pac
-pkgver=0.0.2
+pkgver=0.0.4
 pkgrel=1
 pkgdesc="local pacfile serving server"
 arch=(i686 x86_64)
@@ -10,7 +10,7 @@ depends=(ruby)
 makedepends=(rubygems filegen)
 source=(http://gems.rubyforge.org/gems/$pkgname-$pkgver.gem)
 noextract=($pkgname-$pkgver.gem)
-sha256sums=('fee945f21f86f74b52cff1f6045dd294af50e71f9cd530c8e1813c41972c77e3')
+sha256sums=('d3db443b922d70a451a16669613c778b4fa7939852baf2ffd62758af107dd0ed')
 
 package() {
   cd "$srcdir"
@@ -24,7 +24,7 @@ package() {
   install -d ${pkgdir}/$_bin_dir 
   install -d ${pkgdir}/$_systemd_dir 
 
-  gem install --env-shebang --wrappers --no-ri --no-rdoc --install-dir ${pkgdir}/${_library_dir} $pkgname 
+  gem install --env-shebang --wrappers --no-ri --no-rdoc --install-dir ${pkgdir}/${_library_dir} $pkgname puma
 
   SOFTWARE_BINARY=$_library_dir/gems/${pkgname}-${pkgver}/bin/${pkgname} SOFTWARE_LIB=/usr/lib/local_pac filegen  ${pkgdir}${_share_dir}/archlinux/startup.erb > ${pkgdir}${_bin_dir}/${pkgname}
 
@@ -32,6 +32,7 @@ package() {
   rm -r ${pkgdir}/${_library_dir}/cache
 
   install ${pkgdir}/$_share_dir/systemd/${pkgname}.service ${pkgdir}/$_systemd_dir
+  install ${pkgdir}/$_share_dir/systemd/${pkgname}@.service ${pkgdir}/$_systemd_dir
   install ${pkgdir}/$_share_dir/systemd/${pkgname}.socket ${pkgdir}/$_systemd_dir
 }
 
