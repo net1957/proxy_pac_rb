@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+require 'thor'
+
+$LOAD_PATH << File.expand_path('../../lib', __FILE__)
+require 'local_pac'
+
+class Default < Thor
+  desc 'serve', 'Serve pacfiles'
+  option :logfile, type: :string, default: File.expand_path(File.join(ENV['HOME'], '.local', 'share', 'local_pac', 'access.log')), desc: 'File to write access log to'
+  def serve
+    LocalPac::FileServer.use Rack::CommonLogger, LocalPac::Logger.new(options[:logfile])
+    LocalPac::FileServer.run!
+  end
+end
+
+Default.start
