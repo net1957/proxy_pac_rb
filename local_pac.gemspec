@@ -21,4 +21,5 @@ EOS
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency 'sinatra'
+  spec.add_runtime_dependency 'thor'
 end
