@@ -1,6 +1,6 @@
 # LocalPac
 
-TODO: Write a gem description
+Serve proxy.pac-files with ease.
 
 ## Installation
 
