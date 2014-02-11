@@ -2,14 +2,14 @@
 
 require 'fedux_org/stdlib/rake'
 
-require 'filegen/version'
+require 'local_pac/version'
 
 def software
-  'filegen'
+  'local_pac'
 end
 
 def version
-  Filegen::VERSION
+  LocalPac::VERSION
 end
 
 def root_directory
