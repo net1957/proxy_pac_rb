@@ -1,6 +1,6 @@
 require "uri"
 
-module PAC
+module ProxyPacRb
   require "pac/functions"
 
   class File
@@ -8,7 +8,7 @@ module PAC
 
     def initialize(source)
       @source = source.dup.freeze
-      @context = PAC.runtime.compile(@source)
+      @context = ProxyPacRb.runtime.compile(@source)
       @context.include Functions
     end
 

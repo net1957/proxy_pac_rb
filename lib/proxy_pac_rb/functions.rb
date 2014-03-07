@@ -2,7 +2,7 @@ require "ipaddr"
 require "resolv"
 require "time"
 
-module PAC
+module ProxyPacRb
   module Functions
     DAYS = { "MON" => 1, "TUE" => 2, "WED" => 3, "THU" => 4, "FRI" => 5, "SAT" => 6, "SUN" => 7 }
     MONTHS = { "JAN" => 1, "FEB" => 2, "MAR" => 3, "APR" => 4, "MAY" => 5, "JUN" => 6,

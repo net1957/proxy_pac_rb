@@ -1,4 +1,4 @@
-module PAC
+module ProxyPacRb
   module Runtimes
     require "pac/runtimes/rubyracer"
     require "pac/runtimes/rubyrhino"

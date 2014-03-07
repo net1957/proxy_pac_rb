@@ -1,4 +1,4 @@
-module PAC
+module ProxyPacRb
   module Runtimes
     class RubyRacerRuntime
       class Context

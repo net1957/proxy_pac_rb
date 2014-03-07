@@ -1,3 +1,3 @@
-module PAC
+module ProxyPacRb
   VERSION = "1.0.0"
 end

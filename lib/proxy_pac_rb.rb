@@ -1,6 +1,6 @@
 require "rubygems"
 
-module PAC
+module ProxyPacRb
   require "pac/version"
   require "pac/file"
   require "pac/runtimes"
