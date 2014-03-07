@@ -25,7 +25,7 @@ module ProxyPacRb
               if e.value["name"] == "SyntaxError"
                 raise RuntimeError, e.message
               else
-                raise ProgramError, e.message
+                raise Exceptions::ProgramError, e.message
               end
             end
           end

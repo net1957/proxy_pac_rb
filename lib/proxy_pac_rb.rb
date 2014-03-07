@@ -1,24 +1,22 @@
-require "rubygems"
+require 'uri'
+require 'ipaddr'
+require 'resolv'
+require 'time'
+
+require 'proxy_pac_rb/version'
+require 'proxy_pac_rb/exceptions'
+require 'proxy_pac_rb/functions'
+require 'proxy_pac_rb/file'
+require 'proxy_pac_rb/runtimes/rubyracer'
+require 'proxy_pac_rb/runtimes/rubyrhino'
+require 'proxy_pac_rb/runtimes'
 
 module ProxyPacRb
-  require "pac/version"
-  require "pac/file"
-  require "pac/runtimes"
-
-  class Error < StandardError
-  end
-  class RuntimeError < Error
-  end
-  class ProgramError < Error
-  end
-  class RuntimeUnavailable < RuntimeError
-  end
-
   class << self
     attr_reader :runtime
 
     def runtime=(runtime)
-      raise RuntimeUnavailable, "#{runtime.name} is unavailable on this system" unless runtime.available?
+      fail Exceptions::RuntimeUnavailable, "#{runtime.name} is unavailable on this system" unless runtime.available?
       @runtime = runtime
     end
 

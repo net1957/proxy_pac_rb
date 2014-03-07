@@ -22,7 +22,7 @@ module ProxyPacRb
           if e.message == "syntax error"
             raise RuntimeError, e.message
           else
-            raise ProgramError, e.message
+            raise Exceptions::ProgramError, e.message
           end
         end
 

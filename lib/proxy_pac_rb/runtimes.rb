@@ -1,18 +1,11 @@
 module ProxyPacRb
   module Runtimes
-    require "pac/runtimes/rubyracer"
-    require "pac/runtimes/rubyrhino"
-    require "pac/runtimes/johnson"
-    require "pac/runtimes/mustang"
-
     RubyRacer = RubyRacerRuntime.new
     RubyRhino = RubyRhinoRuntime.new
-    Johnson = JohnsonRuntime.new
-    Mustang = MustangRuntime.new
 
     class << self
       def autodetect
-        from_environment || best_available || raise(RuntimeUnavailable, "Could not find a JavaScript runtime. See https://github.com/samuelkadolph/ruby-pac for a list of runtimes.")
+        from_environment || best_available || fail(Exceptions::RuntimeUnavailable, "Could not find a JavaScript runtime. See https://github.com/dg-vrnetze/proxy_pac_rb for a list of runtimes.")
       end
 
       def from_environment
@@ -21,10 +14,10 @@ module ProxyPacRb
             if runtime.available?
               runtime if runtime.available?
             else
-              raise RuntimeUnavailable, "#{runtime.name} runtime is not available on this system"
+              fail Exceptions::RuntimeUnavailable, "#{runtime.name} runtime is not available on this system"
             end
           elsif !name.empty?
-            raise RuntimeUnavailable, "#{name} runtime is not defined"
+            fail Exceptions::RuntimeUnavailable, "#{name} runtime is not defined"
           end
         end
       end
@@ -34,7 +27,7 @@ module ProxyPacRb
       end
 
       def runtimes
-        @runtimes ||= [RubyRacer, RubyRhino, Johnson, Mustang]
+        @runtimes ||= [RubyRacer, RubyRhino]
       end
     end
   end

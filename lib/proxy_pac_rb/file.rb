@@ -1,8 +1,4 @@
-require "uri"
-
 module ProxyPacRb
-  require "pac/functions"
-
   class File
     attr_reader :source, :context
 
@@ -14,7 +10,7 @@ module ProxyPacRb
 
     def find(url)
       uri = URI.parse(url)
-      raise ArgumentError, "url is missing host" unless uri.host
+      fail ArgumentError, "url is missing host" unless uri.host
       context.call("FindProxyForURL", url, uri.host)
     end
   end

@@ -38,3 +38,13 @@ gem 'versionomy', group: [:development, :test], require: false
 gem 'activesupport', '~> 4.0.0', group: [:development, :test], require: false
 
 gem 'awesome_print', group: [:development, :test], require: 'ap'
+
+group :runtimes do
+  group :therubyracer do
+    gem 'therubyracer'
+  end
+
+  group :therubyrhino do
+    gem 'therubyrhino'
+  end
+end

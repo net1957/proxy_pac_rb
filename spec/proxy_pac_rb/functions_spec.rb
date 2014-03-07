@@ -3,12 +3,16 @@ require 'spec_helper'
 
 describe ProxyPacRb::Functions do
   describe "isResolvable()" do
+    let(:tester) do
+      ProxyPacRb::Functions
+    end
+
     it "should return true for localhost" do
-      ProxyPacRb::Functions.isResolvable("localhost").must_equal true
+      expect(tester.isResolvable("localhost")).to be_true
     end
 
     it "should return false for awidhaowuhuiuhiuug" do
-      ProxyPacRb::Functions.isResolvable("awidhaowuhuiuhiuug").must_equal false
+      expect(tester.isResolvable('asdfasdfasdfasdf')).to be_false
     end
   end
 end
