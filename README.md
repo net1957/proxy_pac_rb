@@ -1,45 +1,45 @@
-# pac
+# Proxy Pac Rb
 
-pac is a gem to parse [proxy auto-config](http://en.wikipedia.org/wiki/Proxy_auto-config) files.
-pac uses a JavaScript runtime to evaulate a proxy auto-config file the same way a browser does to determine what proxy (if
+`proxy_pac_rb` is a gem to parse [proxy auto-config](http://en.wikipedia.org/wiki/Proxy_auto-config) files.
+`proxy_pac_rb` uses a JavaScript runtime to evaulate a proxy auto-config file the same way a browser does to determine what proxy (if
 any at all) should a program use to connect to a server. You must install on of the supported JavaScript runtimes:
-therubyracer, therubyrhino, johnson or mustang.
+therubyracer, therubyrhino
 
 Big thanks to [sstephenson](https://github.com/sstephenson)'s [execjs](https://github.com/sstephenson/execjs) for the
-runtime wrapper code.
+runtime wrapper code and to
+[samuelkadolph](https://github.com/samuelkadolph/ruby-pac)'s
+[ruby-pac](https://github.com/samuelkadolph/ruby-pac) for the foundation of this gem.
 
 ## Installing
 
-### Recommended
+Add this line to your application's Gemfile:
 
-```
-gem install pac
-```
+    gem 'proxy_pac_rb'
 
-### Edge
+And then execute:
 
-```
-git clone https://github.com/samuelkadolph/ruby-pac
-cd ruby-pac && rake install
-```
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install proxy_pac_rb
+
 
 ## Requirements
 
-After installing the `pac` gem you must install a JavaScript runtime. Compatible runtimes include:
+After installing the `proxy_pac_rb` gem you must install a JavaScript runtime. Compatible runtimes include:
 
 * [therubyracer](https://rubygems.org/gems/therubyracer) Google V8 embedded within Ruby
 * [therubyrhino](https://rubygems.org/gems/therubyrhino/) Mozilla Rhino embedded within JRuby
-* [johnson](https://rubygems.org/gems/johnson/) Mozilla SpiderMonkey embedded within Ruby 1.8
-* [mustang](https://rubygems.org/gems/mustang/) Mustang V8 embedded within Ruby
 
 ## Usage
 
 ### Command Line
 
 ```
-parsepac http://cloud.github.com/downloads/samuelkadolph/ruby-pac/sample.pac https://github.com
-parsepac http://cloud.github.com/downloads/samuelkadolph/ruby-pac/sample.pac http://ruby-lang.com
-parsepac http://cloud.github.com/downloads/samuelkadolph/ruby-pac/sample.pac http://samuel.kadolph.com
+parsepac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac https://github.com
+parsepac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac http://ruby-lang.com
+parsepac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac http://samuel.kadolph.com
 ```
 
 ### Ruby
@@ -48,10 +48,10 @@ parsepac http://cloud.github.com/downloads/samuelkadolph/ruby-pac/sample.pac htt
 require "rubygems"
 require "pac"
 
-pac = PAC.load("http://cloud.github.com/downloads/samuelkadolph/ruby-pac/sample.pac")
-pac.find("https://github.com") # => "PROXY proxy:8080"
-pac.find("http://ruby-lang.com") # => "PROXY proxy:8080; DIRECT"
-pac.find("http://samuel.kadolph.com") # => "DIRECT"
+pac = PAC.load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac')
+pac.find('https://github.com')        # => "PROXY proxy:8080"
+pac.find('http://ruby-lang.com')      # => "PROXY proxy:8080; DIRECT"
+pac.find('http://samuel.kadolph.com') # => "DIRECT"
 
 pac = PAC.read("sample.pac")
 
@@ -60,7 +60,7 @@ pac = PAC.source <<-JS
     return "DIRECT";
   }
 JS
-pac.find("http://localhost") # => "DIRECT"
+pac.find('http://localhost') # => "DIRECT"
 ```
 
 ## Available JavaScript Functions
@@ -88,6 +88,7 @@ If you want to contribute: fork, branch & pull request.
 
 ```
 bundle install
-rake test
+rake test:rspec
 rake test:rubyracer
+rake test:rubyrhino
 ```
