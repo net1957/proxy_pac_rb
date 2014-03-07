@@ -5,7 +5,7 @@ module ProxyPacRb
     def initialize(source)
       @source = source.dup.freeze
       @context = ProxyPacRb.runtime.compile(@source)
-      @context.include Functions
+      @context.include Environment.new
     end
 
     def find(url)
