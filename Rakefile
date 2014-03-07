@@ -1,22 +1,81 @@
-require 'rubygems'
-require "rake/testtask"
+#!/usr/bin/env rake
+#
+require 'rake/testtask'
+require 'fedux_org/stdlib/rake'
+require 'proxy_pac_rb/version'
 
-Rake::TestTask.new do |t|
-  t.pattern = 'spec/**/*_spec.rb'
+def software
+  'proxy_pac_rb'
 end
 
-namespace "test" do
-  desc "Run tests with the rubyracer runtime"
-  task "rubyracer" do
-    gem "therubyracer"
-    require "v8"
-    Rake::Task["test"].invoke
+def version
+  ProxyPacRb::VERSION
+end
+
+def root_directory
+  ::File.expand_path('../', __FILE__)
+end
+
+def tar_file
+  ::File.join(pkg_directory, "#{software}-#{version}.tar.gz")
+end
+
+def tmp_directory
+  ::File.join(root_directory, 'tmp', "#{software}-#{version}")
+end
+
+def gem_file
+  ::File.join(root_directory, 'pkg', "#{software}-#{version}.gem")
+end
+
+def pkg_directory
+  ::File.join(root_directory, 'pkg')
+end
+
+def gem_directory
+  ::File.join(root_directory, 'vendor', 'cache')
+end
+
+task :default => 'gem:build'
+
+file gem_file => 'gem:build'
+
+file tmp_directory do
+  FileUtils.mkdir_p tmp_directory
+end
+
+namespace :gem do
+  desc 'build tar file'
+  task :package => [gem_file, tmp_directory] do
+    FileUtils.mv ::File.join(pkg_directory, "#{software}-#{version}.gem"), tmp_directory
+
+    Dir.chdir('tmp') do
+      sh "tar -czf #{tar_file} #{::File.basename tmp_directory}"
+    end
+  end
+end
+
+namespace 'test' do
+  require 'bundler'
+
+  desc 'Run tests with the rubyracer runtime'
+  task 'rubyracer' do
+    Bundler.require :default, :test, :development, :therubyracer
+    Rake::Task['test:rspec'].invoke
   end
 
-  desc "Run tests with the therubyrhino runtime"
-  task "rubyrhino" do
-    gem "therubyrhino"
-    require "rhino"
-    Rake::Task["test"].invoke
+  desc 'Run tests with the therubyrhino runtime'
+  task 'rubyrhino' do
+    Bundler.require :default, :test, :development, :therubyrhino
+    Rake::Task['test:rspec'].invoke
   end
+end
+
+
+require 'coveralls/rake/task'
+Coveralls::RakeTask.new
+
+namespace :test do
+  desc 'Test with coveralls'
+  task :coveralls => ['test:rspec', 'test:cucumber', 'coveralls:push']
 end

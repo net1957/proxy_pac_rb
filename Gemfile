@@ -41,10 +41,10 @@ gem 'awesome_print', group: [:development, :test], require: 'ap'
 
 group :runtimes do
   group :therubyracer do
-    gem 'therubyracer'
+    gem 'therubyracer', require: 'v8'
   end
 
   group :therubyrhino do
-    gem 'therubyrhino'
+    gem 'therubyrhino', require: 'rhino'
   end
 end
