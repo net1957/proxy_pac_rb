@@ -4,7 +4,7 @@ module ProxyPacRb
 
     private
 
-    attr_reader :days, :months, :my_ip_address, :time
+    attr_reader :days, :months, :my_ip_address, :time, :io
 
     public
 
@@ -12,8 +12,13 @@ module ProxyPacRb
       @days          = { "MON" => 1, "TUE" => 2, "WED" => 3, "THU" => 4, "FRI" => 5, "SAT" => 6, "SUN" => 7 }
       @months        = { "JAN" => 1, "FEB" => 2, "MAR" => 3, "APR" => 4, "MAY" => 5, "JUN" => 6, "JUL" => 7, "AUG" => 8, "SEP" => 9, "OCT" => 10, "NOV" => 11, "DEC" => 12 }
 
-      @my_ip_address = options.fetch(:my_ip_address, resolve_host(Socket.gethostname))
-      @time          = options.fetch(:time, Time.now)
+      @my_ip_address = options.fetch(:my_ip_address)
+      @time          = options.fetch(:time)
+      @io            = options.fetch(:io, $stderr)
+    end
+
+    def alert(msg)
+      io.puts msg
     end
 
     def isPlainHostName(host)
@@ -53,16 +58,21 @@ module ProxyPacRb
     end
 
     def weekdayRange(wd1, wd2 = nil, gmt = nil)
+      fail Exceptions::InvalidArgument, "wd1 needs to be one of #{days.keys.collect {|k| "\"#{k}\""}.join(', ')}" unless days.key?(wd1)
+      fail Exceptions::InvalidArgument, "wd2 needs to be one of #{days.keys.collect {|k| "\"#{k}\""}.join(', ')}" if wd2 and !days.key?(wd2)
+
       if gmt == "GMT"
         local_time = time.utc 
       else
         local_time = time
       end
 
-      (days[wd1]..days[wd2 || wd1]).include? local_time.wday
+      (days[wd1]..days[wd2 || wd1]).include? local_time.wday == 0 ? 7 : local_time.wday
     end
 
     def dateRange(*args)
+      fail Exceptions::InvalidArgument, "range needs to be one of #{months.keys.collect {|k| "\"#{k}\""}.join(', ')}" if args.any? { |a| !months.key?(a)  }
+
       if args.last == "GMT" and args.pop
         local_time = time.utc 
       else
@@ -87,6 +97,8 @@ module ProxyPacRb
     end
 
     def timeRange(*args)
+      fail Exceptions::InvalidArgument, "args need to be integer values" if args.any? { |a| !a.kind_of? Fixnum }
+
       if args.last == "GMT" and args.pop
         local_time = time.utc 
       else

@@ -81,12 +81,12 @@ describe ProxyPacRb do
 
   describe ".read" do
     it "should load a file from a path" do
-      pac = ProxyPacRb.read(sample_pac)
+      pac = ProxyPacRb::Parser.read(sample_pac)
       expect(pac).not_to be_nil
     end
 
     it "should return DIRECT for a url" do
-      pac = ProxyPacRb.read(sample_pac)
+      pac = ProxyPacRb::Parser.read(sample_pac)
       expect(pac.find('http://localhost')).to eq('DIRECT')
     end
   end
@@ -100,12 +100,12 @@ describe ProxyPacRb do
     end
 
     it "should load source" do
-      pac = ProxyPacRb.source(source)
+      pac = ProxyPacRb::Parser.source(source)
       expect(pac).not_to be_nil
     end
 
     it "should return DIRECT for a url" do
-      pac = ProxyPacRb.source(source)
+      pac = ProxyPacRb::Parser.source(source)
       expect(pac.find('http://localhost')).to eq('DIRECT')
     end
   end

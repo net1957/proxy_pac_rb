@@ -6,5 +6,8 @@ module ProxyPacRb
 
     #raise on java script runtime error
     class RuntimeUnavailable < StandardError; end
+
+    #raise on invalid argument
+    class InvalidArgument < StandardError; end
   end
 end
