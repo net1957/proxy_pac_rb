@@ -44,6 +44,8 @@ parsepac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac 
 
 ### Ruby
 
+*Simple*
+
 ```ruby
 require "rubygems"
 require "pac"
@@ -61,6 +63,16 @@ pac = PAC.source <<-JS
   }
 JS
 pac.find('http://localhost') # => "DIRECT"
+
+*Use Client IP*
+pac = PAC.load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
+pac.find('https://github.com', client_ip: '127.0.0.1')        # => "PROXY localhost:8080"
+pac.find('https://github.com', client_ip: '127.0.0.2')        # => "DIRECT"
+
+*Use Date Time*
+pac = PAC.load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
+pac.find('https://github.com', time: '2014-01-02 08:00:00')   # => "PROXY localhost:8080"
+pac.find('https://github.com', time: '2014-01-02 19:00:00')   # => "DIRECT"
 ```
 
 ## Available JavaScript Functions
