@@ -4,7 +4,7 @@ module ProxyPacRb
 
     private
 
-    attr_reader :days, :months, :my_ip_address, :time, :io
+    attr_reader :days, :months, :my_ip_address, :time, :io, :available_methods
 
     public
 
@@ -15,6 +15,21 @@ module ProxyPacRb
       @my_ip_address = options.fetch(:my_ip_address, '127.0.0.1')
       @time          = options.fetch(:time, Time.now)
       @io            = options.fetch(:io, $stderr)
+      @available_methods = [
+        :alert,
+        :isPlainHostName,
+        :dnsDomainIs,
+        :localHostOrDomainIs,
+        :isResolvable,
+        :isInNet,
+        :dnsResolve,
+        :MyIpAddress ,
+        :dnsDomainLevels,
+        :shExpMatch,
+        :weekdayRange,
+        :dateRange,
+        :timeRange,
+      ]
     end
 
     def alert(msg)
