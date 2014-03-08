@@ -3,34 +3,19 @@ module ProxyPacRb
 
     private
 
-    attr_reader :source, :context
+    attr_reader :javascript
 
     public
 
-    def initialize(source)
-      @source  = source.dup.freeze
+    def initialize(javascript)
+      @javascript  = javascript
     end
 
-
-    def find(url, options = {})
+    def find(url)
       uri = Addressable::URI.heuristic_parse(url)
+      fail ArgumentError, "url is missing host" unless uri.host
 
-      client_ip = options.fetch(:client_ip, '127.0.0.1')
-      time      = options.fetch(:time, Time.now)
-
-      require 'v8'
-      require 'therubyracer'
-
-      environment = Environment.new(my_ip_address: client_ip, time: time)
-      V8::Context.new(:with => environment) do |cxt|
-        puts cxt.eval("FindProxyForURL('#{url}', '#{uri.host}')" + source)
-      end
-
-      #context     = ProxyPacRb::Parser.runtime.compile(source, environment)
-
-      #fail ArgumentError, "url is missing host" unless uri.host
-      #context.call("FindProxyForURL", url, uri.host)
+      javascript.call("FindProxyForURL", url, uri.host)
     end
-
   end
 end

@@ -6,7 +6,7 @@ module ProxyPacRb
     class << self
       def autodetect
         from_environment || best_available ||
-          raise(Exceptions::RuntimeUnavailable, "Could not find a JavaScript runtime. " +
+          fail(Exceptions::RuntimeUnavailable, "Could not find a JavaScript runtime. " +
                 "See https://github.com/sstephenson/execjs for a list of available runtimes.")
       end
 
@@ -15,15 +15,15 @@ module ProxyPacRb
       end
 
       def from_environment
-        if name = ENV["EXECJS_RUNTIME"]
+        if name = ENV["JS_RUNTIME"]
           if runtime = const_get(name)
             if runtime.available?
               runtime if runtime.available?
             else
-              raise Exceptions::RuntimeUnavailable, "#{runtime.name} runtime is not available on this system"
+              fail Exceptions::RuntimeUnavailable, "#{runtime.name} runtime is not available on this system"
             end
           elsif !name.empty?
-            raise Exceptions::RuntimeUnavailable, "#{name} runtime is not defined"
+            fail Exceptions::RuntimeUnavailable, "#{name} runtime is not defined"
           end
         end
       end

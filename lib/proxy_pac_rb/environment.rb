@@ -8,6 +8,8 @@ module ProxyPacRb
 
     public
 
+    attr_reader :available_methods
+
     def initialize(options = {})
       @days          = { "MON" => 1, "TUE" => 2, "WED" => 3, "THU" => 4, "FRI" => 5, "SAT" => 6, "SUN" => 7 }
       @months        = { "JAN" => 1, "FEB" => 2, "MAR" => 3, "APR" => 4, "MAY" => 5, "JUN" => 6, "JUL" => 7, "AUG" => 8, "SEP" => 9, "OCT" => 10, "NOV" => 11, "DEC" => 12 }
@@ -15,6 +17,21 @@ module ProxyPacRb
       @my_ip_address = options.fetch(:my_ip_address, '127.0.0.1')
       @time          = options.fetch(:time, Time.now)
       @io            = options.fetch(:io, $stderr)
+      @available_methods = [
+        :alert,
+        :isPlainHostName,
+        :dnsDomainIs,
+        :localHostOrDomainIs,
+        :isResolvable,
+        :isInNet,
+        :dnsResolve,
+        :MyIpAddress ,
+        :dnsDomainLevels,
+        :shExpMatch,
+        :weekdayRange,
+        :dateRange,
+        :timeRange,
+      ]
     end
 
     def alert(msg)
@@ -92,7 +109,7 @@ module ProxyPacRb
           check_date_part(local_time, args[1]..args[4]) and
           check_date_part(local_time, args[2]..args[5])
       else
-        raise ArgumentError, "wrong number of arguments"
+        fail ArgumentError, "wrong number of arguments"
       end
     end
 
@@ -118,7 +135,7 @@ module ProxyPacRb
           (args[1]..args[4]).include? local_time.min  and
           (args[2]..args[5]).include? local_time.sec
       else
-        raise ArgumentError, "wrong number of arguments"
+        fail ArgumentError, "wrong number of arguments"
       end
     end
 
@@ -137,7 +154,7 @@ module ProxyPacRb
       when Range
         check_date_part(time, part.begin, :>=) and check_date_part(time, part.end, :<=)
       else
-        raise ArgumentError, "wrong type"
+        fail ArgumentError, "wrong type"
       end
     end
 

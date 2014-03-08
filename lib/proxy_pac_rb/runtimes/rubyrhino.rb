@@ -1,77 +1,87 @@
 module ProxyPacRb
-  module Runtimes
-    class RubyRhinoRuntime
-      class Context
-        def initialize(source = "")
-          source = source.encode("UTF-8") if source.respond_to?(:encode)
+  class RubyRhinoRuntime < Runtime
+    class Context < Runtime::Context
+      def initialize(runtime, source = "")
+        source = encode(source)
 
-          @rhino_context = Rhino::Context.new
-          fix_memory_limit! @rhino_context
-          @rhino_context.eval(source)
+        self.context = ::Rhino::Context.new
+        fix_memory_limit! context
+        context.eval(source)
+      end
+
+      def exec(source, options = {})
+        source = encode(source)
+
+        if /\S/ =~ source
+          eval "(function(){#{source}})()", options
         end
+      end
 
-        def include(mod)
-          (mod.methods - Module.methods).each do |name|
-            @rhino_context[name] = mod.method(name)
-          end
+      def eval(source, options = {})
+        source = encode(source)
+
+        if /\S/ =~ source
+          unbox context.eval("(#{source})")
         end
-
-        def call(properties, *args)
-          unbox @rhino_context.eval(properties).call(*args)
-        rescue ::Rhino::JavascriptError => e
-          if e.message == "syntax error"
-            raise RuntimeError, e.message
-          else
-            raise Exceptions::ProgramError, e.message
-          end
+      rescue ::Rhino::JSError => e
+        if e.message =~ /^syntax error/
+          raise RuntimeError, e.message
+        else
+          raise Exceptions::ProgramError, e.message
         end
+      end
 
-        def unbox(value)
-          case value = ::Rhino::To.ruby(value)
-          when ::Rhino::NativeFunction
-            nil
-          when ::Rhino::NativeObject
-            value.inject({}) do |vs, (k, v)|
-              case v
-              when ::Rhino::NativeFunction, ::Rhino::J::Function
-                nil
-              else
-                vs[k] = unbox(v)
-              end
-              vs
-            end
-          when Array
-            value.map { |v| unbox(v) }
-          else
-            value
-          end
+      def call(properties, *args)
+        unbox context.eval(properties).call(*args)
+      rescue ::Rhino::JSError => e
+        if e.message == "syntax error"
+          raise RuntimeError, e.message
+        else
+          raise Exceptions::ProgramError, e.message
         end
+      end
 
-        private
-          # Disables bytecode compiling which limits you to 64K scripts
-          def fix_memory_limit!(context)
-            if context.respond_to?(:optimization_level=)
-              context.optimization_level = -1
+      def unbox(value)
+        case value = ::Rhino::to_ruby(value)
+        when Java::OrgMozillaJavascript::NativeFunction
+          nil
+        when Java::OrgMozillaJavascript::NativeObject
+          value.inject({}) do |vs, (k, v)|
+            case v
+            when Java::OrgMozillaJavascript::NativeFunction, ::Rhino::JS::Function
+              nil
             else
-              context.instance_eval { @native.setOptimizationLevel(-1) }
+              vs[k] = unbox(v)
             end
+            vs
           end
+        when Array
+          value.map { |v| unbox(v) }
+        else
+          value
+        end
       end
 
-      def name
-        "therubyrhino (Rhino)"
-      end
+      private
+        # Disables bytecode compiling which limits you to 64K scripts
+        def fix_memory_limit!(cxt)
+          if cxt.respond_to?(:optimization_level=)
+            cxt.optimization_level = -1
+          else
+            cxt.instance_eval { @native.setOptimizationLevel(-1) }
+          end
+        end
+    end
 
-      def compile(source)
-        Context.new(source)
-      end
+    def name
+      "therubyrhino (Rhino)"
+    end
 
-      def available?
-        require "rhino"
-        true
-      rescue LoadError
-        false
-      end
+    def available?
+      require "rhino"
+      true
+    rescue LoadError
+      false
     end
   end
 end
