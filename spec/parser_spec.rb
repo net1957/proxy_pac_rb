@@ -43,11 +43,11 @@ describe ProxyPacRb::Parser do
       }
       EOS
 
-      environment = ProxyPacRb::Environment.new(my_ip_address: '127.0.0.1')
+      environment = ProxyPacRb::Environment.new(client_ip: '127.0.0.1')
       file = ProxyPacRb::Parser.new(environment).source(string)
       expect(file.find('http://localhost')).to eq('PROXY localhost:8080')
 
-      environment = ProxyPacRb::Environment.new(my_ip_address: '127.0.0.2')
+      environment = ProxyPacRb::Environment.new(client_ip: '127.0.0.2')
       file = ProxyPacRb::Parser.new(environment).source(string)
       expect(file.find('http://localhost')).to eq('DIRECT')
     end

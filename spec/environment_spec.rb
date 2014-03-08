@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe ProxyPacRb::Environment do
   let(:environment) do
-    Environment.new(my_ip_address: '127.0.0.1', time: Time.now)
+    Environment.new(client_ip: '127.0.0.1', time: Time.now)
   end
 
   describe "#isResolvable()" do
@@ -80,7 +80,7 @@ describe ProxyPacRb::Environment do
   describe '#MyIpAddress ' do
     it 'returns the given ip address' do
       ip = '127.0.0.1'
-      environment = Environment.new(my_ip_address: ip, time: Time.now)
+      environment = Environment.new(client_ip: ip, time: Time.now)
 
       expect(environment.MyIpAddress).to eq(ip)
     end
@@ -106,7 +106,7 @@ describe ProxyPacRb::Environment do
   end
 
   describe '#weekdayRange' do
-    let(:environment) { Environment.new(my_ip_address: '127.0.0.1', time: Time.parse('1991-08-25 12:00')) }
+    let(:environment) { Environment.new(client_ip: '127.0.0.1', time: Time.parse('1991-08-25 12:00')) }
 
     it 'returns true for SUN - MON' do
       result = environment.weekdayRange("SUN", "MON")
@@ -127,7 +127,7 @@ describe ProxyPacRb::Environment do
   end
 
   describe '#dateRange' do
-    let(:environment) { Environment.new(my_ip_address: '127.0.0.1', time: Time.parse('1991-08-25 12:00')) }
+    let(:environment) { Environment.new(client_ip: '127.0.0.1', time: Time.parse('1991-08-25 12:00')) }
 
     it 'returns true for JUL - SEP' do
       result = environment.dateRange("JUL", "SEP")
@@ -147,7 +147,7 @@ describe ProxyPacRb::Environment do
   end
 
   describe '#timeRange' do
-    let(:environment) { Environment.new(my_ip_address: '127.0.0.1', time: Time.parse('1991-08-25 12:00')) }
+    let(:environment) { Environment.new(client_ip: '127.0.0.1', time: Time.parse('1991-08-25 12:00')) }
 
     it 'returns true for 8 - 18h' do
       result = environment.timeRange(8, 18)
