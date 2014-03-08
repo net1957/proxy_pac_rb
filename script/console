@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << ::File.expand_path('../../lib', __FILE__)
+
+# Pull in all of the gems including those in the `test` group
+require 'bundler'
+Bundler.require :default, :test, :development, :therubyracer
+
+require 'irb'
+require 'irb/completion'
+require 'proxy_pac_rb'
+
+ARGV.clear
+IRB.start
