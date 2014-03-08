@@ -50,21 +50,20 @@ parsepac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac 
 require 'proxy_pac_rb'
 
 file = ProxyPacRb::Parser.new.load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac')
-file.find('https://github.com')        # => "PROXY proxy:8080"
-file.find('http://ruby-lang.com')      # => "PROXY proxy:8080"
+file.find('https://github.com')        # => "DIRECT"
 ```
 
 *Load from filesystem*
 
 ```bash
-curl -o sample.pac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac
+curl -L -o sample.pac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac
 ```
 
 ```ruby
 require 'proxy_pac_rb'
 
 file = ProxyPacRb::Parser.new.read("sample.pac")
-file.find('https://github.com')        # => "PROXY proxy:8080"
+file.find('https://github.com')        # => "DIRECT"
 ```
 
 *Use string*
@@ -98,6 +97,8 @@ file.find('https://github.com')        # => "DIRECT"
 *Use Date Time*
 
 ```ruby
+require 'proxy_pac_rb'
+
 environment = ProxyPacRb::Environment.new(time: '2014-01-02 08:00:00')
 file = ProxyPacRb::Parser.new(environment).load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
 file.find('https://github.com')   # => "PROXY localhost:8080"
