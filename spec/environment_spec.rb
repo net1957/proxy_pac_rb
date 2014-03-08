@@ -108,8 +108,8 @@ describe ProxyPacRb::Environment do
   describe '#weekdayRange' do
     let(:environment) { Environment.new(my_ip_address: '127.0.0.1', time: Time.parse('1991-08-25 12:00')) }
 
-    it 'returns true for SAT - SUN' do
-      result = environment.weekdayRange("SAT", "SUN")
+    it 'returns true for SUN - MON' do
+      result = environment.weekdayRange("SUN", "MON")
       expect(result).to be_true
     end
 
