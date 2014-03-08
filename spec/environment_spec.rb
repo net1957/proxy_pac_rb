@@ -175,4 +175,19 @@ describe ProxyPacRb::Environment do
       expect(result.chomp).to eq('message')
     end
   end
+
+  describe '#prepare' do
+    it 'adds neccessary functions to source file' do
+      string = ''
+      environment.prepare(string)
+
+      %w[
+      MyIpAddress
+      weekdayRange
+      dateRange
+      timeRange
+      ].each { |f| expect(string).to include(f) }
+      
+    end
+  end
 end

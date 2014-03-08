@@ -4,7 +4,7 @@ module ProxyPacRb
 
     private
 
-    attr_reader :days, :months, :my_ip_address, :time, :io
+    attr_reader :days, :months, :my_ip_address, :time, :io, :javascript_function_templates
 
     public
 
@@ -17,6 +17,9 @@ module ProxyPacRb
       @my_ip_address = options.fetch(:my_ip_address, '127.0.0.1')
       @time          = options.fetch(:time, Time.now)
       @io            = options.fetch(:io, $stderr)
+
+      @javascript_function_templates = ProxyPacJs
+
       @available_methods = [
         :alert,
         :isPlainHostName,
@@ -25,12 +28,12 @@ module ProxyPacRb
         :isResolvable,
         :isInNet,
         :dnsResolve,
-        :MyIpAddress ,
+#        :MyIpAddress ,
         :dnsDomainLevels,
         :shExpMatch,
-        :weekdayRange,
-        :dateRange,
-        :timeRange,
+#        :weekdayRange,
+#        :dateRange,
+#        :timeRange,
       ]
     end
 
@@ -172,6 +175,26 @@ module ProxyPacRb
       # Have to rescue NoMethodError because jruby has a bug with non existant hostnames
       # See http://jira.codehaus.org/browse/JRUBY-6054
       nil
+    end
+
+    public
+
+    def prepare(string)
+      if my_ip_address
+        string << "\n\n"
+        string << javascript_function_templates.my_ip_address_template(my_ip_address)
+      end
+
+      if time
+        string << "\n\n"
+        string << javascript_function_templates.week_day_range_template(time)
+        string << "\n\n"
+        string << javascript_function_templates.date_range_template(time)
+        string << "\n\n"
+        string << javascript_function_templates.time_range_template(time)
+      end
+
+      string
     end
   end
 end

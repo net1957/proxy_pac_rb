@@ -35,21 +35,11 @@ describe File do
   end
 
   context '#find' do
-    it 'should return DIRECT for a url' do
-      file = ProxyPacRb::File.new(simple)
-      expect(file.find('http://localhost')).to eq('DIRECT')
-    end
+    it 'returns result of proxy.pac' do
+      javascript = double('javascript')
+      expect(javascript).to receive(:call).with("FindProxyForURL", "http://localhost", "localhost")
 
-    it 'respects client ip', :focus do
-      file = ProxyPacRb::File.new(client_ip_pac)
-      expect(file.find('http://localhost', client_ip: '127.0.0.1')).to eq('PROXY localhost:8080')
-      expect(file.find('http://localhost', client_ip: '127.0.0.2')).to eq('DIRECT')
-    end
-
-    it 'respects time' do
-      file = ProxyPacRb::File.new(time_pac)
-      expect(file.find('http://localhost', time: '2014-03-07 12:00:00')).to eq('PROXY localhost:8080')
-      expect(file.find('http://localhost', time: '2014-03-07 19:00:00')).to eq('DIRECT')
+      ProxyPacRb::File.new(javascript).find("http://localhost")
     end
   end
 end

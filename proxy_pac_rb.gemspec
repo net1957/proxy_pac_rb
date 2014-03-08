@@ -25,4 +25,5 @@ DESC
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'addressable'
+  spec.add_runtime_dependency 'activesupport'
 end

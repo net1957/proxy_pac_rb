@@ -30,6 +30,8 @@ module ProxyPacRb
     private
 
     def compile_javascript(source)
+      environment.prepare(source)
+
       context = runtime.compile(source)
       context.include environment
 
