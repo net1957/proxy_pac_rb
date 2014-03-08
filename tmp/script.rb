@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'pry'
 
-source = <<-EOS
+string = <<-EOS
 function FindProxyForURL(url, host) {
   alert(MyIpAddress)
   if ( MyIpAddress == '127.0.0.2' ) {
@@ -14,7 +14,14 @@ EOS
 
 require 'proxy_pac_rb'
 
-file = ProxyPacRb::File.new(source)
-puts file.find('http://localhost', client_ip: '127.0.0.2')
-puts file.find('http://localhost', client_ip: '127.0.0.1')
+
+options = {}
+client_ip = options.fetch(:client_ip, '127.0.0.1')
+time      = options.fetch(:time, Time.now)
+
+environment = ProxyPacRb::Environment.new(my_ip_address: client_ip, time: time)
+
+file = ProxyPacRb::Parser.new(environment).source(string)
+puts file.find('http://localhost')
+puts file.find('http://localhost')
 

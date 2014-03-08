@@ -2,28 +2,42 @@
 module ProxyPacRb
   class Parser
 
-    class << self
-      attr_reader :runtime
+    private
 
-      def runtime=(runtime)
-        fail Exceptions::RuntimeUnavailable, "#{runtime.name} is unavailable on this system" unless runtime.available?
+    attr_reader :runtime, :environment
 
-        @runtime = runtime
-      end
+    public
 
-      def load(url, options = {})
-        File.new(open(url, { :proxy => false }.merge(options)).read)
-      end
+    def initialize(environment = Environment.new, runtime = Runtimes.autodetect)
+      fail Exceptions::RuntimeUnavailable, "#{runtime.name} is unavailable on this system" unless runtime.available?
 
-      def read(file)
-        File.new(::File.read(file))
-      end
-
-      def source(source)
-        File.new(source)
-      end
+      @runtime     = runtime
+      @environment = environment
     end
 
-    self.runtime = Runtimes.autodetect
+    def load(url, options = {})
+      create_file(open(url, { :proxy => false }.merge(options)).read)
+    end
+
+    def read(file)
+      create_file(::File.read(file))
+    end
+
+    def source(source)
+      create_file(source)
+    end
+
+    private
+
+    def compile_javascript(source)
+      context = runtime.compile(source)
+      context.include environment
+
+      context
+    end
+
+    def create_file(source)
+      File.new(compile_javascript(source))
+    end
   end
 end
