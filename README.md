@@ -111,11 +111,11 @@ EOS
 
 environment = ProxyPacRb::Environment.new(time: Time.parse('2014-07-06 12:00'))
 file = ProxyPacRb::Parser.new(environment).source(string)
-file.find('http://localhost')) # => 'PROXY localhost:8080'
+file.find('http://localhost') # => 'PROXY localhost:8080'
 
 environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-08 6:00'))
 file = ProxyPacRb::Parser.new(environment).source(string)
-file.find('http://localhost')) # => 'DIRECT'
+file.find('http://localhost') # => 'DIRECT'
 ```
 
 ## Available JavaScript Functions
