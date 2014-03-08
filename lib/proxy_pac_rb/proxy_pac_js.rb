@@ -2,7 +2,6 @@
 module ProxyPacRb
   class ProxyPacJs
     class << self
-
       def my_ip_address_template(value)
         <<-EOS.strip_heredoc
           function MyIpAddress() {

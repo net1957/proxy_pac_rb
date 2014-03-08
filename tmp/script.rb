@@ -1,25 +1,22 @@
 #!/usr/bin/env ruby
 require 'pry'
 
+require 'proxy_pac_rb'
+
 string = <<-EOS
 function FindProxyForURL(url, host) {
-  alert(MyIpAddress())
-  if ( MyIpAddress() == '127.0.0.2' ) {
-    return "DIRECT";
+  if (weekdayRange("FRI", "SUN")) {
+    return "PROXY localhost:8080";                                                                                                          
   } else {
-    return "PROXY localhost:8080";
+    return "DIRECT";
   }
 }
 EOS
 
-require 'proxy_pac_rb'
-
-
-environment = ProxyPacRb::Environment.new(my_ip_address: '127.0.0.1', time: Time.now)
+environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-06 12:00'))
 file = ProxyPacRb::Parser.new(environment).source(string)
 puts file.find('http://localhost')
 
-environment = ProxyPacRb::Environment.new(my_ip_address: '127.0.0.2', time: Time.now)
+environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-08 6:00'))
 file = ProxyPacRb::Parser.new(environment).source(string)
 puts file.find('http://localhost')
-

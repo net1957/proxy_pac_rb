@@ -30,4 +30,87 @@ describe ProxyPacRb::Parser do
       expect(pac).not_to be_nil
     end
   end
+
+  context 'compile' do
+    it 'supports a changeable ip address' do
+      string = <<-EOS
+      function FindProxyForURL(url, host) {
+        if ( MyIpAddress() == '127.0.0.2' ) {
+          return "DIRECT";
+        } else {
+          return "PROXY localhost:8080";
+        }
+      }
+      EOS
+
+      environment = ProxyPacRb::Environment.new(my_ip_address: '127.0.0.1')
+      file = ProxyPacRb::Parser.new(environment).source(string)
+      expect(file.find('http://localhost')).to eq('PROXY localhost:8080')
+
+      environment = ProxyPacRb::Environment.new(my_ip_address: '127.0.0.2')
+      file = ProxyPacRb::Parser.new(environment).source(string)
+      expect(file.find('http://localhost')).to eq('DIRECT')
+    end
+
+    it 'supports a changeable date' do
+      string = <<-EOS
+      function FindProxyForURL(url, host) {
+        if (weekdayRange("FRI", "SAT")) {
+          return "PROXY localhost:8080";
+        } else {
+          return "DIRECT";
+        }
+      }
+      EOS
+
+      environment = Environment.new(time: Time.parse('2014-03-08 12:00'))
+      file = ProxyPacRb::Parser.new(environment).source(string)
+      expect(file.find('http://localhost')).to eq('PROXY localhost:8080')
+
+      environment = Environment.new(time: Time.parse('2014-03-06 12:00'))
+      file = ProxyPacRb::Parser.new(environment).source(string)
+      expect(file.find('http://localhost')).to eq('DIRECT')
+    end
+
+    it 'supports time range' do
+      string = <<-EOS
+      function FindProxyForURL(url, host) {
+        if (timeRange(8, 18)) {
+          return "PROXY localhost:8080";                                                                                                          
+        } else {
+          return "DIRECT";
+        }
+      }
+      EOS
+      
+      environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-06 12:00'))
+      file = ProxyPacRb::Parser.new(environment).source(string)
+      expect(file.find('http://localhost')).to eq('PROXY localhost:8080')
+      
+      environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-08 6:00'))
+      file = ProxyPacRb::Parser.new(environment).source(string)
+      expect(file.find('http://localhost')).to eq('DIRECT')
+    end
+
+    it 'supports a date range' do
+      string = <<-EOS
+      function FindProxyForURL(url, host) {
+        if (dateRange("JUL", "SEP")) {
+          return "PROXY localhost:8080";                                                                                                          
+        } else {
+          return "DIRECT";
+        }
+      }
+      EOS
+      
+      environment = ProxyPacRb::Environment.new(time: Time.parse('2014-07-06 12:00'))
+      file = ProxyPacRb::Parser.new(environment).source(string)
+      expect(file.find('http://localhost')).to eq('PROXY localhost:8080')
+      
+      environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-08 6:00'))
+      file = ProxyPacRb::Parser.new(environment).source(string)
+      expect(file.find('http://localhost')).to eq('DIRECT')
+    end
+
+  end
 end
