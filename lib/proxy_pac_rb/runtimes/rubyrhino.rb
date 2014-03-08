@@ -4,9 +4,9 @@ module ProxyPacRb
       def initialize(runtime, source = "")
         source = encode(source)
 
-        @rhino_context = ::Rhino::Context.new
-        fix_memory_limit! @rhino_context
-        @rhino_context.eval(source)
+        self.context = ::Rhino::Context.new
+        fix_memory_limit! context
+        context.eval(source)
       end
 
       def exec(source, options = {})
@@ -21,7 +21,7 @@ module ProxyPacRb
         source = encode(source)
 
         if /\S/ =~ source
-          unbox @rhino_context.eval("(#{source})")
+          unbox context.eval("(#{source})")
         end
       rescue ::Rhino::JSError => e
         if e.message =~ /^syntax error/
@@ -32,7 +32,7 @@ module ProxyPacRb
       end
 
       def call(properties, *args)
-        unbox @rhino_context.eval(properties).call(*args)
+        unbox context.eval(properties).call(*args)
       rescue ::Rhino::JSError => e
         if e.message == "syntax error"
           raise RuntimeError, e.message
@@ -64,11 +64,11 @@ module ProxyPacRb
 
       private
         # Disables bytecode compiling which limits you to 64K scripts
-        def fix_memory_limit!(context)
-          if context.respond_to?(:optimization_level=)
-            context.optimization_level = -1
+        def fix_memory_limit!(cxt)
+          if cxt.respond_to?(:optimization_level=)
+            cxt.optimization_level = -1
           else
-            context.instance_eval { @native.setOptimizationLevel(-1) }
+            cxt.instance_eval { @native.setOptimizationLevel(-1) }
           end
         end
     end

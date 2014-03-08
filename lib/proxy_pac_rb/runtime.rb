@@ -4,6 +4,14 @@ module ProxyPacRb
     class Context
       include Encoding
 
+      attr_accessor :context
+
+      def include(environment)
+        environment.available_methods.each do |name| 
+          context[name] = environment.method(name)
+        end
+      end
+
       def initialize(runtime, source = "")
       end
 

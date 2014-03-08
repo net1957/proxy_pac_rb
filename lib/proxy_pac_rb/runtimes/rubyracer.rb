@@ -5,15 +5,8 @@ module ProxyPacRb
         source = encode(source)
 
         lock do
-          @v8_context = ::V8::Context.new
-          @v8_context.eval(source)
-
-          if environment
-            environment.available_methods.each do |name| 
-              @v8_context[name] = mod.method(name)
-            end
-          end
-
+          self.context = ::V8::Context.new
+          context.eval(source)
         end
       end
 
@@ -31,7 +24,7 @@ module ProxyPacRb
         if /\S/ =~ source
           lock do
             begin
-              unbox @v8_context.eval("(#{source})")
+              unbox context.eval("(#{source})")
             rescue ::V8::JSError => e
               if e.value["name"] == "SyntaxError"
                 fail RuntimeError, e.value.to_s
@@ -46,7 +39,7 @@ module ProxyPacRb
       def call(properties, *args)
         lock do
           begin
-            unbox @v8_context.eval(properties).call(*args)
+            unbox context.eval(properties).call(*args)
           rescue ::V8::JSError => e
             if e.value["name"] == "SyntaxError"
               raise RuntimeError, e.value.to_s

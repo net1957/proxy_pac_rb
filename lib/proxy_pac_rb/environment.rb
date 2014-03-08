@@ -4,9 +4,11 @@ module ProxyPacRb
 
     private
 
-    attr_reader :days, :months, :my_ip_address, :time, :io, :available_methods
+    attr_reader :days, :months, :my_ip_address, :time, :io
 
     public
+
+    attr_reader :available_methods
 
     def initialize(options = {})
       @days          = { "MON" => 1, "TUE" => 2, "WED" => 3, "THU" => 4, "FRI" => 5, "SAT" => 6, "SUN" => 7 }
