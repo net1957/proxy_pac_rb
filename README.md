@@ -44,35 +44,67 @@ parsepac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac 
 
 ### Ruby
 
-*Simple*
+*Load from website*
 
 ```ruby
-require "rubygems"
-require "pac"
+require 'proxy_pac_rb'
 
-pac = PAC.load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac')
-pac.find('https://github.com')        # => "PROXY proxy:8080"
-pac.find('http://ruby-lang.com')      # => "PROXY proxy:8080; DIRECT"
-pac.find('http://samuel.kadolph.com') # => "DIRECT"
+file = ProxyPacRb::Parser.new.load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac')
+file.find('https://github.com')        # => "PROXY proxy:8080"
+file.find('http://ruby-lang.com')      # => "PROXY proxy:8080"
+```
 
-pac = PAC.read("sample.pac")
+*Load from filesystem*
 
-pac = PAC.source <<-JS
+```bash
+curl -o sample.pac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac
+```
+
+```ruby
+require 'proxy_pac_rb'
+
+file = ProxyPacRb::Parser.new.read("sample.pac")
+file.find('https://github.com')        # => "PROXY proxy:8080"
+```
+
+*Use string*
+
+```ruby
+require 'proxy_pac_rb'
+
+file = ProxyPacRb::Parser.new.source <<-JS
   function FindProxyForURL(url, host) {
     return "DIRECT";
   }
 JS
-pac.find('http://localhost') # => "DIRECT"
+
+file.find('http://localhost') # => "DIRECT"
+```
 
 *Use Client IP*
-pac = PAC.load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
-pac.find('https://github.com', client_ip: '127.0.0.1')        # => "PROXY localhost:8080"
-pac.find('https://github.com', client_ip: '127.0.0.2')        # => "DIRECT"
+
+```ruby
+require 'proxy_pac_rb'
+
+environment = ProxyPacRb::Environment.new(client_ip: '127.0.0.1')
+file = ProxyPacRb::Parser.new(environment).load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
+file.find('https://github.com')        # => "PROXY localhost:8080"
+
+environment = ProxyPacRb::Environment.new(client_ip: '127.0.0.2')
+file = ProxyPacRb::Parser.new(environment).load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
+file.find('https://github.com')        # => "DIRECT"
+```
 
 *Use Date Time*
-pac = PAC.load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
-pac.find('https://github.com', time: '2014-01-02 08:00:00')   # => "PROXY localhost:8080"
-pac.find('https://github.com', time: '2014-01-02 19:00:00')   # => "DIRECT"
+
+```ruby
+environment = ProxyPacRb::Environment.new(time: '2014-01-02 08:00:00')
+file = ProxyPacRb::Parser.new(environment).load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
+file.find('https://github.com')   # => "PROXY localhost:8080"
+
+environment = ProxyPacRb::Environment.new(time: '2014-01-02 19:00:00')
+file = ProxyPacRb::Parser.new(environment).load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
+file.find('https://github.com')   # => "DIRECT"
 ```
 
 ## Available JavaScript Functions
@@ -89,6 +121,7 @@ pac.find('https://github.com', time: '2014-01-02 19:00:00')   # => "DIRECT"
 * weekdayRange(wd1, wd2, gmt)
 * dateRange(*args)
 * timeRange(*args)
+* alert(msg) (output on stderr by default)
 
 ## Developers
 
