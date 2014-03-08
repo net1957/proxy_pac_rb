@@ -11,8 +11,16 @@ module ProxyPacRb
         EOS
       end
 
+
       # taken from  releases-mozilla-release / netwerk / base / src / ProxyAutoConfig.cpp @ bitbucket.org
       # https://bitbucket.org/mozilla/releases-mozilla-release/raw/dece38633cf1adcab2071d69fea264580d24cc9e/netwerk/base/src/ProxyAutoConfig.cpp
+      def time_variables
+        <<-EOS.strip_heredoc
+        var wdays = {SUN: 0, MON: 1, TUE: 2, WED: 3, THU: 4, FRI: 5, SAT: 6};
+        var months = {JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5, JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11};
+        EOS
+      end
+
       def week_day_range_template(value = nil)
         value = %Q{"#{value}"} if value
 

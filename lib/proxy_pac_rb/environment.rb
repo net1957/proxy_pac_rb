@@ -186,6 +186,9 @@ module ProxyPacRb
       end
 
       if time
+        string << javascript_function_templates.time_variables
+        string << "\n\n"
+        string << javascript_function_templates.week_day_range_template(time)
         string << "\n\n"
         string << javascript_function_templates.week_day_range_template(time)
         string << "\n\n"
