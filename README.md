@@ -99,13 +99,23 @@ file.find('https://github.com')        # => "DIRECT"
 ```ruby
 require 'proxy_pac_rb'
 
-environment = ProxyPacRb::Environment.new(time: '2014-01-02 08:00:00')
-file = ProxyPacRb::Parser.new(environment).load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
-file.find('https://github.com')   # => "PROXY localhost:8080"
+string = <<-EOS
+function FindProxyForURL(url, host) {
+  if (dateRange("JUL", "SEP")) {
+    return "PROXY localhost:8080";                                                                                                          
+  } else {
+    return "DIRECT";
+  }
+}
+EOS
 
-environment = ProxyPacRb::Environment.new(time: '2014-01-02 19:00:00')
-file = ProxyPacRb::Parser.new(environment).load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
-file.find('https://github.com')   # => "DIRECT"
+environment = ProxyPacRb::Environment.new(time: Time.parse('2014-07-06 12:00'))
+file = ProxyPacRb::Parser.new(environment).source(string)
+file.find('http://localhost')) # => 'PROXY localhost:8080'
+
+environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-08 6:00'))
+file = ProxyPacRb::Parser.new(environment).source(string)
+file.find('http://localhost')) # => 'DIRECT'
 ```
 
 ## Available JavaScript Functions
