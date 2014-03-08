@@ -34,9 +34,9 @@ module ProxyPacRb
               unbox @v8_context.eval("(#{source})")
             rescue ::V8::JSError => e
               if e.value["name"] == "SyntaxError"
-                raise RuntimeError, e.value.to_s
+                fail RuntimeError, e.value.to_s
               else
-                raise ProgramError, e.value.to_s
+                raise Exceptions::ProgramError, e.value.to_s
               end
             end
           end
@@ -51,7 +51,7 @@ module ProxyPacRb
             if e.value["name"] == "SyntaxError"
               raise RuntimeError, e.value.to_s
             else
-              raise ProgramError, e.value.to_s
+              raise Exceptions::ProgramError, e.value.to_s
             end
           end
         end

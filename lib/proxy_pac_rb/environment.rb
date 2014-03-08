@@ -92,7 +92,7 @@ module ProxyPacRb
           check_date_part(local_time, args[1]..args[4]) and
           check_date_part(local_time, args[2]..args[5])
       else
-        raise ArgumentError, "wrong number of arguments"
+        fail ArgumentError, "wrong number of arguments"
       end
     end
 
@@ -118,7 +118,7 @@ module ProxyPacRb
           (args[1]..args[4]).include? local_time.min  and
           (args[2]..args[5]).include? local_time.sec
       else
-        raise ArgumentError, "wrong number of arguments"
+        fail ArgumentError, "wrong number of arguments"
       end
     end
 
@@ -137,7 +137,7 @@ module ProxyPacRb
       when Range
         check_date_part(time, part.begin, :>=) and check_date_part(time, part.end, :<=)
       else
-        raise ArgumentError, "wrong type"
+        fail ArgumentError, "wrong type"
       end
     end
 

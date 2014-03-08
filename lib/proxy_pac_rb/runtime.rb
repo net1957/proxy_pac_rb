@@ -8,20 +8,20 @@ module ProxyPacRb
       end
 
       def exec(source, options = {})
-        raise NotImplementedError
+        fail NotImplementedError
       end
 
       def eval(source, options = {})
-        raise NotImplementedError
+        fail NotImplementedError
       end
 
       def call(properties, *args)
-        raise NotImplementedError
+        fail NotImplementedError
       end
     end
 
     def name
-      raise NotImplementedError
+      fail NotImplementedError
     end
 
     def context_class
@@ -47,7 +47,7 @@ module ProxyPacRb
     end
 
     def available?
-      raise NotImplementedError
+      fail NotImplementedError
     end
   end
 end
