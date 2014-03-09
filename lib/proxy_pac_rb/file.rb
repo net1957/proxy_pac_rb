@@ -13,7 +13,7 @@ module ProxyPacRb
 
     def find(url)
       uri = Addressable::URI.heuristic_parse(url)
-      fail ArgumentError, "url is missing host" unless uri.host
+      fail Exceptions::UrlInvalid, "url is missing host" unless uri.host
 
       javascript.call("FindProxyForURL", url, uri.host)
     end

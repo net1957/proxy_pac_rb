@@ -9,5 +9,8 @@ module ProxyPacRb
 
     #raise on invalid argument
     class InvalidArgument < StandardError; end
+
+    #raise on invalid argument
+    class UrlInvalid < StandardError; end
   end
 end
