@@ -36,10 +36,24 @@ After installing the `proxy_pac_rb` gem you must install a JavaScript runtime. C
 
 ### Command Line
 
+*Arguments*
+
+* `-p|--proxy-pac FILE`: Path to proxy pac file
+* `-t|--time YYYY-MM-DD HH:MM:SS`: Time to use in proxy.pac
+* `-c|--client-ip x.x.x.x`: Client-IP to use in proxy.pac
+* `-h|--help`: Show help
+
+*Use*
+
 ```
-parsepac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac https://github.com
-parsepac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac http://ruby-lang.com
-parsepac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac http://samuel.kadolph.com
+# Download pac
+curl -L -o sample.pac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac
+
+# Parse pac
+parsepac -c 127.0.0.1 -t "2014-03-09 12:00:00" -p sample.pac https://github.com
+
+# =>                url: result
+# => https://github.com: DIRECT
 ```
 
 ### Ruby
