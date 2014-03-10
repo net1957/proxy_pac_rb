@@ -1,5 +1,10 @@
 # Proxy Pac Rb
 
+[![Build Status](https://travis-ci.org/dg-vrnetze/proxy_pac_rb.png?branch=master)](https://travis-ci.org/dg-vrnetze/proxy_pac_rb)
+[![Code Climate](https://codeclimate.com/github/dg-vrnetze/proxy_pac_rb.png)](https://codeclimate.com/github/dg-vrnetze/proxy_pac_rb)
+[![Coverage Status](https://coveralls.io/repos/dg-vrnetze/proxy_pac_rb/badge.png?branch=master)](https://coveralls.io/r/dg-vrnetze/proxy_pac_rb?branch=master)
+[![Gem Version](https://badge.fury.io/rb/proxy_pac_rb.png)](http://badge.fury.io/rb/proxy_pac_rb)
+
 `proxy_pac_rb` is a gem to parse [proxy auto-config](http://en.wikipedia.org/wiki/Proxy_auto-config) files.
 `proxy_pac_rb` uses a JavaScript runtime to evaulate a proxy auto-config file the same way a browser does to determine what proxy (if
 any at all) should a program use to connect to a server. You must install on of the supported JavaScript runtimes:
