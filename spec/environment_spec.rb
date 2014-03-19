@@ -112,7 +112,7 @@ describe ProxyPacRb::Environment do
       environment.prepare(string)
 
       %w[
-      MyIpAddress
+      myIpAddress
       weekdayRange
       dateRange
       timeRange
