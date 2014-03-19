@@ -77,12 +77,12 @@ describe ProxyPacRb::Environment do
     end
   end
 
-  describe '#MyIpAddress ' do
+  describe '#myIpAddress ' do
     it 'returns the given ip address' do
       ip = '127.0.0.1'
       environment = Environment.new(client_ip: ip, time: Time.now)
 
-      expect(environment.MyIpAddress).to eq(ip)
+      expect(environment.myIpAddress).to eq(ip)
     end
   end
 

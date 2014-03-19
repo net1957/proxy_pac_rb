@@ -65,7 +65,7 @@ module ProxyPacRb
       resolve_host(host)
     end
 
-    def MyIpAddress 
+    def myIpAddress 
       IPAddr.new(client_ip).to_s
     end
 
