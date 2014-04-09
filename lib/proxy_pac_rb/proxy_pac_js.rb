@@ -4,7 +4,7 @@ module ProxyPacRb
     class << self
       def my_ip_address_template(value)
         <<-EOS.strip_heredoc
-          function MyIpAddress() {
+          function myIpAddress() {
             return "#{value}";
           }
         EOS

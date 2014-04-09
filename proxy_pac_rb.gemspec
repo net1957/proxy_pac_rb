@@ -16,7 +16,6 @@ any at all) should a program use to connect to a server. You must install on of 
 therubyracer, therubyrhino, johnson or mustang.
 DESC
 
-  spec.homepage      = 'https://github.com/dg-vrnetze/ruby_pac_rb'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")

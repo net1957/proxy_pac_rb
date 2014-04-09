@@ -13,7 +13,7 @@ describe File do
   let(:client_ip_pac) do 
     <<-EOS.strip_heredoc
       function FindProxyForURL(url, host) {
-        if ( MyIpAddress() == '127.0.0.2' ) {
+        if ( myIpAddress() == '127.0.0.2' ) {
           return "DIRECT";
         } else {
           return "PROXY localhost:8080";
