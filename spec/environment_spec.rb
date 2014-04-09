@@ -77,15 +77,6 @@ describe ProxyPacRb::Environment do
     end
   end
 
-  describe '#MyIpAddress ' do
-    it 'returns the given ip address' do
-      ip = '127.0.0.1'
-      environment = Environment.new(client_ip: ip, time: Time.now)
-
-      expect(environment.MyIpAddress).to eq(ip)
-    end
-  end
-
   describe '#dnsDomainLevels' do
     it 'returns the count of domain levels (dots)' do
       result = environment.dnsDomainLevels('maps.google.com')
@@ -105,67 +96,6 @@ describe ProxyPacRb::Environment do
     end
   end
 
-  describe '#weekdayRange' do
-    let(:environment) { Environment.new(client_ip: '127.0.0.1', time: Time.parse('1991-08-25 12:00')) }
-
-    it 'returns true for SUN - MON' do
-      result = environment.weekdayRange("SUN", "MON")
-      expect(result).to be_true
-    end
-
-    it 'returns false for FR' do
-      result = environment.weekdayRange("FRI")
-      expect(result).to be_false
-    end
-
-    it 'fails if wd1 or wd2 are not valid, e.g. German SO for Sunday' do
-      expect {
-        environment.weekdayRange("SO")
-      }.to raise_error Exceptions::InvalidArgument
-    end
-
-  end
-
-  describe '#dateRange' do
-    let(:environment) { Environment.new(client_ip: '127.0.0.1', time: Time.parse('1991-08-25 12:00')) }
-
-    it 'returns true for JUL - SEP' do
-      result = environment.dateRange("JUL", "SEP")
-      expect(result).to be_true
-    end
-
-    it 'returns false for MAR' do
-      result = environment.dateRange("MAR")
-      expect(result).to be_false
-    end
-
-    it 'fails if range is not valid' do
-      expect {
-        environment.dateRange("SEPT")
-      }.to raise_error Exceptions::InvalidArgument
-    end
-  end
-
-  describe '#timeRange' do
-    let(:environment) { Environment.new(client_ip: '127.0.0.1', time: Time.parse('1991-08-25 12:00')) }
-
-    it 'returns true for 8 - 18h' do
-      result = environment.timeRange(8, 18)
-      expect(result).to be_true
-    end
-
-    it 'returns false for MAR' do
-      result = environment.timeRange(13,14)
-      expect(result).to be_false
-    end
-
-    it 'fails if range is not valid' do
-      expect {
-        environment.timeRange("SEPT")
-      }.to raise_error Exceptions::InvalidArgument
-    end
-  end
-
   describe '#alert' do
     it 'outputs msg' do
       result = capture(:stderr) do
@@ -182,7 +112,7 @@ describe ProxyPacRb::Environment do
       environment.prepare(string)
 
       %w[
-      MyIpAddress
+      myIpAddress
       weekdayRange
       dateRange
       timeRange
