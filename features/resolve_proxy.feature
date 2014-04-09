@@ -84,3 +84,25 @@ Feature: Resolve proxy
     """
     DIRECT
     """
+
+  Scenario: Use time
+    Given a file named "proxy.pac" with:
+    """
+    function FindProxyForURL(url, host) {
+      if (dateRange("JAN", "MAY")) {
+        return 'PROXY localhost:3128';
+      } else {
+        return 'DIRECT';
+      }
+    }
+    """
+    When I successfully run `pprb -p proxy.pac -t 2014-04-09 www.example.org`
+    Then the output should contain:
+    """
+    PROXY localhost:3128
+    """
+    When I successfully run `pprb -p proxy.pac -t 2014-12-07 www.example.org`
+    Then the output should contain:
+    """
+    DIRECT
+    """
