@@ -30,6 +30,19 @@ Feature: Resolve proxy
     PROXY localhost:3128
     """
 
+  Scenario: Existing proxy.pac with url
+    Given a file named "proxy.pac" with:
+    """
+    function FindProxyForURL(url, host) {
+      return 'PROXY localhost:3128';
+    }
+    """
+    When I successfully run `pprb -p http://127.0.0.1:4567/proxy.pac www.example.org`
+    Then the output should contain:
+    """
+    PROXY localhost:3128
+    """
+
   Scenario: Non-Existing proxy.pac
     When I run `pprb -p proxy.pac www.example.org`
     Then the output should contain:
