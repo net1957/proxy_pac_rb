@@ -1,6 +1,8 @@
 #!/bin/sh
 bundle exec script/test_web &
 
+sleep 15
+
 bundle exec cucumber
 
 pkill -P $$
