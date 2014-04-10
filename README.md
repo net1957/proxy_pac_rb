@@ -50,12 +50,20 @@ After installing the `proxy_pac_rb` gem you must install a JavaScript runtime. C
 
 *Use*
 
-```
+```bash
 # Download pac
 curl -L -o sample.pac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac
 
 # Parse pac
 pprb -c 127.0.0.1 -t "2014-03-09 12:00:00" -p sample.pac https://github.com
+
+# =>                url: result
+# => https://github.com: DIRECT
+```
+
+```bash
+# Download and parse pac
+pprb -c 127.0.0.1 -t "2014-03-09 12:00:00" -p https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac https://github.com
 
 # =>                url: result
 # => https://github.com: DIRECT
