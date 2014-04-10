@@ -35,6 +35,7 @@ gem 'fedux_org-stdlib', group: [:development, :test], require: false
 gem 'bundler', '~> 1.3', group: [:development, :test], require: false
 gem 'erubis', group: [:development, :test]
 gem 'versionomy', group: [:development, :test], require: false
+gem 'filegen', group: [:development, :test]
 gem 'sinatra', group: [:development, :test], require: 'sinatra/base'
 gem 'rack', group: [:development, :test]
 gem 'activesupport', '~> 4.0.0', group: [:development, :test], require: false
