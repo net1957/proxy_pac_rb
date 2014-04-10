@@ -92,6 +92,11 @@ module ProxyPacRb
             uri.path = ::File.expand_path(uri.path)
           end
 
+          ENV.delete 'HTTP_PROXY'
+          ENV.delete 'HTTPS_PROXY'
+          ENV.delete 'http_proxy'
+          ENV.delete 'https_proxy'
+
           options.proxy_pac_file = open(uri, { proxy: false }).read
         end
 
