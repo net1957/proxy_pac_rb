@@ -11,8 +11,8 @@ describe ProxyPacRb::Environment do
       expect(environment.isResolvable("localhost")).to be_true
     end
 
-    it "should return false for awidhaowuhuiuhiuug" do
-      expect(environment.isResolvable('asdfasdfasdfasdf')).to be_false
+    it "should return false for unexist.domain.localdomain" do
+      expect(environment.isResolvable('unexist.domain.localdomain')).to be_false
     end
   end
 
@@ -74,6 +74,11 @@ describe ProxyPacRb::Environment do
       ip   = '8.8.8.8'
       name =  'google-public-dns-a.google.com'
       expect(environment.dnsResolve(name)).to eq(ip)
+    end
+
+    it 'return an empty string for a not resolvable host name' do
+      name =  'not.resolvable.localhost.localdomain'
+      expect(environment.dnsResolve(name)).to eq('')
     end
   end
 

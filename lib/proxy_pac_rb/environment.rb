@@ -58,7 +58,7 @@ module ProxyPacRb
     end
 
     def dnsResolve(host)
-      resolve_host(host)
+      resolve_host(host).to_s
     end
 
     def dnsDomainLevels(host)

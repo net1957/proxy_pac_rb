@@ -119,3 +119,20 @@ Feature: Resolve proxy
     """
     DIRECT
     """
+
+  Scenario: Unresolvable hostname
+    Given a file named "proxy.pac" with:
+    """
+    function FindProxyForURL(url, host) {
+      if (isInNet(dnsResolve(host), "8.8.8.8", "255.0.0.0")) {
+        return 'PROXY localhost:3128';
+      } else {
+        return 'DIRECT';
+      }
+    }
+    """
+    When I successfully run `pprb -p proxy.pac unexist.localhost.localdomain`
+    Then the output should contain:
+    """
+    DIRECT
+    """
