@@ -4,6 +4,7 @@ require 'resolv'
 require 'time'
 require 'open-uri'
 require 'active_support/core_ext/string/strip'
+require 'active_support/core_ext/object/blank'
 
 require 'proxy_pac_rb/version'
 require 'proxy_pac_rb/encoding'

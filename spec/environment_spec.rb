@@ -67,6 +67,28 @@ describe ProxyPacRb::Environment do
       result = environment.isInNet('10.0.0.1', '127.0.0.0', '255.255.255.0')
       expect(result).to be_false
     end
+
+    it 'resolves host name' do
+      name =  'google-public-dns-a.google.com'
+      result = environment.isInNet(name, '8.0.0.0', '255.0.0.0')
+      expect(result).to eq true
+    end
+
+    it 'handles not resolvable host names' do
+      name =  'asdf.in.localhost.localdomain'
+      result = environment.isInNet(name, '8.0.0.0', '255.0.0.0')
+      expect(result).to eq false
+    end
+
+    it 'handles empty strings' do
+      result = environment.isInNet('', '8.0.0.0', '255.0.0.0')
+      expect(result).to eq false
+    end
+
+    it 'handles nil' do
+      result = environment.isInNet(nil, '8.0.0.0', '255.0.0.0')
+      expect(result).to eq false
+    end
   end
 
   describe '#dnsResolve' do
@@ -76,9 +98,21 @@ describe ProxyPacRb::Environment do
       expect(environment.dnsResolve(name)).to eq(ip)
     end
 
-    it 'return an empty string for a not resolvable host name' do
+    it 'return nil for a not resolvable host name' do
       name =  'not.resolvable.localhost.localdomain'
-      expect(environment.dnsResolve(name)).to eq('')
+      expect(environment.dnsResolve(name)).to eq(nil)
+    end
+
+    it 'handles nil values as input' do
+      expect(environment.dnsResolve(nil)).to eq(nil)
+    end
+
+    it 'handles empty string as input' do
+      expect(environment.dnsResolve('')).to eq(nil)
+    end
+
+    it 'handles garbage as input' do
+      expect(environment.dnsResolve('§§jk:')).to eq(nil)
     end
   end
 

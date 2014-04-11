@@ -58,7 +58,7 @@ module ProxyPacRb
     end
 
     def dnsResolve(host)
-      resolve_host(host).to_s
+      resolve_host(host)
     end
 
     def dnsDomainLevels(host)
@@ -72,7 +72,9 @@ module ProxyPacRb
     private
 
     def resolve_host(host)
-      Resolv.each_address(host) do |address|
+      return nil if host.blank?
+
+      Resolv.each_address(host.force_encoding('ASCII-8BIT')) do |address|
         begin
           return address if IPAddr.new(address).ipv4?
         rescue ArgumentError
