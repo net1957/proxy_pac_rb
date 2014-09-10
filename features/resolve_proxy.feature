@@ -136,3 +136,20 @@ Feature: Resolve proxy
     """
     DIRECT
     """
+
+  Scenario: dnsResolve + isInNet
+    Given a file named "proxy.pac" with:
+    """
+    function FindProxyForURL(url, host) {
+      hostip = dnsResolve(host);
+      if (isInNet(hostip, "127.0.0.1", "255.255.255.255") ||
+          isInNet(hostip, "127.0.0.1", "255.255.255.255") ||
+          isInNet(hostip, "127.0.0.1", "255.255.255.255") ||
+          isInNet(hostip, "127.0.0.1", "255.255.255.255")) return 'proxy.example.com';
+    }
+    """
+    When I successfully run `pprb -p proxy.pac http://localhost`
+    Then the output should contain:
+    """
+    proxy.example.com
+    """
