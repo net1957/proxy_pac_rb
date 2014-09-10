@@ -1,5 +1,15 @@
 # encoding: utf-8
 module ProxyPacRb
+  # Proxy Pac parser
+  #
+  # @example Usage
+  #
+  # parser = Parser.new
+  # parser.load('http://example.com/proxy.pac')
+  # parser.read('file.pac')
+  #
+  # string = ''
+  # parser.source(string)
   class Parser
     private
 

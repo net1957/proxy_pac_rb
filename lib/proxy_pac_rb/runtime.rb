@@ -1,6 +1,7 @@
 module ProxyPacRb
   # Abstract base class for runtimes
   class Runtime
+    # Context
     class Context
       include Encoding
 

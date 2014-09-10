@@ -1,5 +1,7 @@
 module ProxyPacRb
+  # Ruby Rhine Runtime
   class RubyRhinoRuntime < Runtime
+    # Context
     class Context < Runtime::Context
       def initialize(_runtime, source = '')
         source = encode(source)
@@ -13,7 +15,9 @@ module ProxyPacRb
         source = encode(source)
 
         if /\S/ =~ source
+          # rubocop:disable Lint/Eval
           eval "(function(){#{source}})()", options
+          # rubocop:enable Lint/Eval
         end
       end
 
@@ -46,6 +50,7 @@ module ProxyPacRb
         when Java::OrgMozillaJavascript::NativeFunction
           nil
         when Java::OrgMozillaJavascript::NativeObject
+          # rubocop:disable Style/EachWithObject
           value.reduce({}) do |vs, (k, v)|
             case v
             when Java::OrgMozillaJavascript::NativeFunction, ::Rhino::JS::Function
@@ -55,6 +60,7 @@ module ProxyPacRb
             end
             vs
           end
+          # rubocop:enable Style/EachWithObject
         when Array
           value.map { |v| unbox(v) }
         else

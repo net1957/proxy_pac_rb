@@ -1,0 +1,31 @@
+# Offense count: 4
+# Configuration parameters: MinBodyLength.
+#Style/GuardClause:
+#  Enabled: false
+
+# Offense count: 5
+# Configuration parameters: MaxLineLength.
+Style/IfUnlessModifier:
+  Enabled: false
+
+# Offense count: 8
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/MethodName:
+  Enabled: false
+
+# Offense count: 1
+Style/MultilineTernaryOperator:
+  Enabled: false
+
+# Offense count: 4
+Style/RedundantException:
+  Enabled: false
+
+# Offense count: 2
+Style/RegexpLiteral:
+  MaxSlashes: 0
+
+# Offense count: 1
+# Configuration parameters: Methods.
+Style/SingleLineBlockParams:
+  Enabled: false

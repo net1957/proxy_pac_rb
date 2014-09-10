@@ -13,7 +13,9 @@ def software
 end
 
 def gemspec
+  # rubocop:disable Lint/Eval
   eval File.read(Dir.glob(File.join(File.expand_path('../', __FILE__), '*.gemspec')).first)
+  # rubocop:enable Lint/Eval
 end
 
 def version

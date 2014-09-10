@@ -1,5 +1,6 @@
 # encoding: utf-8
 module ProxyPacRb
+  # Environment in which a proxy.pac will be evaluated
   class Environment
     private
 
@@ -49,7 +50,7 @@ module ProxyPacRb
     end
 
     def isResolvable(host)
-      !!resolve_host(host)
+      !resolve_host(host).blank?
     end
 
     def isInNet(host, pattern, mask)
@@ -76,8 +77,10 @@ module ProxyPacRb
       Resolv.each_address(host.force_encoding('ASCII-8BIT')) do |address|
         begin
           return address if IPAddr.new(address).ipv4?
+        # rubocop:disable Lint/HandleExceptions
         rescue ArgumentError
         end
+        # rubocop:enable Lint/HandleExceptions
       end
 
       # We couldn't find an IPv4 address for the host

@@ -1,5 +1,6 @@
 # encoding: utf-8
 module ProxyPacRb
+  # Javascript-Methods for evaluation of proxy.pac
   class ProxyPacJs
     class << self
       def my_ip_address_template(value)

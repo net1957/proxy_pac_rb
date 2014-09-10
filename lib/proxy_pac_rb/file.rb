@@ -1,4 +1,5 @@
 module ProxyPacRb
+  # Proxy pac file
   class File
     private
 

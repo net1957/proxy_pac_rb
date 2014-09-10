@@ -1,4 +1,5 @@
 module ProxyPacRb
+  # JavaScript Runtimes
   module Runtimes
     RubyRacer = RubyRacerRuntime.new
     RubyRhino = RubyRhinoRuntime.new
@@ -15,17 +16,14 @@ module ProxyPacRb
       end
 
       def from_environment
-        if name = ENV['JS_RUNTIME']
-          if runtime = const_get(name)
-            if runtime.available?
-              runtime if runtime.available?
-            else
-              fail Exceptions::RuntimeUnavailable, "#{runtime.name} runtime is not available on this system"
-            end
-          elsif !name.empty?
-            fail Exceptions::RuntimeUnavailable, "#{name} runtime is not defined"
-          end
-        end
+        return nil unless ENV['JS_RUNTIME']
+
+        runtime = const_get(ENV['JS_RUNTIME'])
+
+        fail Exceptions::RuntimeUnavailable, "#{ENV['JS_RUNTIME']} runtime is not defined" unless runtime
+        fail Exceptions::RuntimeUnavailable, "#{runtime.name} runtime is not available on this system" unless runtime.available?
+
+        runtime
       end
 
       def names

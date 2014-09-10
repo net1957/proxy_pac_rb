@@ -1,5 +1,7 @@
 module ProxyPacRb
+  # Ruby Racer Runtime
   class RubyRacerRuntime < Runtime
+    # Context
     class Context < Runtime::Context
       def initialize(_runtime, source = '', _environment = nil)
         source = encode(source)
@@ -14,7 +16,9 @@ module ProxyPacRb
         source = encode(source)
 
         if /\S/ =~ source
+          # rubocop:disable Lint/Eval
           eval "(function(){#{source}})()", options
+          # rubocop:enable Lint/Eval
         end
       end
 
@@ -57,10 +61,12 @@ module ProxyPacRb
         when ::V8::Array
           value.map { |v| unbox(v) }
         when ::V8::Object
+          # rubocop:disable Style/EachWithObject
           value.reduce({}) do |vs, (k, v)|
             vs[k] = unbox(v) unless v.is_a?(::V8::Function)
             vs
           end
+          # rubocop:enable Style/EachWithObject
         when String
           value.respond_to?(:force_encoding) ?
             value.force_encoding('UTF-8') :

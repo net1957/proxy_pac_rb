@@ -1,45 +1,14 @@
 # encoding: utf-8
 module ProxyPacRb
+  # Command line interface
   class Cli
-    class Validator
-      private
-
-      attr_reader :options
-
-      public
-
-      def initialize(options)
-        @options = options
-      end
-
-      def validate
-        exit_with_message 'You need to provide at least one url. Multiple urls need to be separated by a space.' if empty_url?
-        exit_with_message 'You need to provide a proxy pac file.' if empty_pac_file?
-      end
-
-      private
-
-      def empty_url?
-        options.urls.blank?
-      end
-
-      def empty_pac_file?
-        options.proxy_pac_file.blank?
-      end
-
-      def exit_with_message(msg)
-        $stderr.puts msg
-        exit 1
-      end
-    end
-
     attr_accessor :options
 
     def self.start(argv = ARGV)
       cli = new
       cli.parse(argv)
 
-      Validator.new(cli.options).validate
+      CliValidator.new(cli.options).validate
 
       environment = ProxyPacRb::Environment.new(client_ip: cli.options.client_ip, time: cli.options.time)
       file = ProxyPacRb::Parser.new(environment).source(cli.options.proxy_pac_file)
