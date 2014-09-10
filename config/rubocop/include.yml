@@ -1,0 +1,14 @@
+# Offense count: 151
+# Configuration parameters: AllowURI.
+Metrics/LineLength:
+  Max: 225
+
+# Offense count: 1
+# Configuration parameters: CountKeywordArgs.
+Metrics/ParameterLists:
+  Max: 6
+
+# Offense count: 1
+# Configuration parameters: CountComments.
+Metrics/ClassLength:
+  Max: 160
