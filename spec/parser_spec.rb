@@ -2,13 +2,15 @@
 require 'spec_helper'
 
 describe ProxyPacRb::Parser do
-  let(:sample_pac) do
-    create_file 'sample.pac', <<-EOS.strip_heredoc
+  before :each do
+    write_file 'sample.pac', <<-EOS.strip_heredoc
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
     EOS
   end
+
+  let(:sample_pac) { absolute_path('sample.pac') }
 
   context '.read' do
     it 'should load a file from a path' do

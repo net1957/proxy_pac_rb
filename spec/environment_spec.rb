@@ -8,64 +8,64 @@ describe ProxyPacRb::Environment do
 
   describe '#isResolvable()' do
     it 'should return true for localhost' do
-      expect(environment.isResolvable('localhost')).to be_true
+      expect(environment.isResolvable('localhost')).to be true
     end
 
     it 'should return false for unexist.domain.localdomain' do
-      expect(environment.isResolvable('unexist.domain.localdomain')).to be_false
+      expect(environment.isResolvable('unexist.domain.localdomain')).to be false
     end
   end
 
   describe '#isPlainHostName' do
     it 'returns true for google' do
       result = environment.isPlainHostName('google')
-      expect(result).to be_true
+      expect(result).to be true
     end
 
     it 'returns false for google.com' do
       result = environment.isPlainHostName('google.com')
-      expect(result).to be_false
+      expect(result).to be false
     end
   end
 
   describe '#dnsDomainIs' do
     it 'returns true for maps.google.com' do
       result = environment.dnsDomainIs('maps.google.com', '.google.com')
-      expect(result).to be_true
+      expect(result).to be true
     end
 
     it 'returns false for maps.ms.com' do
       result = environment.dnsDomainIs('maps.ms.com', '.google.com')
-      expect(result).to be_false
+      expect(result).to be false
     end
   end
 
   describe '#localHostOrDomainIs' do
     it 'returns true for maps.google.com' do
       result = environment.localHostOrDomainIs('maps.google.com', 'maps.google.com')
-      expect(result).to be_true
+      expect(result).to be true
     end
 
     it 'returns true for maps' do
       result = environment.localHostOrDomainIs('maps', 'maps.google.com')
-      expect(result).to be_true
+      expect(result).to be true
     end
 
     it 'returns false for maps.ms.com' do
       result = environment.dnsDomainIs('maps.ms.com', '.google.com')
-      expect(result).to be_false
+      expect(result).to be false
     end
   end
 
   describe '#isInNet' do
     it 'returns true for 127.0.0.1' do
       result = environment.isInNet('127.0.0.1', '127.0.0.0', '255.255.255.0')
-      expect(result).to be_true
+      expect(result).to be true
     end
 
     it 'returns false for 10.0.0.1' do
       result = environment.isInNet('10.0.0.1', '127.0.0.0', '255.255.255.0')
-      expect(result).to be_false
+      expect(result).to be false
     end
 
     it 'resolves host name' do
@@ -126,12 +126,12 @@ describe ProxyPacRb::Environment do
   describe '#shExpMatch' do
     it 'returns true for maps.google.com' do
       result = environment.shExpMatch('maps.google.com', '*.com')
-      expect(result).to be_true
+      expect(result).to be true
     end
 
     it 'returns false for maps.ms.com' do
       result = environment.shExpMatch('maps.ms.com', '*.de')
-      expect(result).to be_false
+      expect(result).to be false
     end
   end
 
