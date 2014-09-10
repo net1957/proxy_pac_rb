@@ -6,12 +6,12 @@ describe ProxyPacRb::Environment do
     Environment.new(client_ip: '127.0.0.1', time: Time.now)
   end
 
-  describe "#isResolvable()" do
-    it "should return true for localhost" do
-      expect(environment.isResolvable("localhost")).to be_true
+  describe '#isResolvable()' do
+    it 'should return true for localhost' do
+      expect(environment.isResolvable('localhost')).to be_true
     end
 
-    it "should return false for unexist.domain.localdomain" do
+    it 'should return false for unexist.domain.localdomain' do
       expect(environment.isResolvable('unexist.domain.localdomain')).to be_false
     end
   end
@@ -150,13 +150,13 @@ describe ProxyPacRb::Environment do
       string = ''
       environment.prepare(string)
 
-      %w[
-      myIpAddress
-      weekdayRange
-      dateRange
-      timeRange
-      ].each { |f| expect(string).to include(f) }
-      
+      %w(
+        myIpAddress
+        weekdayRange
+        dateRange
+        timeRange
+      ).each { |f| expect(string).to include(f) }
+
     end
   end
 end

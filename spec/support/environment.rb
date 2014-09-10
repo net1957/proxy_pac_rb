@@ -5,7 +5,7 @@ module ProxyPacRb
   module SpecHelper
     module Environment
       include FeduxOrg::Stdlib::Environment
-      alias_method :with_environment, :isolated_environment 
+      alias_method :with_environment, :isolated_environment
     end
   end
 end
@@ -14,4 +14,3 @@ end
 RSpec.configure do |c|
   c.include ProxyPacRb::SpecHelper::Environment
 end
-

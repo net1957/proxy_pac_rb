@@ -6,8 +6,8 @@ module ProxyPacRb
     class << self
       def autodetect
         from_environment || best_available ||
-          fail(Exceptions::RuntimeUnavailable, "Could not find a JavaScript runtime. " +
-                "See https://github.com/sstephenson/execjs for a list of available runtimes.")
+          fail(Exceptions::RuntimeUnavailable, 'Could not find a JavaScript runtime. ' \
+                'See https://github.com/sstephenson/execjs for a list of available runtimes.')
       end
 
       def best_available
@@ -15,7 +15,7 @@ module ProxyPacRb
       end
 
       def from_environment
-        if name = ENV["JS_RUNTIME"]
+        if name = ENV['JS_RUNTIME']
           if runtime = const_get(name)
             if runtime.available?
               runtime if runtime.available?
@@ -29,13 +29,13 @@ module ProxyPacRb
       end
 
       def names
-        @names ||= constants.inject({}) { |h, name| h.merge(const_get(name) => name) }.values
+        @names ||= constants.reduce({}) { |h, name| h.merge(const_get(name) => name) }.values
       end
 
       def runtimes
         @runtimes ||= [
           RubyRacer,
-          RubyRhino,
+          RubyRhino
         ]
       end
     end

@@ -18,7 +18,7 @@ group :development, :test do
     gem 'pry'
     gem 'pry-doc', require: false
 
-    if RUBY_VERSION > "2.0.0"
+    if RUBY_VERSION > '2.0.0'
       gem 'byebug'
       gem 'pry-byebug', require: false
     else

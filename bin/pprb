@@ -12,7 +12,6 @@ require 'open-uri'
 
 module ProxyPacRb
   class Cli
-
     class Validator
       private
 
@@ -25,8 +24,8 @@ module ProxyPacRb
       end
 
       def validate
-        exit_with_message 'You need to provide at least one url. Multiple urls need to be separated by a space.' if empty_url? 
-        exit_with_message 'You need to provide a proxy pac file.' if empty_pac_file? 
+        exit_with_message 'You need to provide at least one url. Multiple urls need to be separated by a space.' if empty_url?
+        exit_with_message 'You need to provide a proxy pac file.' if empty_pac_file?
       end
 
       private
@@ -43,12 +42,11 @@ module ProxyPacRb
         $stderr.puts msg
         exit 1
       end
-      
     end
 
     attr_accessor :options
 
-    def self.start(argv = $*)
+    def self.start(argv = $ARGV)
       cli = new
       cli.parse(argv)
 
@@ -58,7 +56,7 @@ module ProxyPacRb
       file = ProxyPacRb::Parser.new(environment).source(cli.options.proxy_pac_file)
 
       $stderr.printf("%30s: %-s\n", 'url', 'result')
-      cli.options.urls.each do |u| 
+      cli.options.urls.each do |u|
         begin
           $stderr.printf("%30s: %-s\n", u, file.find(u))
         rescue Exceptions::UrlInvalid
@@ -76,7 +74,7 @@ module ProxyPacRb
 
     def parse(argv)
       parser = OptionParser.new do |opts|
-        opts.banner = "Usage: parsepac [options] url1 [url2..urln]"
+        opts.banner = 'Usage: parsepac [options] url1 [url2..urln]'
 
         opts.on('-c', '--client-ip IP', 'Client ip address') do |i|
           options.client_ip = IPAddr.new(i)
@@ -98,15 +96,15 @@ module ProxyPacRb
           ENV.delete 'http_proxy'
           ENV.delete 'https_proxy'
 
-          options.proxy_pac_file = open(uri, { proxy: false }).read
+          options.proxy_pac_file = open(uri, proxy: false).read
         end
 
-        opts.on_tail("-h", "--help", "Show this message") do
+        opts.on_tail('-h', '--help', 'Show this message') do
           $stderr.puts opts
           exit
         end
 
-        opts.on_tail("--version", "Show version") do
+        opts.on_tail('--version', 'Show version') do
           $stderr.puts ProxyPacRb::VERSION
           exit
         end

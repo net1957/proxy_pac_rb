@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe ProxyPacRb::Parser do
-  let(:sample_pac) do 
+  let(:sample_pac) do
     create_file 'sample.pac', <<-EOS.strip_heredoc
       function FindProxyForURL(url, host) {
         return "DIRECT";
@@ -10,22 +10,23 @@ describe ProxyPacRb::Parser do
     EOS
   end
 
-  context ".read" do
-    it "should load a file from a path" do
+  context '.read' do
+    it 'should load a file from a path' do
       pac = ProxyPacRb::Parser.new.read(sample_pac)
       expect(pac).not_to be_nil
     end
   end
 
-  context ".source" do
-    let(:source) do <<-JS.strip_heredoc
+  context '.source' do
+    let(:source) do
+      <<-JS.strip_heredoc
         function FindProxyForURL(url, host) {
           return "DIRECT";
         }
       JS
     end
 
-    it "should load source" do
+    it 'should load source' do
       pac = ProxyPacRb::Parser.new.source(source)
       expect(pac).not_to be_nil
     end
@@ -76,17 +77,17 @@ describe ProxyPacRb::Parser do
       string = <<-EOS
       function FindProxyForURL(url, host) {
         if (timeRange(8, 18)) {
-          return "PROXY localhost:8080";                                                                                                          
+          return "PROXY localhost:8080";
         } else {
           return "DIRECT";
         }
       }
       EOS
-      
+
       environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-06 12:00'))
       file = ProxyPacRb::Parser.new(environment).source(string)
       expect(file.find('http://localhost')).to eq('PROXY localhost:8080')
-      
+
       environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-08 6:00'))
       file = ProxyPacRb::Parser.new(environment).source(string)
       expect(file.find('http://localhost')).to eq('DIRECT')
@@ -96,17 +97,17 @@ describe ProxyPacRb::Parser do
       string = <<-EOS
       function FindProxyForURL(url, host) {
         if (dateRange("JUL", "SEP")) {
-          return "PROXY localhost:8080";                                                                                                          
+          return "PROXY localhost:8080";
         } else {
           return "DIRECT";
         }
       }
       EOS
-      
+
       environment = ProxyPacRb::Environment.new(time: Time.parse('2014-07-06 12:00'))
       file = ProxyPacRb::Parser.new(environment).source(string)
       expect(file.find('http://localhost')).to eq('PROXY localhost:8080')
-      
+
       environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-08 6:00'))
       file = ProxyPacRb::Parser.new(environment).source(string)
       expect(file.find('http://localhost')).to eq('DIRECT')

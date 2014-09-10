@@ -1,7 +1,7 @@
 module ProxyPacRb
   class RubyRacerRuntime < Runtime
     class Context < Runtime::Context
-      def initialize(runtime, source = "", environment = nil)
+      def initialize(_runtime, source = '', _environment = nil)
         source = encode(source)
 
         lock do
@@ -18,7 +18,7 @@ module ProxyPacRb
         end
       end
 
-      def eval(source, options = {})
+      def eval(source, _options = {})
         source = encode(source)
 
         if /\S/ =~ source
@@ -26,8 +26,8 @@ module ProxyPacRb
             begin
               unbox context.eval("(#{source})")
             rescue ::V8::JSError => e
-              if e.value["name"] == "SyntaxError"
-                fail RuntimeError, e.value.to_s
+              if e.value['name'] == 'SyntaxError'
+                raise RuntimeError, e.value.to_s
               else
                 raise Exceptions::ProgramError, e.value.to_s
               end
@@ -41,7 +41,7 @@ module ProxyPacRb
           begin
             unbox context.eval(properties).call(*args)
           rescue ::V8::JSError => e
-            if e.value["name"] == "SyntaxError"
+            if e.value['name'] == 'SyntaxError'
               raise RuntimeError, e.value.to_s
             else
               raise Exceptions::ProgramError, e.value.to_s
@@ -57,7 +57,7 @@ module ProxyPacRb
         when ::V8::Array
           value.map { |v| unbox(v) }
         when ::V8::Object
-          value.inject({}) do |vs, (k, v)|
+          value.reduce({}) do |vs, (k, v)|
             vs[k] = unbox(v) unless v.is_a?(::V8::Function)
             vs
           end
@@ -71,30 +71,31 @@ module ProxyPacRb
       end
 
       private
-        def lock
-          result, exception = nil, nil
-          V8::C::Locker() do
-            begin
-              result = yield
-            rescue Exception => e
-              exception = e
-            end
-          end
 
-          if exception
-            raise exception
-          else
-            result
+      def lock
+        result, exception = nil, nil
+        V8::C::Locker() do
+          begin
+            result = yield
+          rescue => e
+            exception = e
           end
         end
+
+        if exception
+          fail exception
+        else
+          result
+        end
+      end
     end
 
     def name
-      "therubyracer (V8)"
+      'therubyracer (V8)'
     end
 
     def available?
-      require "v8"
+      require 'v8'
       true
     rescue LoadError
       false

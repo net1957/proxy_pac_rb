@@ -7,23 +7,23 @@ module ProxyPacRb
       attr_accessor :context
 
       def include(environment)
-        environment.available_methods.each do |name| 
+        environment.available_methods.each do |name|
           context[name] = environment.method(name)
         end
       end
 
-      def initialize(runtime, source = "")
+      def initialize(_runtime, _source = '')
       end
 
-      def exec(source, options = {})
+      def exec(_source, _options = {})
         fail NotImplementedError
       end
 
-      def eval(source, options = {})
+      def eval(_source, _options = {})
         fail NotImplementedError
       end
 
-      def call(properties, *args)
+      def call(_properties, *_args)
         fail NotImplementedError
       end
     end

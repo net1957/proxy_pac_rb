@@ -1,7 +1,6 @@
 # encoding: utf-8
 module ProxyPacRb
   class Parser
-
     private
 
     attr_reader :runtime, :environment
@@ -16,7 +15,7 @@ module ProxyPacRb
     end
 
     def load(url, options = {})
-      create_file(open(url, { :proxy => false }.merge(options)).read)
+      create_file(open(url, { proxy: false }.merge(options)).read)
     end
 
     def read(file)
