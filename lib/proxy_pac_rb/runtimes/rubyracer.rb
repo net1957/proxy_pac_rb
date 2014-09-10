@@ -15,26 +15,24 @@ module ProxyPacRb
       def exec(source, options = {})
         source = encode(source)
 
-        if /\S/ =~ source
-          # rubocop:disable Lint/Eval
-          eval "(function(){#{source}})()", options
-          # rubocop:enable Lint/Eval
-        end
+        # rubocop:disable Lint/Eval
+        eval "(function(){#{source}})()", options if /\S/ =~ source
+        # rubocop:enable Lint/Eval
       end
 
       def eval(source, _options = {})
         source = encode(source)
 
-        if /\S/ =~ source
-          lock do
-            begin
-              unbox context.eval("(#{source})")
-            rescue ::V8::JSError => e
-              if e.value['name'] == 'SyntaxError'
-                raise RuntimeError, e.value.to_s
-              else
-                raise Exceptions::ProgramError, e.value.to_s
-              end
+        return nil unless /\S/ =~ source
+
+        lock do
+          begin
+            unbox context.eval("(#{source})")
+          rescue ::V8::JSError => e
+            if e.value['name'] == 'SyntaxError'
+              raise e.value.to_s
+            else
+              raise Exceptions::ProgramError, e.value.to_s
             end
           end
         end
@@ -46,7 +44,7 @@ module ProxyPacRb
             unbox context.eval(properties).call(*args)
           rescue ::V8::JSError => e
             if e.value['name'] == 'SyntaxError'
-              raise RuntimeError, e.value.to_s
+              raise e.value.to_s
             else
               raise Exceptions::ProgramError, e.value.to_s
             end
@@ -68,9 +66,11 @@ module ProxyPacRb
           end
           # rubocop:enable Style/EachWithObject
         when String
-          value.respond_to?(:force_encoding) ?
-            value.force_encoding('UTF-8') :
+          if value.respond_to?(:force_encoding)
+            value.force_encoding('UTF-8')
+          else
             value
+          end
         else
           value
         end

@@ -14,22 +14,20 @@ module ProxyPacRb
       def exec(source, options = {})
         source = encode(source)
 
-        if /\S/ =~ source
-          # rubocop:disable Lint/Eval
-          eval "(function(){#{source}})()", options
-          # rubocop:enable Lint/Eval
-        end
+        return nil unless /\S/ =~ source
+
+        # rubocop:disable Lint/Eval
+        eval "(function(){#{source}})()", options
+        # rubocop:enable Lint/Eval
       end
 
       def eval(source, _options = {})
         source = encode(source)
 
-        if /\S/ =~ source
-          unbox context.eval("(#{source})")
-        end
+        unbox context.eval("(#{source})") if /\S/ =~ source
       rescue ::Rhino::JSError => e
         if e.message =~ /^syntax error/
-          raise RuntimeError, e.message
+          raise e.message
         else
           raise Exceptions::ProgramError, e.message
         end
@@ -39,7 +37,7 @@ module ProxyPacRb
         unbox context.eval(properties).call(*args)
       rescue ::Rhino::JSError => e
         if e.message == 'syntax error'
-          raise RuntimeError, e.message
+          raise e.message
         else
           raise Exceptions::ProgramError, e.message
         end

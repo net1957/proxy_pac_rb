@@ -45,9 +45,7 @@ module ProxyPacRb
         opts.on('-p', '--proxy-pac FILE|URL', 'Proxy.pac-file') do |f|
           uri = Addressable::URI.parse(f)
 
-          if uri.host.nil?
-            uri.path = ::File.expand_path(uri.path)
-          end
+          uri.path = ::File.expand_path(uri.path) if uri.host.nil?
 
           ENV.delete 'HTTP_PROXY'
           ENV.delete 'HTTPS_PROXY'

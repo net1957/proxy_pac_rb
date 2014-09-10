@@ -27,7 +27,7 @@ module ProxyPacRb
       end
 
       def names
-        @names ||= constants.reduce({}) { |h, name| h.merge(const_get(name) => name) }.values
+        @names ||= constants.reduce({}) { |a, e| a.merge(const_get(e) => e) }.values
       end
 
       def runtimes
