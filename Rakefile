@@ -4,7 +4,7 @@
 #Bundler.require :default, :test, :development
 
 require 'filegen'
-require 'fedux_org/stdlib/rake'
+require 'fedux_org_stdlib/rake_tasks'
 require 'active_support/core_ext/string/inflections'
 require 'open3'
 
@@ -103,5 +103,5 @@ Coveralls::RakeTask.new
 
 namespace :test do
   desc 'Test with coveralls'
-  task :coveralls => ['test:rspec', 'test:cucumber', 'coveralls:push']
+  task :coveralls => ['test:rubocop', 'test:rspec', 'test:cucumber', 'coveralls:push']
 end
