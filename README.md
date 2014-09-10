@@ -167,3 +167,6 @@ rake test:rspec
 rake test:rubyracer
 rake test:rubyrhino
 ```
+
+If you want to open an issue. Please send a PR with a test describing the bug.
+
