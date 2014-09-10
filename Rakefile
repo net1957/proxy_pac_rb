@@ -101,9 +101,20 @@ end
 require 'coveralls/rake/task'
 Coveralls::RakeTask.new
 
+desc 'Run test suite'
+task :test do
+  Rake::Task['test:before'].execute
+
+  begin
+    %w(test:rubocop test:rspec test:cucumber test:after).each { |t| Rake::Task[t].execute }
+  ensure
+    Rake::Task['test:after'].execute
+  end
+end
+
 namespace :test do
   desc 'Test with coveralls'
-  task coveralls: ['test:rubocop', 'test:rspec', 'test:cucumber', 'coveralls:push']
+  task coveralls: %w(test coveralls:push)
 
   require 'rubocop/rake_task'
   RuboCop::RakeTask.new
@@ -116,5 +127,15 @@ namespace :test do
   desc 'Run cucumber'
   task :cucumber do
     sh 'bundle exec cucumber -p all'
+  end
+
+  desc 'Setup test environment'
+  task :before do
+    @web_server = Process.spawn 'script/test_web'
+  end
+
+  desc 'Teardown test environment'
+  task :after do
+    sh "kill #{@web_server}"
   end
 end
