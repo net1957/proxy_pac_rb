@@ -13,7 +13,7 @@ module ProxyPacRb
       end
 
       def test_proxy_pac
-        @proxy_pacs.each do |p| 
+        @proxy_pacs.each do |p|
           begin
             file = ProxyPacRb::Parser.new.source(p.raw_content)
             file.find('http://example.org')
@@ -24,7 +24,10 @@ module ProxyPacRb
       end
 
       def compress_proxy_pac
-        @proxy_pacs.each { |p| p.compress_me(@compressor); p.write }
+        @proxy_pacs.each do |p|
+          p.compress_me(@compressor)
+          p.write
+        end
       end
     end
   end

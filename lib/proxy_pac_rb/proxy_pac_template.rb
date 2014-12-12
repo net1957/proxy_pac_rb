@@ -1,5 +1,6 @@
 # encoding: utf-8
 module ProxyPacRb
+  # Template for proxy pac
   class ProxyPacTemplate
     private
 
