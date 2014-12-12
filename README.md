@@ -41,6 +41,8 @@ After installing the `proxy_pac_rb` gem you must install a JavaScript runtime. C
 
 ### Command Line
 
+#### Find proxy for url
+
 *Arguments*
 
 * `-p|--proxy-pac FILE`: Path to proxy pac file
@@ -55,7 +57,23 @@ After installing the `proxy_pac_rb` gem you must install a JavaScript runtime. C
 curl -L -o sample.pac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac
 
 # Parse pac
-pprb -c 127.0.0.1 -t "2014-03-09 12:00:00" -p sample.pac https://github.com
+pprb find proxy -c 127.0.0.1 -t "2014-03-09 12:00:00" -p sample.pac -u https://github.com
+
+# =>                url: result
+# => https://github.com: DIRECT
+```
+
+#### Compress proxy.pac-file
+
+You can compress a proxy.pac with `pprb` to reduce the amount of data
+transferred to download the proxy.pac.
+
+```
+# Download pac
+curl -L -o sample.pac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac
+
+# Parse pac
+pprb compress proxy_pac -p sample.pac
 
 # =>                url: result
 # => https://github.com: DIRECT

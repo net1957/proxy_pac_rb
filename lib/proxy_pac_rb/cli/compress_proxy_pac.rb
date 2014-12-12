@@ -7,22 +7,24 @@ module ProxyPacRb
 
       class_option :proxy_pac, type: :array, desc: 'Proxy.pac-file(s)', aliases: '-p', required: true
 
-      def find_proxy
-        #proxy_pacs = options[:proxy_pac].map { |p| read_proxy_pac(p) }
+      def set_variables
+        @proxy_pacs = options[:proxy_pac].map { |p| ProxyPacTemplate.new(p) }
+        @compressor = JavascriptCompressor.new
+      end
 
-        #proxy_pacs.each { |p| File.write(Uglifier.compile(File.read("source.js"))
+      def test_proxy_pac
+        @proxy_pacs.each do |p| 
+          begin
+            file = ProxyPacRb::Parser.new.source(p.raw_content)
+            file.find('http://example.org')
+          rescue V8::Error => e
+            $stderr.puts "Proxy.pac-file \"#{p.input_path}\" is invalid. I ignore that file: #{e.message}"
+          end
+        end
+      end
 
-        #environment = ProxyPacRb::Environment.new(client_ip: client_ip, time: time)
-        #file        = ProxyPacRb::Parser.new(environment).source(proxy_pac)
-
-        #$stderr.printf("%30s: %-s\n", 'url', 'result')
-        #urls.each do |u|
-        #  begin
-        #    $stderr.printf("%30s: %-s\n", u, file.find(u))
-        #  rescue Exceptions::UrlInvalid
-        #    $stderr.puts "You provide an invalid url \"#{u}\". Please use a correct one."
-        #  end
-        #end
+      def compress_proxy_pac
+        @proxy_pacs.each { |p| p.compress_me(@compressor); p.write }
       end
     end
   end

@@ -17,6 +17,17 @@ Feature: Resolve proxy
     PROXY localhost:3128
     """
 
+  Scenario: Existing proxy.pac with compressed content
+    Given a file named "proxy.pac" with:
+    """
+    function FindProxyForURL(){return"PROXY localhost:3128"}
+    """
+    When I successfully run `pprb find proxy -p proxy.pac -u www.example.org`
+    Then the output should contain:
+    """
+    PROXY localhost:3128
+    """
+
   Scenario: Existing proxy.pac with relative path
     Given a file named "proxy.pac" with:
     """

@@ -4,6 +4,7 @@ PATH
     proxy_pac_rb (0.3.6)
       activesupport
       addressable
+      uglifier
 
 GEM
   remote: https://rubygems.org/
@@ -54,6 +55,7 @@ GEM
     docile (1.1.5)
     dotenv (0.7.0)
     erubis (2.7.0)
+    execjs (2.2.2)
     fedux_org-stdlib (0.7.33)
       activesupport
     ffi (1.9.6)
@@ -170,6 +172,9 @@ GEM
     travis-lint (2.0.0)
       json
     tzinfo (0.3.42)
+    uglifier (2.6.0)
+      execjs (>= 0.3.0)
+      json (>= 1.8.0)
     versionomy (0.4.4)
       blockenspiel (>= 0.4.5)
     xml-simple (1.1.4)
