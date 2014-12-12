@@ -1,6 +1,7 @@
 # encoding: utf-8
 module ProxyPacRb
   module Cli
+    # Show things
     class Show < Thor
       desc 'version', 'Show version'
       def version

@@ -1,6 +1,7 @@
 # encoding: utf-8
 module ProxyPacRb
   module Cli
+    # Find things
     class Find < Thor
       register(FindProxy, 'proxy', 'find_proxy URLS', 'Find proxy for URL(s)')
 

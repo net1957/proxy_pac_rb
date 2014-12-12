@@ -1,6 +1,8 @@
 # encoding: utf-8
 module ProxyPacRb
+  # Commandline parsing
   module Cli
+    # Run command
     class Runner < Thor
       map '-v' => :version
       map '--version' => :version

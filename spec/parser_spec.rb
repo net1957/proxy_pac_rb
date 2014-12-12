@@ -114,6 +114,5 @@ describe ProxyPacRb::Parser do
       file = ProxyPacRb::Parser.new(environment).source(string)
       expect(file.find('http://localhost')).to eq('DIRECT')
     end
-
   end
 end

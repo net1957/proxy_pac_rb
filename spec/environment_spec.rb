@@ -156,7 +156,6 @@ describe ProxyPacRb::Environment do
         dateRange
         timeRange
       ).each { |f| expect(string).to include(f) }
-
     end
   end
 end

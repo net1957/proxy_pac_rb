@@ -1,4 +1,39 @@
-inherit_from: 
-  - config/rubocop/include.yml
-  - config/rubocop/exclude.yml
-  - .rubocop_todo.yml
+AllCops:
+  Exclude:
+    - 'tmp/**/*'
+
+Metrics/AbcSize:
+  Max: 38
+
+# Configuration parameters: AllowURI.
+Metrics/LineLength:
+  Max: 225
+
+# Configuration parameters: CountKeywordArgs.
+Metrics/ParameterLists:
+  Max: 6
+
+Metrics/BlockNesting:
+  Max: 4
+
+# Configuration parameters: CountComments.
+Metrics/ClassLength:
+  Max: 174
+
+Metrics/CyclomaticComplexity:
+  Max: 7
+
+# Configuration parameters: CountComments.
+Metrics/MethodLength:
+  Max: 76
+
+Metrics/PerceivedComplexity:
+  Max: 8
+
+Style/RegexpLiteral:
+  MaxSlashes: 0
+
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/MethodName:
+  Exclude:
+    - lib/proxy_pac_rb/environment.rb

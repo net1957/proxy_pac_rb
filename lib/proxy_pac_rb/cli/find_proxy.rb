@@ -1,6 +1,7 @@
 # encoding: utf-8
 module ProxyPacRb
   module Cli
+    # Find proxy for url
     class FindProxy < Thor::Group
       include Shared
 

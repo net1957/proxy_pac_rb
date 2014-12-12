@@ -1,8 +1,0 @@
-AllCops:
-  Exclude:
-    - 'tmp/**/*'
-
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/MethodName:
-  Exclude:
-    - lib/proxy_pac_rb/environment.rb
