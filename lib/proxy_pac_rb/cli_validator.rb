@@ -19,11 +19,11 @@ module ProxyPacRb
     private
 
     def empty_url?
-      options.urls.blank?
+      options[:urls].blank?
     end
 
     def empty_pac_file?
-      options.proxy_pac_file.blank?
+      options[:proxy_pac].blank?
     end
 
     def exit_with_message(msg)

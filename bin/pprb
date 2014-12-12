@@ -4,6 +4,6 @@ $LOAD_PATH << File.expand_path('../../lib', __FILE__)
 
 require 'proxy_pac_rb'
 
-ProxyPacRb::Cli.start
+ProxyPacRb::Cli::Runner.start
 
 exit 0
