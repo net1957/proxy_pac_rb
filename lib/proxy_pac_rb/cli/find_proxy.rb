@@ -15,11 +15,11 @@ module ProxyPacRb
 
         client_ip = IPAddr.new(options[:client_ip])
         time      = Time.parse(options[:time])
-        proxy_pac = read_proxy_pac(options[:proxy_pac])
+        proxy_pac = ProxyPacFile.new(options[:proxy_pac])
         urls      = options[:urls]
 
         environment = ProxyPacRb::Environment.new(client_ip: client_ip, time: time)
-        file        = ProxyPacRb::Parser.new(environment).source(proxy_pac)
+        file        = ProxyPacRb::Parser.new(environment).source(proxy_pac.content)
 
         $stderr.printf("%30s: %-s\n", 'url', 'result')
         urls.each do |u|

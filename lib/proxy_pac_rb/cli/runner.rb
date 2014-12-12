@@ -10,6 +10,9 @@ module ProxyPacRb
       desc 'find', 'Find something'
       subcommand 'find', Find
 
+      desc 'compress', 'Compress something'
+      subcommand 'compress', Compress
+
       desc 'show', 'Show something'
       subcommand 'show', Show
 
