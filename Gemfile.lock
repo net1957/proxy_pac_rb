@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    proxy_pac_rb (0.3.6)
+    proxy_pac_rb (0.3.7)
       activesupport
       addressable
       uglifier
