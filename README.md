@@ -54,7 +54,7 @@ After installing the `proxy_pac_rb` gem you must install a JavaScript runtime. C
 
 ```
 # Download pac
-curl -L -o sample.pac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac
+curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac
 
 # Parse pac
 pprb find proxy -c 127.0.0.1 -t "2014-03-09 12:00:00" -p sample.pac -u https://github.com
@@ -70,7 +70,7 @@ transferred to download the proxy.pac.
 
 ```
 # Download pac
-curl -L -o sample.pac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac
+curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac
 
 # Parse pac
 pprb compress proxy_pac -p sample.pac
@@ -86,14 +86,14 @@ pprb compress proxy_pac -p sample.pac
 ```ruby
 require 'proxy_pac_rb'
 
-file = ProxyPacRb::Parser.new.load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac')
+file = ProxyPacRb::Parser.new.load('https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac')
 file.find('https://github.com')        # => "DIRECT"
 ```
 
 *Load from filesystem*
 
 ```bash
-curl -L -o sample.pac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac
+curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac
 ```
 
 ```ruby
@@ -123,11 +123,11 @@ file.find('http://localhost') # => "DIRECT"
 require 'proxy_pac_rb'
 
 environment = ProxyPacRb::Environment.new(client_ip: '127.0.0.1')
-file = ProxyPacRb::Parser.new(environment).load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
+file = ProxyPacRb::Parser.new(environment).load('https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample2.pac')
 file.find('https://github.com')        # => "PROXY localhost:8080"
 
 environment = ProxyPacRb::Environment.new(client_ip: '127.0.0.2')
-file = ProxyPacRb::Parser.new(environment).load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
+file = ProxyPacRb::Parser.new(environment).load('https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample2.pac')
 file.find('https://github.com')        # => "DIRECT"
 ```
 
