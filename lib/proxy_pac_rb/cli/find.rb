@@ -3,7 +3,7 @@ module ProxyPacRb
   module Cli
     # Find things
     class Find < Thor
-      register(FindProxy, 'proxy', 'find_proxy', 'Find proxy for URL(s)')
+      register(FindProxy, 'proxy', 'proxy', 'Find proxy for URL(s)')
 
       default_command :proxy
     end
