@@ -1,0 +1,104 @@
+require 'spec_helper'
+
+RSpec.describe ProxyPacRb do
+  subject(:proxy_pac) { instance_double('ProxyPac::ProxyPacFile') }
+
+  let(:content) do
+    <<-EOS.strip_heredoc.chomp
+      function FindProxyForURL(url, host) {
+        return "DIRECT";
+      }
+    EOS
+  end
+
+  before :each do
+    allow(proxy_pac).to receive(:content).and_return(content)
+  end
+
+  describe ProxyPacCompressor do
+    let(:compressor) { described_class.new }
+    let(:modified_content) {%(function FindProxyForURL(){return"DIRECT"}) }
+
+    before :each do
+      expect(proxy_pac).to receive(:content=).with(modified_content)
+    end
+
+    describe '#modify' do
+      context 'when string contains white paces' do
+        it { compressor.modify(proxy_pac) }
+      end
+    end
+  end
+
+  describe ProxyPacDumper do
+    let(:dumper) { ProxyPacDumper.new }
+    let(:destination) { absolute_path('proxy.pac') }
+
+    describe '#dump' do
+      let(:source) do
+        <<-EOS.strip_heredoc
+        function FindProxyForURL(url, host) {
+          return "DIRECT";
+        }
+        EOS
+      end
+
+      before :each do
+        allow(proxy_pac).to receive(:source).and_return(source)
+      end
+
+      before :each do
+        dumper.dump(content: proxy_pac.content, file: destination)
+      end
+
+      context 'when proxy pac is string' do
+        it { expect(destination).to be_existing_file }
+        it { expect(destination).to have_content proxy_pac.content }
+      end
+    end
+  end
+
+  describe ProxyPacLoader do
+    let(:loader) { ProxyPacLoader.new }
+
+    before :each do
+      allow(proxy_pac).to receive(:source).and_return(content)
+    end
+
+    describe '#load' do
+      context 'when proxy pac is string' do
+        it { expect(loader.load(proxy_pac)).to eq content }
+      end
+
+      context 'when proxy pac is file' do
+        let(:file) { 'proxy.pac' }
+
+        before(:each) { allow(proxy_pac).to receive(:source).and_return(absolute_path(file)) }
+        before(:each) { write_file(file, content) }
+
+        it { expect(loader.load(proxy_pac)).to eq content }
+      end
+
+      context 'when proxy pac is url' do
+        let(:uri) { 'http://example.com/proxy.pac' }
+
+        before(:each) { allow(proxy_pac).to receive(:source).and_return(uri) }
+        before(:each) { stub_request(:get, 'http://example.com/proxy.pac').to_return(body: content) }
+        
+
+        it { expect(loader.load(proxy_pac)).to eq content }
+      end
+    end
+  end
+
+  #describe ProxyPacParser do
+  #  describe '#read' do
+
+  #  end
+  #end
+
+  #describe ProxyPacLinter do
+  #  describe '#read' do
+  #  end
+  #end
+end

@@ -44,6 +44,7 @@ group :development, :test do
   gem 'travis-lint', require: false
   gem 'versionomy', require: false
   gem 'yard', require: false
+  gem 'webmock', require: 'webmock/rspec'
 end
 
 group :profile do
