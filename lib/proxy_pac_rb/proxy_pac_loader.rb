@@ -28,7 +28,10 @@ module ProxyPacRb
   # Load proxy pac from string
   class ProxyPacStringLoader
     def load(proxy_pac)
-      proxy_pac.source.to_s
+      proxy_pac.content = proxy_pac.source.to_s
+      proxy_pac.type = :string
+
+      self
     end
 
     def suitable_for?(proxy_pac)
@@ -39,7 +42,8 @@ module ProxyPacRb
   # Load proxy pac from file
   class ProxyPacFileLoader
     def load(proxy_pac)
-      ::File.read(proxy_pac.source).chomp
+      proxy_pac.content = ::File.read(proxy_pac.source).chomp
+      proxy_pac.type    = :file
     end
 
     def suitable_for?(proxy_pac)
@@ -50,7 +54,8 @@ module ProxyPacRb
   # Load proxy pac from url
   class ProxyPacUriLoader
     def load(proxy_pac)
-      Net::HTTP.get(URI(proxy_pac.source))
+      proxy_pac.content = Net::HTTP.get(URI(proxy_pac.source))
+      proxy_pac.type = :url
     end
 
     def suitable_for?(proxy_pac)

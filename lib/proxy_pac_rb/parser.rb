@@ -26,7 +26,7 @@ module ProxyPacRb
     def parse(source)
       pac_file = ProxyPacFile.new source: source
 
-      pac_file.content = loader.load(pac_file)
+      loader.load(pac_file)
       linter.lint(pac_file)
 
       unless pac_file.valid?

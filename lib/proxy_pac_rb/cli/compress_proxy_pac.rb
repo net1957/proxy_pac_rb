@@ -17,13 +17,13 @@ module ProxyPacRb
 
       def test_proxy_pac
         @proxy_pacs.keep_if do |p|
-          p.content = @loader.load(p)
+          @loader.load(p)
           @linter.lint(p)
 
           if p.valid?
             true
           else
-            $stderr.puts %(proxy.pac "#{p.source}" is invalid. I'm going to ignore that file.)
+            $stderr.puts %(proxy.pac "#{p.source}" is of type #{p.type} and is invalid. I'm going to ignore that file.)
 
             false
           end

@@ -20,6 +20,8 @@ module ProxyPacRb
 
         file = ProxyPacRb::Parser.new(environment: environment).parse(options[:proxy_pac])
 
+        return if file.blank?
+
         $stderr.printf("%30s: %-s\n", 'url', 'result')
         options[:urls].each do |u|
           begin
