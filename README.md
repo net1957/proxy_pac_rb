@@ -1,9 +1,11 @@
 # Proxy Pac Rb
 
-[![Build Status](https://travis-ci.org/dg-vrnetze/proxy_pac_rb.png?branch=master)](https://travis-ci.org/dg-vrnetze/proxy_pac_rb)
-[![Code Climate](https://codeclimate.com/github/dg-vrnetze/proxy_pac_rb.png)](https://codeclimate.com/github/dg-vrnetze/proxy_pac_rb)
-[![Coverage Status](https://coveralls.io/repos/dg-vrnetze/proxy_pac_rb/badge.png?branch=master)](https://coveralls.io/r/dg-vrnetze/proxy_pac_rb?branch=master)
+[![Build Status](https://travis-ci.org/fedux-org/proxy_pac_rb.png?branch=master)](https://travis-ci.org/fedux-org/proxy_pac_rb)
+[![Code Climate](https://codeclimate.com/github/fedux-org/proxy_pac_rb.png)](https://codeclimate.com/github/fedux-org/proxy_pac_rb)
+[![Coverage Status](https://coveralls.io/repos/fedux-org/proxy_pac_rb/badge.png?branch=master)](https://coveralls.io/r/fedux-org/proxy_pac_rb?branch=master)
 [![Gem Version](https://badge.fury.io/rb/proxy_pac_rb.png)](http://badge.fury.io/rb/proxy_pac_rb)
+[![Downloads](http://img.shields.io/gem/dt/proxy_pac_rb.svg?style=flat)](http://rubygems.org/gems/proxy_pac_rb)
+
 
 `proxy_pac_rb` is a gem to parse [proxy auto-config](http://en.wikipedia.org/wiki/Proxy_auto-config) files.
 `proxy_pac_rb` uses a JavaScript runtime to evaulate a proxy auto-config file the same way a browser does to determine what proxy (if
@@ -41,6 +43,8 @@ After installing the `proxy_pac_rb` gem you must install a JavaScript runtime. C
 
 ### Command Line
 
+#### Find proxy for url
+
 *Arguments*
 
 * `-p|--proxy-pac FILE`: Path to proxy pac file
@@ -52,10 +56,26 @@ After installing the `proxy_pac_rb` gem you must install a JavaScript runtime. C
 
 ```bash
 # Download pac
-curl -L -o sample.pac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac
+curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac
 
 # Parse pac
-pprb -c 127.0.0.1 -t "2014-03-09 12:00:00" -p sample.pac https://github.com
+pprb find proxy -c 127.0.0.1 -t "2014-03-09 12:00:00" -p sample.pac -u https://github.com
+
+# =>                url: result
+# => https://github.com: DIRECT
+```
+
+#### Compress proxy.pac-file
+
+You can compress a proxy.pac with `pprb` to reduce the amount of data
+transferred to download the proxy.pac.
+
+```
+# Download pac
+curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac
+
+# Parse pac
+pprb compress proxy_pac -p sample.pac
 
 # =>                url: result
 # => https://github.com: DIRECT
@@ -76,14 +96,14 @@ pprb -c 127.0.0.1 -t "2014-03-09 12:00:00" -p https://github.com/dg-vrnetze/prox
 ```ruby
 require 'proxy_pac_rb'
 
-file = ProxyPacRb::Parser.new.load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac')
+file = ProxyPacRb::Parser.new.load('https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac')
 file.find('https://github.com')        # => "DIRECT"
 ```
 
 *Load from filesystem*
 
 ```bash
-curl -L -o sample.pac https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac
+curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac
 ```
 
 ```ruby
@@ -113,11 +133,11 @@ file.find('http://localhost') # => "DIRECT"
 require 'proxy_pac_rb'
 
 environment = ProxyPacRb::Environment.new(client_ip: '127.0.0.1')
-file = ProxyPacRb::Parser.new(environment).load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
+file = ProxyPacRb::Parser.new(environment).load('https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample2.pac')
 file.find('https://github.com')        # => "PROXY localhost:8080"
 
 environment = ProxyPacRb::Environment.new(client_ip: '127.0.0.2')
-file = ProxyPacRb::Parser.new(environment).load('https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample2.pac')
+file = ProxyPacRb::Parser.new(environment).load('https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample2.pac')
 file.find('https://github.com')        # => "DIRECT"
 ```
 
@@ -175,3 +195,6 @@ rake test:rspec
 rake test:rubyracer
 rake test:rubyrhino
 ```
+
+If you want to open an issue. Please send a PR with a test describing the bug.
+

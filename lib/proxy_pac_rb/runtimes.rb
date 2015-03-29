@@ -1,4 +1,5 @@
 module ProxyPacRb
+  # JavaScript Runtimes
   module Runtimes
     RubyRacer = RubyRacerRuntime.new
     RubyRhino = RubyRhinoRuntime.new
@@ -6,8 +7,8 @@ module ProxyPacRb
     class << self
       def autodetect
         from_environment || best_available ||
-          fail(Exceptions::RuntimeUnavailable, "Could not find a JavaScript runtime. " +
-                "See https://github.com/sstephenson/execjs for a list of available runtimes.")
+          fail(Exceptions::RuntimeUnavailable, 'Could not find a JavaScript runtime. ' \
+                'See https://github.com/sstephenson/execjs for a list of available runtimes.')
       end
 
       def best_available
@@ -15,27 +16,24 @@ module ProxyPacRb
       end
 
       def from_environment
-        if name = ENV["JS_RUNTIME"]
-          if runtime = const_get(name)
-            if runtime.available?
-              runtime if runtime.available?
-            else
-              fail Exceptions::RuntimeUnavailable, "#{runtime.name} runtime is not available on this system"
-            end
-          elsif !name.empty?
-            fail Exceptions::RuntimeUnavailable, "#{name} runtime is not defined"
-          end
-        end
+        return nil unless ENV['JS_RUNTIME']
+
+        runtime = const_get(ENV['JS_RUNTIME'])
+
+        fail Exceptions::RuntimeUnavailable, "#{ENV['JS_RUNTIME']} runtime is not defined" unless runtime
+        fail Exceptions::RuntimeUnavailable, "#{runtime.name} runtime is not available on this system" unless runtime.available?
+
+        runtime
       end
 
       def names
-        @names ||= constants.inject({}) { |h, name| h.merge(const_get(name) => name) }.values
+        @names ||= constants.reduce({}) { |a, e| a.merge(const_get(e) => e) }.values
       end
 
       def runtimes
         @runtimes ||= [
           RubyRacer,
-          RubyRhino,
+          RubyRhino
         ]
       end
     end

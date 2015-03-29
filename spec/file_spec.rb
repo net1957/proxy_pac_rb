@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe File do
-  let(:simple) do 
+  let(:simple) do
     <<-EOS.strip_heredoc
       function FindProxyForURL(url, host) {
         return "DIRECT";
@@ -10,7 +10,7 @@ describe File do
     EOS
   end
 
-  let(:client_ip_pac) do 
+  let(:client_ip_pac) do
     <<-EOS.strip_heredoc
       function FindProxyForURL(url, host) {
         if ( myIpAddress() == '127.0.0.2' ) {
@@ -22,7 +22,7 @@ describe File do
     EOS
   end
 
-  let(:time_pac) do 
+  let(:time_pac) do
     <<-EOS.strip_heredoc
       function FindProxyForURL(url, host) {
         if ( timeRange(8, 18) ) {
@@ -37,9 +37,9 @@ describe File do
   context '#find' do
     it 'returns result of proxy.pac' do
       javascript = double('javascript')
-      expect(javascript).to receive(:call).with("FindProxyForURL", "http://localhost", "localhost")
+      expect(javascript).to receive(:call).with('FindProxyForURL', 'http://localhost', 'localhost')
 
-      ProxyPacRb::File.new(javascript).find("http://localhost")
+      ProxyPacRb::File.new(javascript).find('http://localhost')
     end
   end
 end

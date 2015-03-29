@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors     = ['Dennis Günnewig']
   spec.email       = ['dg1@vrnetze.de']
   spec.homepage    = 'https://github.com/dg-vrnetze/proxy_pac_rb'
-  spec.summary     = %q{gem to parse proxy auto-config files.}
+  spec.summary     = 'gem to parse proxy auto-config files.'
   spec.description = <<-DESC
 This gem uses a JavaScript runtime to evaulate a proxy auto-config file the same way a browser does to determine what proxy (if
 any at all) should a program use to connect to a server. You must install on of the supported JavaScript runtimes:
@@ -25,4 +25,5 @@ DESC
 
   spec.add_runtime_dependency 'addressable'
   spec.add_runtime_dependency 'activesupport'
+  spec.add_runtime_dependency 'uglifier'
 end

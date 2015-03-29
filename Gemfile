@@ -3,42 +3,52 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in local_pac.gemspec
 gemspec
 
-group :test do
-  gem 'rspec', require: false
-  gem 'fuubar', require: false
-  gem 'simplecov', require: false
-  gem 'rubocop', require: false
+group :development, :test do
+  if !ENV.key?('CI') && !ENV.key?('TRAVIS')
+    gem 'pry'
+    gem 'pry-doc', require: false
+
+    if RUBY_VERSION > '2.0.0'
+      gem 'byebug'
+      gem 'pry-byebug', require: false
+    else
+      gem 'debugger'
+      gem 'pry-debugger'
+    end
+  end
+
+  gem 'activesupport', '~> 4.0.0', require: false
+  gem 'aruba', require: false
+  gem 'awesome_print', require: 'ap'
+  gem 'bundler', '~> 1.3', require: false
+  gem 'command_exec', require: false
   gem 'coveralls', require: false
   gem 'cucumber', require: false
-  gem 'aruba', require: false
-end
-
-group :development do
-  gem 'debugger'
-  gem 'debugger-completion'
+  gem 'erubis'
+  gem 'fedux_org-stdlib', '~>0.7.25', require: false
+  gem 'filegen'
+  gem 'foreman', require: false
+  gem 'fuubar', require: false
   gem 'github-markup'
-  gem 'pry'
-  gem 'pry-debugger', require: false
-  gem 'pry-doc', require: false
-  gem 'redcarpet', require: false
-  gem 'tmrb', require: false
-  gem 'yard', require: false
   gem 'inch', require: false
+  gem 'launchy', require: false
+  gem 'license_finder'
+  gem 'rack'
+  gem 'rake', require: false
+  gem 'redcarpet', require: false
+  gem 'rspec', require: false
+  gem 'rubocop', require: false
+  gem 'simplecov', require: false
+  gem 'sinatra', require: 'sinatra/base'
+  gem 'tmrb', require: false
+  gem 'travis-lint', require: false
+  gem 'versionomy', require: false
+  gem 'yard', require: false
 end
 
 group :profile do
   gem 'ruby-prof'
 end
-
-gem 'rake', group: [:development, :test], require: false
-gem 'fedux_org-stdlib', group: [:development, :test], require: false
-gem 'bundler', '~> 1.3', group: [:development, :test], require: false
-gem 'erubis', group: [:development, :test]
-gem 'versionomy', group: [:development, :test], require: false
-gem 'sinatra', group: [:development, :test], require: 'sinatra/base'
-gem 'activesupport', '~> 4.0.0', group: [:development, :test], require: false
-
-gem 'awesome_print', group: [:development, :test], require: 'ap'
 
 group :runtimes do
   group :therubyracer do

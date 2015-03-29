@@ -1,7 +1,7 @@
 # encoding: utf-8
 module ProxyPacRb
+  # Environment in which a proxy.pac will be evaluated
   class Environment
-
     private
 
     attr_reader :days, :months, :client_ip, :time, :io, :javascript_function_templates
@@ -11,8 +11,8 @@ module ProxyPacRb
     attr_reader :available_methods
 
     def initialize(options = {})
-      @days          = { "MON" => 1, "TUE" => 2, "WED" => 3, "THU" => 4, "FRI" => 5, "SAT" => 6, "SUN" => 0 }
-      @months        = { "JAN" => 1, "FEB" => 2, "MAR" => 3, "APR" => 4, "MAY" => 5, "JUN" => 6, "JUL" => 7, "AUG" => 8, "SEP" => 9, "OCT" => 10, "NOV" => 11, "DEC" => 12 }
+      @days          = { 'MON' => 1, 'TUE' => 2, 'WED' => 3, 'THU' => 4, 'FRI' => 5, 'SAT' => 6, 'SUN' => 0 }
+      @months        = { 'JAN' => 1, 'FEB' => 2, 'MAR' => 3, 'APR' => 4, 'MAY' => 5, 'JUN' => 6, 'JUL' => 7, 'AUG' => 8, 'SEP' => 9, 'OCT' => 10, 'NOV' => 11, 'DEC' => 12 }
 
       @client_ip     = options.fetch(:client_ip, '127.0.0.1')
       @time          = options.fetch(:time, Time.now)
@@ -29,7 +29,7 @@ module ProxyPacRb
         :isInNet,
         :dnsResolve,
         :dnsDomainLevels,
-        :shExpMatch,
+        :shExpMatch
       ]
     end
 
@@ -38,7 +38,7 @@ module ProxyPacRb
     end
 
     def isPlainHostName(host)
-      not host.include? "."
+      !host.include? '.'
     end
 
     def dnsDomainIs(host, domain)
@@ -46,11 +46,11 @@ module ProxyPacRb
     end
 
     def localHostOrDomainIs(host, hostdom)
-      host == hostdom or hostdom.include? host
+      host == hostdom || hostdom.include?(host)
     end
 
     def isResolvable(host)
-      !!resolve_host(host)
+      !resolve_host(host).blank?
     end
 
     def isInNet(host, pattern, mask)
@@ -62,7 +62,7 @@ module ProxyPacRb
     end
 
     def dnsDomainLevels(host)
-      host.scan(".").size
+      host.scan('.').size
     end
 
     def shExpMatch(str, shexp)
@@ -72,11 +72,15 @@ module ProxyPacRb
     private
 
     def resolve_host(host)
-      Resolv.each_address(host) do |address|
+      return nil if host.blank?
+
+      Resolv.each_address(host.force_encoding('ASCII-8BIT')) do |address|
         begin
           return address if IPAddr.new(address).ipv4?
+        # rubocop:disable Lint/HandleExceptions
         rescue ArgumentError
         end
+        # rubocop:enable Lint/HandleExceptions
       end
 
       # We couldn't find an IPv4 address for the host

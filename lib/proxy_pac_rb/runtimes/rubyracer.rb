@@ -1,7 +1,9 @@
 module ProxyPacRb
+  # Ruby Racer Runtime
   class RubyRacerRuntime < Runtime
+    # Context
     class Context < Runtime::Context
-      def initialize(runtime, source = "", environment = nil)
+      def initialize(_runtime, source = '', _environment = nil)
         source = encode(source)
 
         lock do
@@ -13,24 +15,24 @@ module ProxyPacRb
       def exec(source, options = {})
         source = encode(source)
 
-        if /\S/ =~ source
-          eval "(function(){#{source}})()", options
-        end
+        # rubocop:disable Lint/Eval
+        eval "(function(){#{source}})()", options if /\S/ =~ source
+        # rubocop:enable Lint/Eval
       end
 
-      def eval(source, options = {})
+      def eval(source, _options = {})
         source = encode(source)
 
-        if /\S/ =~ source
-          lock do
-            begin
-              unbox context.eval("(#{source})")
-            rescue ::V8::JSError => e
-              if e.value["name"] == "SyntaxError"
-                fail RuntimeError, e.value.to_s
-              else
-                raise Exceptions::ProgramError, e.value.to_s
-              end
+        return nil unless /\S/ =~ source
+
+        lock do
+          begin
+            unbox context.eval("(#{source})")
+          rescue ::V8::JSError => e
+            if e.value['name'] == 'SyntaxError'
+              raise e.value.to_s
+            else
+              raise Exceptions::ProgramError, e.value.to_s
             end
           end
         end
@@ -41,8 +43,8 @@ module ProxyPacRb
           begin
             unbox context.eval(properties).call(*args)
           rescue ::V8::JSError => e
-            if e.value["name"] == "SyntaxError"
-              raise RuntimeError, e.value.to_s
+            if e.value['name'] == 'SyntaxError'
+              raise e.value.to_s
             else
               raise Exceptions::ProgramError, e.value.to_s
             end
@@ -57,44 +59,49 @@ module ProxyPacRb
         when ::V8::Array
           value.map { |v| unbox(v) }
         when ::V8::Object
-          value.inject({}) do |vs, (k, v)|
+          # rubocop:disable Style/EachWithObject
+          value.reduce({}) do |vs, (k, v)|
             vs[k] = unbox(v) unless v.is_a?(::V8::Function)
             vs
           end
+          # rubocop:enable Style/EachWithObject
         when String
-          value.respond_to?(:force_encoding) ?
-            value.force_encoding('UTF-8') :
+          if value.respond_to?(:force_encoding)
+            value.force_encoding('UTF-8')
+          else
             value
+          end
         else
           value
         end
       end
 
       private
-        def lock
-          result, exception = nil, nil
-          V8::C::Locker() do
-            begin
-              result = yield
-            rescue Exception => e
-              exception = e
-            end
-          end
 
-          if exception
-            raise exception
-          else
-            result
+      def lock
+        result, exception = nil, nil
+        V8::C::Locker() do
+          begin
+            result = yield
+          rescue => e
+            exception = e
           end
         end
+
+        if exception
+          fail exception
+        else
+          result
+        end
+      end
     end
 
     def name
-      "therubyracer (V8)"
+      'therubyracer (V8)'
     end
 
     def available?
-      require "v8"
+      require 'v8'
       true
     rescue LoadError
       false

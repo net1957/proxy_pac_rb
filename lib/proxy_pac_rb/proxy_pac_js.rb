@@ -1,5 +1,6 @@
 # encoding: utf-8
 module ProxyPacRb
+  # Javascript-Methods for evaluation of proxy.pac
   class ProxyPacJs
     class << self
       def my_ip_address_template(value)
@@ -9,7 +10,6 @@ module ProxyPacRb
           }
         EOS
       end
-
 
       # taken from  releases-mozilla-release / netwerk / base / src / ProxyAutoConfig.cpp @ bitbucket.org
       # https://bitbucket.org/mozilla/releases-mozilla-release/raw/dece38633cf1adcab2071d69fea264580d24cc9e/netwerk/base/src/ProxyAutoConfig.cpp
@@ -21,7 +21,7 @@ module ProxyPacRb
       end
 
       def week_day_range_template(value = nil)
-        value = %Q{"#{value}"} if value
+        value = %("#{value}") if value
 
         <<-EOS.strip_heredoc
         function weekdayRange() {
@@ -51,7 +51,7 @@ module ProxyPacRb
       end
 
       def date_range_template(value = nil)
-        value = %Q{"#{value}"} if value
+        value = %("#{value}") if value
 
         <<-EOS.strip_heredoc
         function dateRange() {
@@ -79,7 +79,7 @@ module ProxyPacRb
                              getMonth(arguments[0]));
                 } else if (tmp < 32) {
                     return ((isGMT ? date.getUTCDate() : date.getDate()) == tmp);
-                } else { 
+                } else {
                     return ((isGMT ? date.getUTCFullYear() : date.getFullYear()) ==
                              tmp);
                 }
@@ -132,7 +132,7 @@ module ProxyPacRb
       end
 
       def time_range_template(value = nil)
-        value = %Q{"#{value}"} if value
+        value = %("#{value}") if value
 
         <<-EOS.strip_heredoc
         function timeRange() {

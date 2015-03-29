@@ -1,7 +1,9 @@
 module ProxyPacRb
+  # Ruby Rhine Runtime
   class RubyRhinoRuntime < Runtime
+    # Context
     class Context < Runtime::Context
-      def initialize(runtime, source = "")
+      def initialize(_runtime, source = '')
         source = encode(source)
 
         self.context = ::Rhino::Context.new
@@ -12,20 +14,20 @@ module ProxyPacRb
       def exec(source, options = {})
         source = encode(source)
 
-        if /\S/ =~ source
-          eval "(function(){#{source}})()", options
-        end
+        return nil unless /\S/ =~ source
+
+        # rubocop:disable Lint/Eval
+        eval "(function(){#{source}})()", options
+        # rubocop:enable Lint/Eval
       end
 
-      def eval(source, options = {})
+      def eval(source, _options = {})
         source = encode(source)
 
-        if /\S/ =~ source
-          unbox context.eval("(#{source})")
-        end
+        unbox context.eval("(#{source})") if /\S/ =~ source
       rescue ::Rhino::JSError => e
         if e.message =~ /^syntax error/
-          raise RuntimeError, e.message
+          raise e.message
         else
           raise Exceptions::ProgramError, e.message
         end
@@ -34,19 +36,20 @@ module ProxyPacRb
       def call(properties, *args)
         unbox context.eval(properties).call(*args)
       rescue ::Rhino::JSError => e
-        if e.message == "syntax error"
-          raise RuntimeError, e.message
+        if e.message == 'syntax error'
+          raise e.message
         else
           raise Exceptions::ProgramError, e.message
         end
       end
 
       def unbox(value)
-        case value = ::Rhino::to_ruby(value)
+        case value = ::Rhino.to_ruby(value)
         when Java::OrgMozillaJavascript::NativeFunction
           nil
         when Java::OrgMozillaJavascript::NativeObject
-          value.inject({}) do |vs, (k, v)|
+          # rubocop:disable Style/EachWithObject
+          value.reduce({}) do |vs, (k, v)|
             case v
             when Java::OrgMozillaJavascript::NativeFunction, ::Rhino::JS::Function
               nil
@@ -55,6 +58,7 @@ module ProxyPacRb
             end
             vs
           end
+          # rubocop:enable Style/EachWithObject
         when Array
           value.map { |v| unbox(v) }
         else
@@ -63,22 +67,23 @@ module ProxyPacRb
       end
 
       private
-        # Disables bytecode compiling which limits you to 64K scripts
-        def fix_memory_limit!(cxt)
-          if cxt.respond_to?(:optimization_level=)
-            cxt.optimization_level = -1
-          else
-            cxt.instance_eval { @native.setOptimizationLevel(-1) }
-          end
+
+      # Disables bytecode compiling which limits you to 64K scripts
+      def fix_memory_limit!(cxt)
+        if cxt.respond_to?(:optimization_level=)
+          cxt.optimization_level = -1
+        else
+          cxt.instance_eval { @native.setOptimizationLevel(-1) }
         end
+      end
     end
 
     def name
-      "therubyrhino (Rhino)"
+      'therubyrhino (Rhino)'
     end
 
     def available?
-      require "rhino"
+      require 'rhino'
       true
     rescue LoadError
       false

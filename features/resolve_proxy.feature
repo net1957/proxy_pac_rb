@@ -11,7 +11,18 @@ Feature: Resolve proxy
       return 'PROXY localhost:3128';
     }
     """
-    When I successfully run `pprb -p proxy.pac www.example.org`
+    When I successfully run `pprb find proxy -p proxy.pac -u www.example.org`
+    Then the output should contain:
+    """
+    PROXY localhost:3128
+    """
+
+  Scenario: Existing proxy.pac with compressed content
+    Given a file named "proxy.pac" with:
+    """
+    function FindProxyForURL(){return"PROXY localhost:3128"}
+    """
+    When I successfully run `pprb find proxy -p proxy.pac -u www.example.org`
     Then the output should contain:
     """
     PROXY localhost:3128
@@ -24,7 +35,7 @@ Feature: Resolve proxy
       return 'PROXY localhost:3128';
     }
     """
-    When I successfully run `pprb -p ./proxy.pac www.example.org`
+    When I successfully run `pprb find proxy -p ./proxy.pac -u www.example.org`
     Then the output should contain:
     """
     PROXY localhost:3128
@@ -37,14 +48,14 @@ Feature: Resolve proxy
       return 'PROXY localhost:3128';
     }
     """
-    When I successfully run `pprb -p http://127.0.0.1:4567/proxy.pac www.example.org`
+    When I successfully run `pprb find proxy -p http://127.0.0.1:4567/proxy.pac -u www.example.org`
     Then the output should contain:
     """
     PROXY localhost:3128
     """
 
   Scenario: Non-Existing proxy.pac
-    When I run `pprb -p proxy.pac www.example.org`
+    When I run `pprb find proxy -p proxy.pac -u www.example.org`
     Then the output should contain:
     """
     No such file or directory
@@ -57,10 +68,10 @@ Feature: Resolve proxy
       return 'PROXY localhost:3128';
     }
     """
-    When I run `pprb -p proxy.pac`
+    When I run `pprb find proxy -p proxy.pac`
     Then the output should contain:
     """
-    You need to provide at least one url
+    No value provided for required options '--urls'
     """
 
   Scenario: Missing proxy parameter
@@ -70,10 +81,10 @@ Feature: Resolve proxy
       return 'PROXY localhost:3128';
     }
     """
-    When I run `pprb www.example.org`
+    When I run `pprb find proxy -u www.example.org`
     Then the output should contain:
     """
-    You need to provide a proxy pac file
+    No value provided for required options '--proxy-pac'
     """
 
   Scenario: Use client ip
@@ -87,12 +98,12 @@ Feature: Resolve proxy
       }
     }
     """
-    When I successfully run `pprb -p proxy.pac -c 10.0.0.1 www.example.org`
+    When I successfully run `pprb find proxy -p proxy.pac -c 10.0.0.1 -u www.example.org`
     Then the output should contain:
     """
     PROXY localhost:3128
     """
-    When I successfully run `pprb -p proxy.pac -c 192.0.0.1 www.example.org`
+    When I successfully run `pprb find proxy -p proxy.pac -c 192.0.0.1 -u www.example.org`
     Then the output should contain:
     """
     DIRECT
@@ -109,13 +120,47 @@ Feature: Resolve proxy
       }
     }
     """
-    When I successfully run `pprb -p proxy.pac -t 2014-04-09 www.example.org`
+    When I successfully run `pprb find proxy -p proxy.pac -t 2014-04-09 -u www.example.org`
     Then the output should contain:
     """
     PROXY localhost:3128
     """
-    When I successfully run `pprb -p proxy.pac -t 2014-12-07 www.example.org`
+    When I successfully run `pprb find proxy -p proxy.pac -t 2014-12-07 -u www.example.org`
     Then the output should contain:
     """
     DIRECT
+    """
+
+  Scenario: Unresolvable hostname
+    Given a file named "proxy.pac" with:
+    """
+    function FindProxyForURL(url, host) {
+      if (isInNet(dnsResolve(host), "8.8.8.8", "255.0.0.0")) {
+        return 'PROXY localhost:3128';
+      } else {
+        return 'DIRECT';
+      }
+    }
+    """
+    When I successfully run `pprb find proxy -p proxy.pac -u unexist.localhost.localdomain`
+    Then the output should contain:
+    """
+    DIRECT
+    """
+
+  Scenario: dnsResolve + isInNet
+    Given a file named "proxy.pac" with:
+    """
+    function FindProxyForURL(url, host) {
+      hostip = dnsResolve(host);
+      if (isInNet(hostip, "127.0.0.1", "255.255.255.255") ||
+          isInNet(hostip, "127.0.0.1", "255.255.255.255") ||
+          isInNet(hostip, "127.0.0.1", "255.255.255.255") ||
+          isInNet(hostip, "127.0.0.1", "255.255.255.255")) return 'proxy.example.com';
+    }
+    """
+    When I successfully run `pprb find proxy -p proxy.pac -u http://localhost`
+    Then the output should contain:
+    """
+    proxy.example.com
     """

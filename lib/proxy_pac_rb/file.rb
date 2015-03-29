@@ -1,6 +1,6 @@
 module ProxyPacRb
+  # Proxy pac file
   class File
-
     private
 
     attr_reader :javascript
@@ -13,9 +13,9 @@ module ProxyPacRb
 
     def find(url)
       uri = Addressable::URI.heuristic_parse(url)
-      fail Exceptions::UrlInvalid, "url is missing host" unless uri.host
+      fail Exceptions::UrlInvalid, 'url is missing host' unless uri.host
 
-      javascript.call("FindProxyForURL", url, uri.host)
+      javascript.call('FindProxyForURL', url, uri.host)
     end
   end
 end
