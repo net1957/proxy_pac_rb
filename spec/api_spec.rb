@@ -147,3 +147,27 @@ RSpec.describe ProxyPacRb do
     end
   end
 end
+
+RSpec.describe ProxyPacFile do
+  subject(:proxy_pac) { ProxyPacFile.new source: source }
+
+  let(:source) do
+    <<-EOS.strip_heredoc.chomp
+      function FindProxyForURL(url, host) {
+        return "DIRECT";
+      }
+    EOS
+  end
+
+  describe '#valid?' do
+    context 'when is invalid' do
+      it { expect(proxy_pac).not_to be_valid }
+    end
+
+    context 'when is valid' do
+      before(:each) { proxy_pac.valid = true }
+
+      it { expect(proxy_pac).to be_valid }
+    end
+  end
+end

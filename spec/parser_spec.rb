@@ -2,41 +2,39 @@
 require 'spec_helper'
 
 describe ProxyPacRb::Parser do
-  before :each do
-    write_file 'sample.pac', <<-EOS.strip_heredoc
+  subject(:proxy_pac) { Parser.new(environment: environment).parse(source) }
+  let(:environment) { Environment.new }
+
+  let(:content) do
+    <<-EOS.strip_heredoc.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
     EOS
   end
 
-  let(:sample_pac) { absolute_path('sample.pac') }
-
-  context '.read' do
-    it 'should load a file from a path' do
-      pac = ProxyPacRb::Parser.new.read(sample_pac)
-      expect(pac).not_to be_nil
-    end
+  let(:source) do
+    <<-EOS.strip_heredoc.chomp
+      function FindProxyForURL(url, host) {
+        return "DIRECT";
+      }
+    EOS
   end
 
-  context '.source' do
-    let(:source) do
-      <<-JS.strip_heredoc
-        function FindProxyForURL(url, host) {
-          return "DIRECT";
-        }
-      JS
-    end
-
-    it 'should load source' do
-      pac = ProxyPacRb::Parser.new.source(source)
-      expect(pac).not_to be_nil
-    end
+  context 'when string is given' do
+    it { expect(proxy_pac).not_to be_nil }
   end
 
-  context 'compile' do
-    it 'supports a changeable ip address' do
-      string = <<-EOS
+  context 'when path is given' do
+    let(:source) { absolute_path('proxy.pac') }
+    before(:each) { write_file(source, content) }
+
+    it { expect(proxy_pac).not_to be_nil }
+  end
+
+  context 'when ip address is given' do
+    let(:content) do
+      <<-EOS
       function FindProxyForURL(url, host) {
         if ( myIpAddress() == '127.0.0.2' ) {
           return "DIRECT";
@@ -45,18 +43,22 @@ describe ProxyPacRb::Parser do
         }
       }
       EOS
-
-      environment = ProxyPacRb::Environment.new(client_ip: '127.0.0.1')
-      file = ProxyPacRb::Parser.new(environment).source(string)
-      expect(file.find('http://localhost')).to eq('PROXY localhost:8080')
-
-      environment = ProxyPacRb::Environment.new(client_ip: '127.0.0.2')
-      file = ProxyPacRb::Parser.new(environment).source(string)
-      expect(file.find('http://localhost')).to eq('DIRECT')
     end
 
-    it 'supports a changeable date' do
-      string = <<-EOS
+    context 'when ip is 127.0.0.1' do
+      let(:environment) { Environment.new(client_ip: '127.0.0.1') }
+      it { expect(proxy_pac.find('http://localhost')).to eq('PROXY localhost:8080') }
+    end
+    
+    context 'when ip is  127.0.0.2' do
+      let(:environment) { Environment.new(client_ip: '127.0.0.2') }
+      it { expect(proxy_pac.find('http://localhost')).to eq('DIRECT') }
+    end
+  end
+
+  context 'when date is given' do
+    let(:content) do 
+      <<-EOS
       function FindProxyForURL(url, host) {
         if (weekdayRange("FRI", "SAT")) {
           return "PROXY localhost:8080";
@@ -65,18 +67,22 @@ describe ProxyPacRb::Parser do
         }
       }
       EOS
-
-      environment = Environment.new(time: Time.parse('2014-03-08 12:00'))
-      file = ProxyPacRb::Parser.new(environment).source(string)
-      expect(file.find('http://localhost')).to eq('PROXY localhost:8080')
-
-      environment = Environment.new(time: Time.parse('2014-03-06 12:00'))
-      file = ProxyPacRb::Parser.new(environment).source(string)
-      expect(file.find('http://localhost')).to eq('DIRECT')
     end
 
-    it 'supports time range' do
-      string = <<-EOS
+    context 'when time is 2014-03-08 12:00' do
+      let(:environment) { Environment.new(time: Time.parse('2014-03-08 12:00')) }
+      it { expect(proxy_pac.find('http://localhost')).to eq('PROXY localhost:8080') }
+    end
+
+    context 'when time is 2014-03-06 12:0' do
+      let(:environment) { Environment.new(time: Time.parse('2014-03-06 12:00')) }
+      it { expect(proxy_pac.find('http://localhost')).to eq('DIRECT') }
+    end
+  end
+
+  context 'when time range is used' do
+    let(:content) do
+      <<-EOS
       function FindProxyForURL(url, host) {
         if (timeRange(8, 18)) {
           return "PROXY localhost:8080";
@@ -85,18 +91,22 @@ describe ProxyPacRb::Parser do
         }
       }
       EOS
-
-      environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-06 12:00'))
-      file = ProxyPacRb::Parser.new(environment).source(string)
-      expect(file.find('http://localhost')).to eq('PROXY localhost:8080')
-
-      environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-08 6:00'))
-      file = ProxyPacRb::Parser.new(environment).source(string)
-      expect(file.find('http://localhost')).to eq('DIRECT')
     end
 
-    it 'supports a date range' do
-      string = <<-EOS
+    context 'when time is 2014-03-06 12:00' do
+      let(:environment) { ProxyPacRb::Environment.new(time: Time.parse('2014-03-06 12:00')) }
+      it { expect(proxy_pac.find('http://localhost')).to eq('PROXY localhost:8080') }
+    end
+
+    context 'when time is 2014-03-08 6:00' do
+      let(:environment) { ProxyPacRb::Environment.new(time: Time.parse('2014-03-08 6:00')) }
+      it { expect(proxy_pac.find('http://localhost')).to eq('DIRECT') }
+    end
+  end
+
+  context 'when date range is used' do
+    let(:content) do
+      <<-EOS
       function FindProxyForURL(url, host) {
         if (dateRange("JUL", "SEP")) {
           return "PROXY localhost:8080";
@@ -105,14 +115,16 @@ describe ProxyPacRb::Parser do
         }
       }
       EOS
+    end
 
-      environment = ProxyPacRb::Environment.new(time: Time.parse('2014-07-06 12:00'))
-      file = ProxyPacRb::Parser.new(environment).source(string)
-      expect(file.find('http://localhost')).to eq('PROXY localhost:8080')
+    context 'when time is 2014-07-06 12:00' do
+      let(:environment) { ProxyPacRb::Environment.new(time: Time.parse('2014-07-06 12:00')) }
+      it { expect(proxy_pac.find('http://localhost')).to eq('PROXY localhost:8080') }
+    end
 
-      environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-08 6:00'))
-      file = ProxyPacRb::Parser.new(environment).source(string)
-      expect(file.find('http://localhost')).to eq('DIRECT')
+    context 'when time is 2014-03-08 6:00' do
+      let(:environment) { ProxyPacRb::Environment.new(time: Time.parse('2014-03-08 6:00')) }
+      it { expect(proxy_pac.find('http://localhost')).to eq('DIRECT') }
     end
   end
 end

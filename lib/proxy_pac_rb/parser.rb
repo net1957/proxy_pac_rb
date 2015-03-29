@@ -13,42 +13,41 @@ module ProxyPacRb
   class Parser
     private
 
-    attr_reader :runtime, :environment
+    attr_reader :parser, :loader, :linter
 
     public
 
-    def initialize(environment = Environment.new, runtime = Runtimes.autodetect)
-      fail RuntimeUnavailableError, "#{runtime.name} is unavailable on this system" unless runtime.available?
-
-      @runtime     = runtime
-      @environment = environment
+    def initialize(**args)
+      @parser = ProxyPacParser.new(**args)
+      @loader = ProxyPacLoader.new
+      @linter = ProxyPacLinter.new
     end
 
-    def load(url, options = {})
-      create_file(open(url, { proxy: false }.merge(options)).read)
+    def parse(source)
+      pac_file = ProxyPacFile.new source: source
+
+      pac_file.content = loader.load(pac_file)
+      linter.lint(pac_file)
+
+      parser.parse(pac_file)
     end
 
-    def read(file)
-      create_file(::File.read(file))
+    def load(*args)
+      $stderr.puts "Depreated: #load. Please use #parse instead."
+
+      parse(*args)
     end
 
-    def source(source)
-      create_file(source)
+    def read(*args)
+      $stderr.puts "Depreated: #read. Please use #parse instead."
+
+     parse(*args)
     end
 
-    private
+    def source(*args)
+      $stderr.puts "Depreated: #source. Please use #parse instead."
 
-    def compile_javascript(source)
-      environment.prepare(source)
-
-      context = runtime.compile(source)
-      context.include environment
-
-      context
-    end
-
-    def create_file(source)
-      File.new(compile_javascript(source))
+      parse(*args)
     end
   end
 end
