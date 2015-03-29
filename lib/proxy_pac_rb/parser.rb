@@ -18,7 +18,7 @@ module ProxyPacRb
     public
 
     def initialize(environment = Environment.new, runtime = Runtimes.autodetect)
-      fail Exceptions::RuntimeUnavailable, "#{runtime.name} is unavailable on this system" unless runtime.available?
+      fail RuntimeUnavailableError, "#{runtime.name} is unavailable on this system" unless runtime.available?
 
       @runtime     = runtime
       @environment = environment

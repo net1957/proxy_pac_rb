@@ -17,7 +17,7 @@ module ProxyPacRb
       cli.options.urls.each do |u|
         begin
           $stderr.printf("%30s: %-s\n", u, file.find(u))
-        rescue Exceptions::UrlInvalid
+        rescue UrlInvalidError
           $stderr.puts "You provide an invalid url \"#{u}\". Please use a correct one."
         end
       end

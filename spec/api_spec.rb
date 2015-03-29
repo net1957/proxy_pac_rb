@@ -11,8 +11,18 @@ RSpec.describe ProxyPacRb do
     EOS
   end
 
+  let(:source) do
+    <<-EOS.strip_heredoc.chomp
+      function FindProxyForURL(url, host) {
+        return "DIRECT";
+      }
+    EOS
+  end
+
   before :each do
     allow(proxy_pac).to receive(:content).and_return(content)
+    allow(proxy_pac).to receive(:valid).and_return(true)
+    allow(proxy_pac).to receive(:source).and_return(source)
   end
 
   describe ProxyPacCompressor do
@@ -35,14 +45,6 @@ RSpec.describe ProxyPacRb do
     let(:destination) { absolute_path('proxy.pac') }
 
     describe '#dump' do
-      let(:source) do
-        <<-EOS.strip_heredoc
-        function FindProxyForURL(url, host) {
-          return "DIRECT";
-        }
-        EOS
-      end
-
       before :each do
         allow(proxy_pac).to receive(:source).and_return(source)
       end
@@ -62,7 +64,7 @@ RSpec.describe ProxyPacRb do
     let(:loader) { ProxyPacLoader.new }
 
     before :each do
-      allow(proxy_pac).to receive(:source).and_return(content)
+      allow(proxy_pac).to receive(:source).and_return(source)
     end
 
     describe '#load' do
@@ -91,14 +93,57 @@ RSpec.describe ProxyPacRb do
     end
   end
 
-  #describe ProxyPacParser do
-  #  describe '#read' do
+  describe ProxyPacParser do
+    describe '#parse' do
+      let(:pac) { ProxyPacParser.new.parse(proxy_pac) }
 
-  #  end
-  #end
+      context 'when is valid' do
+        it { expect(pac).to be_kind_of ProxyPac }
+      end
 
-  #describe ProxyPacLinter do
-  #  describe '#read' do
-  #  end
-  #end
+      context 'when is valid' do
+        let(:content) do
+          <<-EOS.strip_heredoc.chomp
+          function FindProxyForURL(url, host) {
+           asdfasf $$ SDF
+          }
+          EOS
+        end
+
+        it { expect{ pac }.to raise_error ParserError }
+      end
+    end
+  end
+
+  describe ProxyPacLinter do
+    describe '#lint' do
+      let(:linter) {  ProxyPacLinter.new(silent: true) }
+      let(:result) { true }
+
+      before(:each) { expect(proxy_pac).to receive(:valid=).with(result) }
+
+      context 'when is valid' do
+        it { linter.lint(proxy_pac) }
+      end
+
+      context 'when is proxy.pac does not contain FindProxyForURL' do
+        let(:result) { false }
+        let(:content) { '' }
+        it { linter.lint(proxy_pac) }
+      end
+
+      context 'when is proxy.pac cannot be compiled' do
+        let(:result) { false }
+        let(:content) do
+          <<-EOS.strip_heredoc.chomp
+          function FindProxyForURL(url, host) {
+           asdfasf $$ SDF
+          }
+          EOS
+        end
+
+        it { linter.lint(proxy_pac) }
+      end
+    end
+  end
 end

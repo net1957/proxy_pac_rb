@@ -1,34 +1,24 @@
-# encoding: utf-8
 module ProxyPacRb
-  # ProxyPac
+  # Proxy pac file
   class ProxyPac
     private
 
-    attr_reader :path
+    attr_reader :javascript
 
     public
 
-    def initialize(path)
-      @path = path
+    attr_reader :file
+
+    def initialize(javascript:, file:)
+      @javascript = javascript
+      @file       = file
     end
 
-    def content
-      fail
-    end
+    def find(url)
+      uri = Addressable::URI.heuristic_parse(url)
+      fail UrlInvalidError, 'url is missing host' unless uri.host
 
-    private
-
-    def read_proxy_pac(path)
-      uri = Addressable::URI.parse(path)
-
-      uri.path = ::File.expand_path(uri.path) if uri.host.nil?
-
-      ENV.delete 'HTTP_PROXY'
-      ENV.delete 'HTTPS_PROXY'
-      ENV.delete 'http_proxy'
-      ENV.delete 'https_proxy'
-
-      open(uri, proxy: false).read
+      javascript.FindProxyForURL(url, uri.host)
     end
   end
 end

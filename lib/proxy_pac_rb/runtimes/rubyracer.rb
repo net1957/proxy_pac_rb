@@ -32,7 +32,7 @@ module ProxyPacRb
             if e.value['name'] == 'SyntaxError'
               raise e.value.to_s
             else
-              raise Exceptions::ProgramError, e.value.to_s
+              raise ProgramError, e.value.to_s
             end
           end
         end
@@ -46,7 +46,7 @@ module ProxyPacRb
             if e.value['name'] == 'SyntaxError'
               raise e.value.to_s
             else
-              raise Exceptions::ProgramError, e.value.to_s
+              raise ProgramError, e.value.to_s
             end
           end
         end

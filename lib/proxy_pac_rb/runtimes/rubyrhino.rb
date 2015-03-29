@@ -29,7 +29,7 @@ module ProxyPacRb
         if e.message =~ /^syntax error/
           raise e.message
         else
-          raise Exceptions::ProgramError, e.message
+          raise ProgramError, e.message
         end
       end
 
@@ -39,7 +39,7 @@ module ProxyPacRb
         if e.message == 'syntax error'
           raise e.message
         else
-          raise Exceptions::ProgramError, e.message
+          raise ProgramError, e.message
         end
       end
 
