@@ -10,6 +10,10 @@ module ProxyPacRb
       @valid  = false
     end
 
+    def type?(t)
+      type == t
+    end
+
     def valid?
       valid == true
     end

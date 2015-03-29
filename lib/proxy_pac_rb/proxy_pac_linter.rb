@@ -10,7 +10,7 @@ module ProxyPacRb
     def initialize(silent: false)
       @rules = []
       @rules << Rules::ContainerProxyPacFunction.new
-      @rules << Rules::CanBeCompiled.new
+      @rules << Rules::CanBeParsed.new
 
       @silent = silent
     end
@@ -33,7 +33,13 @@ module ProxyPacRb
   module Rules
     class ContainerProxyPacFunction
       def lint(proxy_pac)
-        message = %(proxy.pac "#{proxy_pac.source}" does not contain "FindProxyForURL".)
+        message = if proxy_pac.type? :string
+                    %(proxy.pac is only given as string "#{proxy_pac.source}" and does not contain "FindProxyForURL".)
+                  elsif proxy_pac.type? :url
+                    %(proxy.pac-url "#{proxy_pac.source}" does not contain "FindProxyForURL".)
+                  else
+                    %(proxy.pac-file "#{proxy_pac.source}" does not contain "FindProxyForURL".)
+                  end
 
         fail LinterError, message unless proxy_pac.content.include?('FindProxyForURL')
 
@@ -41,7 +47,7 @@ module ProxyPacRb
       end
     end
 
-    class CanBeCompiled
+    class CanBeParsed
       private
 
       attr_reader :parser
@@ -57,7 +63,15 @@ module ProxyPacRb
 
         self
       rescue => err
-        raise LinterError, %(proxy.pac "#{proxy_pac.source}" cannot be compiled:\n#{err.message}".)
+        message = if proxy_pac.type? :string
+                    %(proxy.pac is only given as string "#{proxy_pac.source}" cannot be parsed:\n#{err.message}".)
+                  elsif proxy_pac.type? :url
+                    %(proxy.pac-url "#{proxy_pac.source}" cannot be parsed:\n#{err.message}".)
+                  else
+                    %(proxy.pac-file "#{proxy_pac.source}" cannot be parsed:\n#{err.message}".)
+                  end
+
+        raise LinterError, message
       end
     end
   end
