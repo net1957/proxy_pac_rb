@@ -13,16 +13,15 @@ module ProxyPacRb
       def find_proxy
         CliValidator.new(options).validate
 
-        client_ip = IPAddr.new(options[:client_ip])
-        time      = Time.parse(options[:time])
-        proxy_pac = ProxyPacFile.new(options[:proxy_pac])
-        urls      = options[:urls]
+        environment = ProxyPacRb::Environment.new(
+          client_ip: IPAddr.new(options[:client_ip]),
+          time: Time.parse(options[:time])
+        )
 
-        environment = ProxyPacRb::Environment.new(client_ip: client_ip, time: time)
-        file        = ProxyPacRb::Parser.new(environment).source(proxy_pac.content)
+        file = ProxyPacRb::Parser.new(environment: environment).parse(options[:proxy_pac])
 
         $stderr.printf("%30s: %-s\n", 'url', 'result')
-        urls.each do |u|
+        options[:urls].each do |u|
           begin
             $stderr.printf("%30s: %-s\n", u, file.find(u))
           rescue UrlInvalidError

@@ -15,7 +15,7 @@ module ProxyPacRb
       def test_proxy_pac
         @proxy_pacs.each do |p|
           begin
-            file = ProxyPacRb::Parser.new.source(p.raw_content)
+            file = ProxyPacRb::Parser.new.parse(p.raw_content)
             file.find('http://example.org')
           rescue V8::Error => e
             $stderr.puts "Proxy.pac-file \"#{p.input_path}\" is invalid. I ignore that file: #{e.message}"

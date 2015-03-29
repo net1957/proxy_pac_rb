@@ -3,6 +3,7 @@ require 'spec_helper'
 
 describe ProxyPacRb::Parser do
   subject(:proxy_pac) { Parser.new(environment: environment).parse(source) }
+
   let(:environment) { Environment.new }
 
   let(:content) do
@@ -33,7 +34,7 @@ describe ProxyPacRb::Parser do
   end
 
   context 'when ip address is given' do
-    let(:content) do
+    let(:source) do
       <<-EOS
       function FindProxyForURL(url, host) {
         if ( myIpAddress() == '127.0.0.2' ) {
@@ -57,7 +58,7 @@ describe ProxyPacRb::Parser do
   end
 
   context 'when date is given' do
-    let(:content) do 
+    let(:source) do 
       <<-EOS
       function FindProxyForURL(url, host) {
         if (weekdayRange("FRI", "SAT")) {
@@ -81,7 +82,7 @@ describe ProxyPacRb::Parser do
   end
 
   context 'when time range is used' do
-    let(:content) do
+    let(:source) do
       <<-EOS
       function FindProxyForURL(url, host) {
         if (timeRange(8, 18)) {
@@ -105,7 +106,7 @@ describe ProxyPacRb::Parser do
   end
 
   context 'when date range is used' do
-    let(:content) do
+    let(:source) do
       <<-EOS
       function FindProxyForURL(url, host) {
         if (dateRange("JUL", "SEP")) {
