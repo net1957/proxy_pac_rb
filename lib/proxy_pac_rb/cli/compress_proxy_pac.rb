@@ -8,25 +8,32 @@ module ProxyPacRb
       class_option :proxy_pac, type: :array, desc: 'Proxy.pac-file(s)', aliases: '-p', required: true
 
       def set_variables
-        @proxy_pacs = options[:proxy_pac].map { |p| ProxyPacTemplate.new(p) }
+        @proxy_pacs = options[:proxy_pac].map { |p| ProxyPacFile.new source: p }
         @compressor = ProxyPacCompressor.new
+        @dumper     = ProxyPacDumper.new
+        @loader     = ProxyPacLoader.new
+        @linter     = ProxyPacLinter.new
       end
 
       def test_proxy_pac
-        @proxy_pacs.each do |p|
-          begin
-            file = ProxyPacRb::Parser.new.parse(p.raw_content)
-            file.find('http://example.org')
-          rescue V8::Error => e
-            $stderr.puts "Proxy.pac-file \"#{p.input_path}\" is invalid. I ignore that file: #{e.message}"
+        @proxy_pacs.keep_if do |p|
+          p.content = @loader.load(p)
+          @linter.lint(p)
+
+          if p.valid?
+            true
+          else
+            $stderr.puts %(proxy.pac "#{p.source}" is invalid. I'm going to ignore that file.)
+
+            false
           end
         end
       end
 
       def compress_proxy_pac
         @proxy_pacs.each do |p|
-          p.compress_me(@compressor)
-          p.write
+          @compressor.compress(p)
+          @dumper.dump(p, type: :template)
         end
       end
     end

@@ -29,6 +29,12 @@ module ProxyPacRb
       pac_file.content = loader.load(pac_file)
       linter.lint(pac_file)
 
+      unless pac_file.valid?
+        $stderr.puts %(proxy.pac "#{pac_file.source}" is invalid.)
+
+        return
+      end
+
       parser.parse(pac_file)
     end
 
