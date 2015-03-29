@@ -9,7 +9,7 @@ module ProxyPacRb
 
       def set_variables
         @proxy_pacs = options[:proxy_pac].map { |p| ProxyPacTemplate.new(p) }
-        @compressor = JavascriptCompressor.new
+        @compressor = ProxyPacCompressor.new
       end
 
       def test_proxy_pac

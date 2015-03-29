@@ -24,7 +24,7 @@ require 'proxy_pac_rb/proxy_pac_js'
 require 'proxy_pac_rb/proxy_pac'
 require 'proxy_pac_rb/proxy_pac_file'
 require 'proxy_pac_rb/proxy_pac_template'
-require 'proxy_pac_rb/javascript_compressor'
+require 'proxy_pac_rb/proxy_pac_compressor'
 
 require 'proxy_pac_rb/cli_validator'
 
