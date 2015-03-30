@@ -90,10 +90,19 @@ curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files
 pprb lint proxy_pac -p sample.pac
 ```
 
-### Rack-based servers
-```
+### "rack"-middleware
 
-*Warning*
+The middleware which comes with `proxy_pac_rb` is compliant with the
+`rack`-specification - tested via
+[`rack/lint`](https://github.com/rack/rack/blob/master/lib/rack/lint.rb) and
+should work with every `rack`-compliant-server.
+
+#### Prerequisites
+
+Make sure the content is served with "Content-Type":
+'application/x-ns-proxy-autoconfig'. Otherwise the content is ignored.
+
+#### Warning
 
 The linter-`rack`-middleware needs to be activated before ANY other
 middleman-extension, `rack`-middleware or whatever framework you are using
@@ -122,18 +131,41 @@ Error
 There were errors during this build
 ```
 
-*Linter Middleware*
+
+#### Linter Middleware
 
 ```ruby
 require 'proxy_pac_rb/rack/proxy_pac_linter'
 use ProxyPacRb::Rack::ProxyPacLinter
 ```
 
-*Compressor Middleware*
+#### Compressor Middleware
 
 ```ruby
 require 'proxy_pac_rb/rack/proxy_pac_compressor'
 use ProxyPacRb::Rack::ProxyPacCompressor
+```
+
+#### Using "rack"-middleware with "middleman"
+
+If you want to use the `rack`-middleware with `middleman` look at the following
+code snippet captured from the `middleman`-configuration file `config.rb`:
+
+* `config.rb`:
+
+  ```ruby
+  # Important needs to come first
+  # See Warning above for a full explanation
+  require 'proxy_pac_rb/rack/proxy_pac_linter'
+  use ProxyPacRb::Rack::ProxyPacLinter
+
+  require 'proxy_pac_rb/rack/proxy_pac_compressor'
+  use ProxyPacRb::Rack::ProxyPacCompressor
+
+  # The middleware works on content served with 
+  # "Content-Type" 'application/x-ns-proxy-autoconfig'
+  page "*.pac", content_type: 'application/x-ns-proxy-autoconfig'
+  ```
 
 ### Ruby
 
