@@ -58,7 +58,7 @@ Feature: Resolve proxy
     When I run `pprb find proxy -p proxy.pac -u www.example.org`
     Then the output should contain:
     """
-    No such file or directory
+    You need to provide a path to an existing proxy pac file. The file "proxy.pac" does not exist.
     """
 
   Scenario: Missing url

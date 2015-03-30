@@ -35,7 +35,7 @@ RSpec.describe ProxyPacRb do
 
     describe '#modify' do
       context 'when string contains white paces' do
-        it { compressor.modify(proxy_pac) }
+        it { compressor.compress(proxy_pac) }
       end
     end
   end
