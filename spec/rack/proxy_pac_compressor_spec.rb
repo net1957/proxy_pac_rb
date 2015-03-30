@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'proxy_pac_rb/rack/proxy_pac_compressor'
+require 'rack/lint'
 
 RSpec.describe ProxyPacRb::Rack::ProxyPacCompressor, type: :rack_test do
   let(:compressed_content) { %(function FindProxyForURL(){return\"DIRECT\"}) }
@@ -23,7 +24,9 @@ RSpec.describe ProxyPacRb::Rack::ProxyPacCompressor, type: :rack_test do
         end
       end
 
+      a.use Rack::Lint
       a.use ProxyPacRb::Rack::ProxyPacCompressor
+      a.use Rack::Lint
 
       a.new
     end
@@ -49,7 +52,9 @@ RSpec.describe ProxyPacRb::Rack::ProxyPacCompressor, type: :rack_test do
         end
       end
 
+      a.use Rack::Lint
       a.use ProxyPacRb::Rack::ProxyPacCompressor
+      a.use Rack::Lint
 
       a.new
     end

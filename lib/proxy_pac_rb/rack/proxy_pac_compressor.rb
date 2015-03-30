@@ -43,7 +43,8 @@ module ProxyPacRb
                                               && %r{application/x-ns-proxy-autoconfig} === headers['Content-Type']
         # rubocop:enable Style/CaseEquality
 
-        content = [body].flatten.each_with_object('') { |e, a| a << e.to_s }
+        content = ''
+        content = body.each { |part| content << part }
 
         begin
           proxy_pac = ProxyPacFile.new(source: content)

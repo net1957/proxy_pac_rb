@@ -42,22 +42,21 @@ module ProxyPacRb
                                               && %r{application/x-ns-proxy-autoconfig} === headers['Content-Type']
         # rubocop:enable Style/CaseEquality
 
-        content = [body].flatten.each_with_object('') { |e, a| a << e.to_s }
+        content = ''
+        content = body.each { |part| content << part }
 
         proxy_pac = ProxyPacFile.new(source: content)
 
         loader.load(proxy_pac)
         linter.lint(proxy_pac)
 
-        if proxy_pac.valid?
-          content = proxy_pac.content
-        else
+        unless proxy_pac.valid?
           status  = 500
-          content = proxy_pac.message
-          headers['Content-Length'] = content.bytesize.to_s if headers['Content-Length']
+          body = proxy_pac.message
+          headers['Content-Length'] = body.bytesize.to_s if headers['Content-Length']
         end
 
-        [status, headers, [content]]
+        [status, headers, [body]]
       ensure
         body.close if body.respond_to?(:close)
       end

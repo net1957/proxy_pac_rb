@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'proxy_pac_rb/rack/proxy_pac_linter'
+require 'rack/lint'
 
 RSpec.describe ProxyPacRb::Rack::ProxyPacLinter, type: :rack_test do
   let(:content) do
@@ -13,7 +14,7 @@ RSpec.describe ProxyPacRb::Rack::ProxyPacLinter, type: :rack_test do
   before(:each) { get '/' }
   subject(:body) { last_response.body }
 
-  context 'when valid proxy pac is given' do
+  context 'when valid proxy pac is given', :focus do
     let(:app) do
       a = Class.new(Sinatra::Base) do
         before do
@@ -29,7 +30,9 @@ RSpec.describe ProxyPacRb::Rack::ProxyPacLinter, type: :rack_test do
         end
       end
 
+      a.use Rack::Lint
       a.use ProxyPacRb::Rack::ProxyPacLinter
+      a.use Rack::Lint
 
       a.new
     end
@@ -55,7 +58,9 @@ RSpec.describe ProxyPacRb::Rack::ProxyPacLinter, type: :rack_test do
         end
       end
 
+      a.use Rack::Lint
       a.use ProxyPacRb::Rack::ProxyPacLinter
+      a.use Rack::Lint
 
       a.new
     end
