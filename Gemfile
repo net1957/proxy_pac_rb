@@ -3,20 +3,18 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in local_pac.gemspec
 gemspec
 
-group :development, :test do
-  if !ENV.key?('CI') && !ENV.key?('TRAVIS')
+group :debug do
     gem 'pry'
+    gem 'byebug'
+
     gem 'pry-doc', require: false
+    gem 'pry-stack_explorer', require: false
+    gem 'pry-exception_explorer', require: false
+    gem 'pry-rescue', require: false
+    gem 'pry-byebug', require: false
+end
 
-    if RUBY_VERSION > '2.0.0'
-      gem 'byebug'
-      gem 'pry-byebug', require: false
-    else
-      gem 'debugger'
-      gem 'pry-debugger'
-    end
-  end
-
+group :development, :test do
   gem 'activesupport', '~> 4.0.0', require: false
   gem 'aruba', require: false
   gem 'awesome_print', require: 'ap'

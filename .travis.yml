@@ -1,7 +1,8 @@
 env:
   - CI=1
 language: ruby
-bundler_args: --without development
+bundler_args: --without development debug
 rvm:
   - 2.1.5
+  - 2.2.1
 script: script/ci
