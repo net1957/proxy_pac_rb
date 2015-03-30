@@ -90,6 +90,22 @@ curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files
 pprb lint proxy_pac -p sample.pac
 ```
 
+### Rack-based servers
+
+*Compressor Middleware*
+
+```ruby
+require 'proxy_pac_rb/rack/proxy_pac_compressor'
+use ProxyPacRb::Rack::ProxyPacCompressor
+```
+
+*Linter Middleware*
+
+```ruby
+require 'proxy_pac_rb/rack/proxy_pac_linter'
+use ProxyPacRb::Rack::ProxyPacLinter
+```
+
 ### Ruby
 
 *Load from website*
