@@ -4,14 +4,14 @@ source 'https://rubygems.org'
 gemspec
 
 group :debug do
-    gem 'pry'
-    gem 'byebug'
+  gem 'pry'
+  gem 'byebug'
 
-    gem 'pry-doc', require: false
-    gem 'pry-stack_explorer', require: false
-    gem 'pry-exception_explorer', require: false
-    gem 'pry-rescue', require: false
-    gem 'pry-byebug', require: false
+  gem 'pry-doc', require: false
+  gem 'pry-stack_explorer', require: false
+  gem 'pry-exception_explorer', require: false
+  gem 'pry-rescue', require: false
+  gem 'pry-byebug', require: false
 end
 
 group :development, :test do
@@ -34,7 +34,6 @@ group :development, :test do
   gem 'rack'
   gem 'rake', require: false
   gem 'redcarpet', require: false
-  gem 'rspec', require: false
   gem 'rubocop', require: false
   gem 'simplecov', require: false
   gem 'sinatra', require: 'sinatra/base'
@@ -42,8 +41,9 @@ group :development, :test do
   gem 'travis-lint', require: false
   gem 'versionomy', require: false
   gem 'yard', require: false
-  gem 'webmock', require: 'webmock/rspec'
-  gem 'rack-test', require: 'rack/test'
+  gem 'rspec', require: false
+  gem 'webmock', require: false
+  gem 'rack-test', require: false
 end
 
 group :profile do
