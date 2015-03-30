@@ -19,9 +19,12 @@ module ProxyPacRb
         @linter     = ProxyPacLinter.new
       end
 
+      def load_files
+        @proxy_pacs.each { |p| @loader.load(p) }
+      end
+
       def test_proxy_pac
         @proxy_pacs.keep_if do |p|
-          @loader.load(p)
           @linter.lint(p)
 
           if p.valid?
