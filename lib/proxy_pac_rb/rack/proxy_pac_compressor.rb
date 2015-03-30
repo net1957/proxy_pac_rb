@@ -20,7 +20,7 @@ module ProxyPacRb
     class ProxyPacCompressor
       private
 
-      attr_reader :compressor, :loader
+      attr_reader :compressor, :loader, :enabled
 
       public
 
