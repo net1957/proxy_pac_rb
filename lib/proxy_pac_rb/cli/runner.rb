@@ -16,6 +16,9 @@ module ProxyPacRb
       desc 'show', 'Show something'
       subcommand 'show', Show
 
+      desc 'lint', 'Lint something'
+      subcommand 'lint', Lint
+
       desc 'version', 'version', hide: true
       def version
         invoke 'proxy_pac_rb:cli:show:version'
