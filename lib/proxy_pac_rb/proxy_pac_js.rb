@@ -24,13 +24,14 @@ module ProxyPacRb
         value = %("#{value}") if value
 
         <<-EOS.strip_heredoc
-        function weekdayRange() {
-            function getDay(weekday) {
-                if (weekday in wdays) {
-                    return wdays[weekday];
-                }
-                return -1;
+        function getDay(weekday) {
+            if (weekday in wdays) {
+                return wdays[weekday];
             }
+            return -1;
+        }
+
+        function weekdayRange() {
             var date = new Date(#{value});
             var argc = arguments.length;
             var wday;
@@ -54,13 +55,14 @@ module ProxyPacRb
         value = %("#{value}") if value
 
         <<-EOS.strip_heredoc
-        function dateRange() {
-            function getMonth(name) {
-                if (name in months) {
-                    return months[name];
-                }
-                return -1;
+        function getMonth(name) {
+            if (name in months) {
+                return months[name];
             }
+            return -1;
+        }
+
+        function dateRange() {
             var date = new Date(#{value});
             var argc = arguments.length;
             if (argc < 1) {
