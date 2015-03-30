@@ -91,12 +91,35 @@ pprb lint proxy_pac -p sample.pac
 ```
 
 ### Rack-based servers
+```
 
-*Compressor Middleware*
+*Warning*
 
-```ruby
-require 'proxy_pac_rb/rack/proxy_pac_compressor'
-use ProxyPacRb::Rack::ProxyPacCompressor
+The linter-`rack`-middleware needs to be activated before ANY other
+middleman-extension, `rack`-middleware or whatever framework you are using
+can instantiate the `V8`-runtime! Only the first time the
+`V8`-javascript-engine - aka `therubyracer` - is instantiated, it is possible to
+create a binding to ruby code. Every other `V8`-object created later re-uses
+this binding.
+
+You might an error like this if you ignore this warning!
+
+```bash
+error  build/proxy.pac
+Unexpected token: name (is) (line: 1, col: 10, pos: 10)
+
+Error
+    at new JS_Parse_Error (<eval>:2359:10623)
+    at js_error (<eval>:2359:10842)
+    at croak (<eval>:2359:19086)
+    at token_error (<eval>:2359:19223)
+    at unexpected (<eval>:2359:19311)
+    at semicolon (<eval>:2359:19784)
+    at simple_statement (<eval>:2359:22580)
+    at <eval>:2359:20553
+    at <eval>:2359:19957
+    at <eval>:2359:31968
+There were errors during this build
 ```
 
 *Linter Middleware*
@@ -105,6 +128,12 @@ use ProxyPacRb::Rack::ProxyPacCompressor
 require 'proxy_pac_rb/rack/proxy_pac_linter'
 use ProxyPacRb::Rack::ProxyPacLinter
 ```
+
+*Compressor Middleware*
+
+```ruby
+require 'proxy_pac_rb/rack/proxy_pac_compressor'
+use ProxyPacRb::Rack::ProxyPacCompressor
 
 ### Ruby
 
