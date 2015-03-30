@@ -2,12 +2,17 @@
 module ProxyPacRb
   # Pac file
   class ProxyPacFile
-    attr_accessor :content, :valid, :type, :message
+    attr_accessor :valid, :type, :message
     attr_reader :source
+    attr_writer :content
 
     def initialize(source:)
       @source = source
       @valid  = false
+    end
+
+    def content
+      @content.dup
     end
 
     def type?(t)
