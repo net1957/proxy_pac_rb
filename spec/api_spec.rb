@@ -23,6 +23,7 @@ RSpec.describe ProxyPacRb do
     allow(proxy_pac).to receive(:content).and_return(content)
     allow(proxy_pac).to receive(:valid).and_return(true)
     allow(proxy_pac).to receive(:source).and_return(source)
+    allow(proxy_pac).to receive(:type?).with(:string).and_return(true)
   end
 
   describe ProxyPacCompressor do
@@ -49,11 +50,34 @@ RSpec.describe ProxyPacRb do
         allow(proxy_pac).to receive(:source).and_return(source)
       end
 
-      before :each do
-        dumper.dump(content: proxy_pac.content, file: destination)
+      context 'when proxy pac is string' do
+        before :each do
+          in_current_dir do
+            dumper.dump(proxy_pac, type: :string)
+          end
+        end
+
+        it { expect(destination).to be_existing_file }
+        it { expect(destination).to have_content proxy_pac.content }
       end
 
-      context 'when proxy pac is string' do
+      context 'when proxy pac is file' do
+        let(:source) { 'proxy.pac.in' }
+
+        before :each do
+          write_file(source, content)
+        end
+
+        before :each do
+          in_current_dir do
+            dumper.dump(proxy_pac, type: :template)
+          end
+        end
+
+        around :example do |example|
+          in_current_dir { example.call }
+        end
+
         it { expect(destination).to be_existing_file }
         it { expect(destination).to have_content proxy_pac.content }
       end
@@ -62,33 +86,40 @@ RSpec.describe ProxyPacRb do
 
   describe ProxyPacLoader do
     let(:loader) { ProxyPacLoader.new }
+    let(:type) { :string }
 
     before :each do
       allow(proxy_pac).to receive(:source).and_return(source)
+      allow(proxy_pac).to receive(:type=).with(type)
+    end
+
+    before :each do
+      expect(proxy_pac).to receive(:content=).with(content)
     end
 
     describe '#load' do
       context 'when proxy pac is string' do
-        it { expect(loader.load(proxy_pac)).to eq content }
+        it { loader.load(proxy_pac) }
       end
 
       context 'when proxy pac is file' do
         let(:file) { 'proxy.pac' }
+        let(:type) { :file }
 
         before(:each) { allow(proxy_pac).to receive(:source).and_return(absolute_path(file)) }
         before(:each) { write_file(file, content) }
 
-        it { expect(loader.load(proxy_pac)).to eq content }
+        it { loader.load(proxy_pac) }
       end
 
       context 'when proxy pac is url' do
         let(:uri) { 'http://example.com/proxy.pac' }
+        let(:type) { :url }
 
         before(:each) { allow(proxy_pac).to receive(:source).and_return(uri) }
         before(:each) { stub_request(:get, 'http://example.com/proxy.pac').to_return(body: content) }
-        
 
-        it { expect(loader.load(proxy_pac)).to eq content }
+        it { loader.load(proxy_pac) }
       end
     end
   end

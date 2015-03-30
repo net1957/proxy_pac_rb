@@ -9,12 +9,29 @@ module ProxyPacRb
     public
 
     def initialize
-      @dumpers = {}
+      @dumpers = Hash.new { ProxyPacStringDumper.new }
       @dumpers[:template] = ProxyPacTemplateDumper.new
+      @dumpers[:string] = ProxyPacStringDumper.new
     end
 
     def dump(proxy_pac, type:)
       dumpers[type].dump(proxy_pac)
+    end
+  end
+
+  class ProxyPacStringDumper
+    private
+
+    attr_reader :default_file_name
+
+    public
+
+    def initialize
+      @default_file_name = 'proxy.pac'
+    end
+
+    def dump(proxy_pac)
+      ::File.write(default_file_name, proxy_pac.content)
     end
   end
 
