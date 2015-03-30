@@ -84,7 +84,7 @@ module ProxyPacRb
 
       yield
     ensure
-      %w( 
+      %w(
         http_proxy
         https_proxy
         HTTP_PROXY
