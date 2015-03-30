@@ -165,6 +165,17 @@ code snippet captured from the `middleman`-configuration file `config.rb`:
   # The middleware works on content served with 
   # "Content-Type" 'application/x-ns-proxy-autoconfig'
   page "*.pac", content_type: 'application/x-ns-proxy-autoconfig'
+
+  # This provides an uncompressed copy of the proxy.pac to make it
+  # possible for your support to review it by hand
+  Dir.glob(File.join(source_dir, '**', '*.pac')).each do |f|
+    # Path should be relative to source dir
+    relative_path = Pathname.new(f).relative_path_from(Pathname.new(source_dir))
+
+    # "text/plain" prevents the middlewares to handle it
+    proxy(format('%s.raw', relative_path), relative_path.to_s, content_type: 'text/plain')
+  end
+
   ```
 
 ### Ruby
