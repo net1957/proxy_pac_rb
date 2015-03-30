@@ -50,7 +50,7 @@ describe ProxyPacRb::Parser do
       let(:environment) { Environment.new(client_ip: '127.0.0.1') }
       it { expect(proxy_pac.find('http://localhost')).to eq('PROXY localhost:8080') }
     end
-    
+
     context 'when ip is  127.0.0.2' do
       let(:environment) { Environment.new(client_ip: '127.0.0.2') }
       it { expect(proxy_pac.find('http://localhost')).to eq('DIRECT') }
@@ -58,7 +58,7 @@ describe ProxyPacRb::Parser do
   end
 
   context 'when date is given' do
-    let(:source) do 
+    let(:source) do
       <<-EOS
       function FindProxyForURL(url, host) {
         if (weekdayRange("FRI", "SAT")) {

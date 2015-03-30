@@ -7,6 +7,7 @@ module ProxyPacRb
     attr_reader :rules, :silent
 
     public
+
     def initialize(silent: false)
       @rules = []
       @rules << Rules::ContainerProxyPacFunction.new
@@ -32,6 +33,7 @@ module ProxyPacRb
   end
 
   module Rules
+    # A proxy pac needs to contain FindProxyForURL
     class ContainerProxyPacFunction
       def lint(proxy_pac)
         message = if proxy_pac.type? :string
@@ -48,6 +50,7 @@ module ProxyPacRb
       end
     end
 
+    # A proxy pac needs be parsable
     class CanBeParsed
       private
 

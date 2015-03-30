@@ -31,13 +31,17 @@ module ProxyPacRb
         @app        = app
         @compressor = ProxyPacRb::ProxyPacCompressor.new
         @loader     = ProxyPacRb::ProxyPacLoader.new
+        @enabled    = enabled
       end
 
-      def call env
+      def call(env)
         status, headers, body = @app.call(env)
 
+        return [status, headers, body] if enabled == false
+        # rubocop:disable Style/CaseEquality
         return [status, headers, body] unless headers.key?('Content-Type') \
                                               && %r{application/x-ns-proxy-autoconfig} === headers['Content-Type']
+        # rubocop:enable Style/CaseEquality
 
         content = body.each_with_object('') { |e, a| a << e }
         begin
@@ -55,8 +59,6 @@ module ProxyPacRb
         headers['Content-Length'] = content.bytesize.to_s if headers['Content-Length']
 
         [status, headers, [content]]
-      rescue
-
       ensure
         body.close if body.respond_to? :close
       end

@@ -16,12 +16,12 @@ module ProxyPacRb
     attr_reader :parser, :loader, :linter
 
     public
- 
+
     def initialize(*args)
       if args.first.is_a? Hash
         @parser = ProxyPacParser.new(**args.first)
       else
-        $stderr.puts "Deprecated: Use of positional parameters. Please use named parameters: environment: Environment.new."
+        $stderr.puts 'Deprecated: Use of positional parameters. Please use named parameters: environment: Environment.new.'
         @parser = ProxyPacParser.new(environment: args.first)
       end
 
@@ -45,19 +45,19 @@ module ProxyPacRb
     end
 
     def load(*args)
-      $stderr.puts "Deprecated: #load. Please use #parse instead."
+      $stderr.puts 'Deprecated: #load. Please use #parse instead.'
 
       parse(*args)
     end
 
     def read(*args)
-      $stderr.puts "Deprecated: #read. Please use #parse instead."
+      $stderr.puts 'Deprecated: #read. Please use #parse instead.'
 
-     parse(*args)
+      parse(*args)
     end
 
     def source(*args)
-      $stderr.puts "Deprecated: #source. Please use #parse instead."
+      $stderr.puts 'Deprecated: #source. Please use #parse instead.'
 
       parse(*args)
     end

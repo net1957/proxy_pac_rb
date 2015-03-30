@@ -19,6 +19,7 @@ module ProxyPacRb
     end
   end
 
+  # Dump string to file
   class ProxyPacStringDumper
     private
 
@@ -35,6 +36,7 @@ module ProxyPacRb
     end
   end
 
+  # Dump proxy pac based on template
   class ProxyPacTemplateDumper
     def dump(proxy_pac)
       ::File.write(output_path(proxy_pac.source), proxy_pac.content)

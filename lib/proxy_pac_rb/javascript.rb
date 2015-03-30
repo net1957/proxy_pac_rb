@@ -12,7 +12,7 @@ module ProxyPacRb
       @context = context
     end
 
-    def method_missing(*args, &block)
+    def method_missing(*args, &_block)
       context.call(args.shift, *args)
     end
   end

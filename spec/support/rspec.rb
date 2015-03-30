@@ -5,7 +5,7 @@ RSpec.configure do |config|
 
   config.default_formatter = 'doc' if config.files_to_run.one?
 
-#  config.profile_examples = 10
+  #  config.profile_examples = 10
   config.order = :random
   Kernel.srand config.seed
 
@@ -18,5 +18,5 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
-  config.include Rack::Test::Methods, :type => :rack_test
+  config.include Rack::Test::Methods, type: :rack_test
 end

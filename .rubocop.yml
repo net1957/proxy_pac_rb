@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - 'tmp/**/*'
+  DisplayCopNames: true
 
 Metrics/AbcSize:
   Max: 38

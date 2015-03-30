@@ -28,7 +28,7 @@ RSpec.describe ProxyPacRb do
 
   describe ProxyPacCompressor do
     let(:compressor) { described_class.new }
-    let(:modified_content) {%(function FindProxyForURL(){return"DIRECT"}) }
+    let(:modified_content) { %(function FindProxyForURL(){return"DIRECT"}) }
 
     before :each do
       expect(proxy_pac).to receive(:content=).with(modified_content)
@@ -141,7 +141,7 @@ RSpec.describe ProxyPacRb do
           EOS
         end
 
-        it { expect{ pac }.to raise_error ParserError }
+        it { expect { pac }.to raise_error ParserError }
       end
     end
   end

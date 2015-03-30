@@ -18,6 +18,5 @@ module ProxyPacRb
       self.debug_mode = true
       %w(pry byebug).each { |l| require l }
     end
-
   end
 end

@@ -7,13 +7,14 @@ module ProxyPacRb
     attr_reader :loaders, :default_loader
 
     public
+
     def initialize
       @loaders = []
       @loaders << ProxyPacStringLoader.new
       @loaders << ProxyPacFileLoader.new
       @loaders << ProxyPacUriLoader.new
 
-      @default_loader = ->{ ProxyPacStringLoader.new }
+      @default_loader = -> { ProxyPacStringLoader.new }
     end
 
     # Load proxy pac
@@ -74,10 +75,10 @@ module ProxyPacRb
       backup = []
 
       %w(
-      http_proxy
-      https_proxy
-      HTTP_PROXY
-      HTTPS_PROXY
+        http_proxy
+        https_proxy
+        HTTP_PROXY
+        HTTPS_PROXY
       ).each do |v|
         backup << ENV.delete(v)
       end
