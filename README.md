@@ -74,19 +74,20 @@ transferred to download the proxy.pac.
 # Download pac
 curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac
 
-# Parse pac
+# Compress pac
 pprb compress proxy_pac -p sample.pac
-
-# =>                url: result
-# => https://github.com: DIRECT
 ```
 
-```bash
-# Download and parse pac
-pprb -c 127.0.0.1 -t "2014-03-09 12:00:00" -p https://github.com/dg-vrnetze/proxy_pac_rb/raw/master/files/sample.pac https://github.com
+#### Lint proxy.pac-file
 
-# =>                url: result
-# => https://github.com: DIRECT
+You can lint a proxy.pac with `pprb` to check a proxy.pac before deploying it.
+
+```
+# Download pac
+curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac
+
+# Lint pac
+pprb lint proxy_pac -p sample.pac
 ```
 
 ### Ruby
