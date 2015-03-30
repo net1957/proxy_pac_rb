@@ -10,6 +10,10 @@ module ProxyPacRb
       class_option :proxy_pac, desc: 'Proxy.pac-file', aliases: '-p', required: true
       class_option :urls, type: :array, desc: 'URLs to check against proxy pac', aliases: '-u', required: true
 
+      def pre_init
+        enable_debug_mode
+      end
+
       def find_proxy
         CliValidator.new(options).validate
 

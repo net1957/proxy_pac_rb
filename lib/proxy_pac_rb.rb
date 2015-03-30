@@ -10,6 +10,7 @@ require 'resolv'
 require 'time'
 
 require 'proxy_pac_rb/version'
+require 'proxy_pac_rb/main'
 require 'proxy_pac_rb/errors'
 require 'proxy_pac_rb/encoding'
 require 'proxy_pac_rb/exceptions'

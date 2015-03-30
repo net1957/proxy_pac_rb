@@ -7,6 +7,8 @@ module ProxyPacRb
       map '-v' => :version
       map '--version' => :version
 
+      class_option :debug_mode, type: :boolean, default: false, desc: 'Enable debug mode'
+
       desc 'find', 'Find something'
       subcommand 'find', Find
 

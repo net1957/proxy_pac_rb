@@ -7,6 +7,10 @@ module ProxyPacRb
 
       class_option :proxy_pac, type: :array, desc: 'Proxy.pac-file(s)', aliases: '-p', required: true
 
+      def pre_init
+        enable_debug_mode
+      end
+
       def set_variables
         @proxy_pacs = options[:proxy_pac].map { |p| ProxyPacFile.new source: p }
         @loader     = ProxyPacLoader.new
