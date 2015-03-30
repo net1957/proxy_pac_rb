@@ -45,6 +45,7 @@ group :development, :test do
   gem 'versionomy', require: false
   gem 'yard', require: false
   gem 'webmock', require: 'webmock/rspec'
+  gem 'rack-test', require: 'rack/test'
 end
 
 group :profile do

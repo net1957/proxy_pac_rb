@@ -151,7 +151,10 @@ RSpec.describe ProxyPacRb do
       let(:linter) {  ProxyPacLinter.new(silent: true) }
       let(:result) { true }
 
-      before(:each) { expect(proxy_pac).to receive(:valid=).with(result) }
+      before(:each) do
+        expect(proxy_pac).to receive(:valid=).with(result)
+        allow(proxy_pac).to receive(:message=)
+      end
 
       context 'when is valid' do
         it { linter.lint(proxy_pac) }

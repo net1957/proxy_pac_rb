@@ -17,4 +17,6 @@ RSpec.configure do |config|
     mocks.syntax = :expect
     mocks.verify_partial_doubles = true
   end
+
+  config.include Rack::Test::Methods, :type => :rack_test
 end
