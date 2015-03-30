@@ -43,7 +43,7 @@ module ProxyPacRb
         # rubocop:enable Style/CaseEquality
 
         content = ''
-        content = body.each { |part| content << part }
+        body.each { |part| content << part }
 
         proxy_pac = ProxyPacFile.new(source: content)
 
@@ -52,11 +52,11 @@ module ProxyPacRb
 
         unless proxy_pac.valid?
           status  = 500
-          body = proxy_pac.message
-          headers['Content-Length'] = body.bytesize.to_s if headers['Content-Length']
+          content = proxy_pac.message
+          headers['Content-Length'] = content.bytesize.to_s if headers['Content-Length']
         end
 
-        [status, headers, [body]]
+        [status, headers, [content]]
       ensure
         body.close if body.respond_to?(:close)
       end

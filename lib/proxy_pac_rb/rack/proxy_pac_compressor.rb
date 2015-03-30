@@ -44,7 +44,7 @@ module ProxyPacRb
         # rubocop:enable Style/CaseEquality
 
         content = ''
-        content = body.each { |part| content << part }
+        body.each { |part| content << part }
 
         begin
           proxy_pac = ProxyPacFile.new(source: content)

@@ -14,7 +14,7 @@ RSpec.describe ProxyPacRb::Rack::ProxyPacLinter, type: :rack_test do
   before(:each) { get '/' }
   subject(:body) { last_response.body }
 
-  context 'when valid proxy pac is given', :focus do
+  context 'when valid proxy pac is given' do
     let(:app) do
       a = Class.new(Sinatra::Base) do
         before do
