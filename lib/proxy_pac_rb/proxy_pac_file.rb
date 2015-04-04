@@ -12,7 +12,7 @@ module ProxyPacRb
     end
 
     def content
-      @content.dup
+      @content.to_s.dup
     end
 
     def type?(t)
