@@ -2,7 +2,7 @@
 module ProxyPacRb
   # Pac file
   class ProxyPacFile
-    attr_accessor :valid, :type, :message
+    attr_accessor :valid, :type, :message, :readable
     attr_reader :source
     attr_writer :content
 
@@ -17,6 +17,10 @@ module ProxyPacRb
 
     def type?(t)
       type == t
+    end
+
+    def readable?
+      readable == true
     end
 
     def valid?

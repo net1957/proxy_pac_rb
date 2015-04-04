@@ -204,4 +204,16 @@ RSpec.describe ProxyPacFile do
       it { expect(proxy_pac).to be_valid }
     end
   end
+
+  describe '#readable' do
+    context 'when is invalid' do
+      it { expect(proxy_pac).not_to be_readable }
+    end
+
+    context 'when is valid' do
+      before(:each) { proxy_pac.readable = true }
+
+      it { expect(proxy_pac).to be_readable }
+    end
+  end
 end
