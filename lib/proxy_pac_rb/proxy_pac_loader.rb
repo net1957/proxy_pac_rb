@@ -13,8 +13,9 @@ module ProxyPacRb
       @loaders << ProxyPacStringLoader.new
       @loaders << ProxyPacUriLoader.new
       @loaders << ProxyPacFileLoader.new
+      @loaders << ProxyPacNullLoader.new
 
-      @default_loader = -> { ProxyPacStringLoader.new }
+      @default_loader = -> { ProxyPacNullLoader.new }
     end
 
     # Load proxy pac
@@ -41,20 +42,37 @@ module ProxyPacRb
     end
 
     def suitable_for?(proxy_pac)
+      return false if proxy_pac.nil? || proxy_pac.source.nil?
+
       proxy_pac.source.include? 'FindProxyForURL'
+    end
+  end
+
+  # Handle proxy pac == nil
+  class ProxyPacNullLoader
+    def load(proxy_pac)
+      proxy_pac.type    = :null
+
+      fail StandardError
+    end
+
+    def suitable_for?(proxy_pac)
+      proxy_pac.nil?
     end
   end
 
   # Load proxy pac from file
   class ProxyPacFileLoader
     def load(proxy_pac)
-      content = ::File.read(proxy_pac.source).chomp
+      content = ::File.read(proxy_pac.source.to_s).chomp
 
       proxy_pac.content = content
       proxy_pac.type    = :file
     end
 
     def suitable_for?(proxy_pac)
+      return false if proxy_pac.nil? || proxy_pac.source.nil?
+
       path = Pathname.new(proxy_pac.source)
 
       path.relative? || path.absolute?
@@ -64,13 +82,15 @@ module ProxyPacRb
   # Load proxy pac from url
   class ProxyPacUriLoader
     def load(proxy_pac)
-      content = Net::HTTP.get(URI(proxy_pac.source))
+      content = Net::HTTP.get(URI(proxy_pac.source.to_s))
 
       proxy_pac.content = content
       proxy_pac.type = :url
     end
 
     def suitable_for?(proxy_pac)
+      return false if proxy_pac.nil? || proxy_pac.source.nil?
+
       uri = Addressable::URI.parse(proxy_pac.source)
 
       return true unless uri.host.blank?

@@ -98,6 +98,12 @@ RSpec.describe ProxyPacRb do
         it_behaves_like 'a readable proxy.pac'
       end
 
+      context 'when proxy pac is nil', :focus do
+        let(:source) { nil }
+        let(:type) { :null }
+        it_behaves_like 'an un-readable proxy.pac'
+      end
+
       context 'when proxy pac is file' do
         let(:file) { 'proxy.pac' }
         let(:type) { :file }
@@ -216,7 +222,7 @@ RSpec.describe ProxyPacFile do
     end
   end
 
-  describe '#readable' do
+  describe '#readable?' do
     context 'when is invalid' do
       it { expect(proxy_pac).not_to be_readable }
     end
