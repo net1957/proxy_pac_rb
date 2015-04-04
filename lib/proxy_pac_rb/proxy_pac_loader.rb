@@ -11,8 +11,8 @@ module ProxyPacRb
     def initialize
       @loaders = []
       @loaders << ProxyPacStringLoader.new
-      @loaders << ProxyPacFileLoader.new
       @loaders << ProxyPacUriLoader.new
+      @loaders << ProxyPacFileLoader.new
 
       @default_loader = -> { ProxyPacStringLoader.new }
     end
@@ -23,6 +23,11 @@ module ProxyPacRb
     #   The proxy.pac
     def load(proxy_pac)
       loaders.find(default_loader) { |l| l.suitable_for? proxy_pac }.load(proxy_pac)
+
+      proxy_pac.readable = true
+    rescue => err
+      proxy_pac.message = err.message
+      proxy_pac.readable = false
     end
   end
 
@@ -43,19 +48,25 @@ module ProxyPacRb
   # Load proxy pac from file
   class ProxyPacFileLoader
     def load(proxy_pac)
-      proxy_pac.content = ::File.read(proxy_pac.source).chomp
+      content = ::File.read(proxy_pac.source).chomp
+
+      proxy_pac.content = content
       proxy_pac.type    = :file
     end
 
     def suitable_for?(proxy_pac)
-      ::File.file? proxy_pac.source
+      path = Pathname.new(proxy_pac.source)
+
+      path.relative? || path.absolute?
     end
   end
 
   # Load proxy pac from url
   class ProxyPacUriLoader
     def load(proxy_pac)
-      proxy_pac.content = Net::HTTP.get(URI(proxy_pac.source))
+      content = Net::HTTP.get(URI(proxy_pac.source))
+
+      proxy_pac.content = content
       proxy_pac.type = :url
     end
 

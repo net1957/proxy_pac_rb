@@ -93,33 +93,44 @@ RSpec.describe ProxyPacRb do
       allow(proxy_pac).to receive(:type=).with(type)
     end
 
-    before :each do
-      expect(proxy_pac).to receive(:content=).with(content)
-    end
-
     describe '#load' do
       context 'when proxy pac is string' do
-        it { loader.load(proxy_pac) }
+        it_behaves_like 'a readable proxy.pac'
       end
 
       context 'when proxy pac is file' do
         let(:file) { 'proxy.pac' }
         let(:type) { :file }
+        let(:source) { absolute_path(file) }
 
-        before(:each) { allow(proxy_pac).to receive(:source).and_return(absolute_path(file)) }
-        before(:each) { write_file(file, content) }
+        before(:each) { allow(proxy_pac).to receive(:source).and_return(source) }
 
-        it { loader.load(proxy_pac) }
+        context 'when is readable' do
+          before(:each) { write_file(file, content) }
+
+          it_behaves_like 'a readable proxy.pac'
+        end
+
+        context 'when is not readable' do
+          it_behaves_like 'an un-readable proxy.pac'
+        end
       end
 
       context 'when proxy pac is url' do
-        let(:uri) { 'http://example.com/proxy.pac' }
         let(:type) { :url }
+        let(:source) { 'http://example.com/proxy.pac' }
 
-        before(:each) { allow(proxy_pac).to receive(:source).and_return(uri) }
-        before(:each) { stub_request(:get, 'http://example.com/proxy.pac').to_return(body: content) }
+        context 'when is readable' do
+          before(:each) { stub_request(:get, source).to_return(body: content, status: 200) }
 
-        it { loader.load(proxy_pac) }
+          it_behaves_like 'a readable proxy.pac'
+        end
+
+        context 'when is not readable' do
+          before(:each) { stub_request(:get, source).to_raise(StandardError) }
+
+          it_behaves_like 'an un-readable proxy.pac'
+        end
       end
     end
   end
