@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe ProxyPacRb::Rspec do
+describe ProxyPacRb do
   it 'has a version number' do
-    expect(ProxyPacRb::Rspec::VERSION).not_to be nil
+    expect(ProxyPacRb::VERSION).not_to be nil
   end
 end

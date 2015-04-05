@@ -16,4 +16,3 @@ Dir.glob(::File.expand_path('../support/**/*.rb', __FILE__)).each { |f| require_
 
 # Avoid writing "describe LocalPac::MyClass do [..]" but "describe MyClass do [..]"
 include ProxyPacRb
-include ProxyPacRb::Rspec

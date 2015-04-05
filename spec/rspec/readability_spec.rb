@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'proxy_pac_rb/rspec'
 
 RSpec.describe 'Readability' do
   let(:content) do
