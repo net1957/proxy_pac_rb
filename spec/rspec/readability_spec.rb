@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'proxy_pac_rb/rspec'
 
-RSpec.describe 'Readability' do
+RSpec.describe 'Readability', type: :proxy_pac do
   let(:content) do
     <<-EOS.strip_heredoc.chomp
       function FindProxyForURL(url, host) {
@@ -42,6 +42,8 @@ RSpec.describe 'Readability' do
   end
 
   context 'when is string' do
-    it { expect(false).to be true }
+    context 'it is always readable' do
+      it { expect(proxy_pac).to be_readable }
+    end
   end
 end

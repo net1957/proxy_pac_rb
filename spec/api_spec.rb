@@ -98,7 +98,7 @@ RSpec.describe ProxyPacRb do
         it_behaves_like 'a readable proxy.pac'
       end
 
-      context 'when proxy pac is nil', :focus do
+      context 'when proxy pac is nil' do
         let(:source) { nil }
         let(:type) { :null }
         it_behaves_like 'an un-readable proxy.pac'
@@ -199,38 +199,3 @@ RSpec.describe ProxyPacRb do
   end
 end
 
-RSpec.describe ProxyPacFile do
-  subject(:proxy_pac) { ProxyPacFile.new source: source }
-
-  let(:source) do
-    <<-EOS.strip_heredoc.chomp
-      function FindProxyForURL(url, host) {
-        return "DIRECT";
-      }
-    EOS
-  end
-
-  describe '#valid?' do
-    context 'when is invalid' do
-      it { expect(proxy_pac).not_to be_valid }
-    end
-
-    context 'when is valid' do
-      before(:each) { proxy_pac.valid = true }
-
-      it { expect(proxy_pac).to be_valid }
-    end
-  end
-
-  describe '#readable?' do
-    context 'when is invalid' do
-      it { expect(proxy_pac).not_to be_readable }
-    end
-
-    context 'when is valid' do
-      before(:each) { proxy_pac.readable = true }
-
-      it { expect(proxy_pac).to be_readable }
-    end
-  end
-end

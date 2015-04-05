@@ -11,5 +11,5 @@ module ProxyPacRb
 end
 
 RSpec.configure do |config|
-  config.include ProxyPacRb::Rspec::Helpers
+  config.include ProxyPacRb::Rspec::Helpers, type: :proxy_pac
 end
