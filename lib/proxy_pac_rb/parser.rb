@@ -34,14 +34,9 @@ module ProxyPacRb
 
       loader.load(pac_file)
       linter.lint(pac_file)
-
-      unless pac_file.valid?
-        $stderr.puts %(proxy.pac "#{pac_file.source}" is invalid.)
-
-        return
-      end
-
       parser.parse(pac_file)
+      
+      pac_file
     end
 
     def load(*args)

@@ -16,4 +16,7 @@ module ProxyPacRb
 
   # raise if proxy pac could not be compiled
   class ParserError < StandardError; end
+
+  # raise if proxy pac could not be compiled
+  class ProxyPacInvalidError < StandardError; end
 end

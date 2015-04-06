@@ -4,38 +4,23 @@ module ProxyPacRb
   class ProxyPacParser
     private
 
-    attr_reader :environment, :runtime
+    attr_reader :environment, :runtime, :compiler
 
     public
 
     def initialize(
       environment: Environment.new,
-      runtime: Runtimes.autodetect
+      compiler: JavascriptCompiler.new
     )
-      @runtime     = runtime
       @environment = environment
+      @compiler    = compiler
     end
 
     def parse(proxy_pac)
-      fail Exceptions::RuntimeUnavailable, "#{runtime.name} is unavailable on this system" unless runtime.available?
+      fail ProxyPacInvalidError, "It does not make sense to parse invalid proxy.pac \"#{proxy_pac.source}\": #{proxy_pac.message}" \
+        unless proxy_pac.valid?
 
-      ProxyPac.new(
-        javascript: compile_javascript(proxy_pac.content),
-        file: proxy_pac
-      )
-    end
-
-    private
-
-    def compile_javascript(content)
-      environment.prepare(content)
-
-      context = runtime.compile(content)
-      context.include environment
-
-      Javascript.new(context)
-    rescue StandardError => err
-      raise ParserError, err.message
+      proxy_pac.javascript = compiler.compile(content: proxy_pac.content, environment: environment)
     end
   end
 end

@@ -43,6 +43,14 @@ RSpec.describe 'Readability', type: :proxy_pac do
 
   context 'when is string' do
     context 'it is always readable' do
+      subject do
+        <<-EOS.strip_heredoc.chomp
+        function FindProxyForURL(url, host) {
+          return "DIRECT";
+        }
+        EOS
+      end
+
       it { expect(proxy_pac).to be_readable }
     end
   end

@@ -2,7 +2,7 @@
 module ProxyPacRb
   # Pac file
   class ProxyPacFile
-    attr_accessor :valid, :type, :message, :readable
+    attr_accessor :valid, :type, :message, :readable, :javascript
     attr_reader :source
     attr_writer :content
 

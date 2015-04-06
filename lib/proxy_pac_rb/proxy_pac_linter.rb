@@ -54,16 +54,21 @@ module ProxyPacRb
     class CanBeParsed
       private
 
-      attr_reader :parser
+      attr_reader :compiler
 
       public
 
       def initialize
-        @parser = ProxyPacParser.new
+        @compiler = JavascriptCompiler.new
       end
 
       def lint(proxy_pac)
-        parser.parse(proxy_pac)
+        uri = Addressable::URI.parse('http://example.com')
+
+        javascript = compiler.compile(content: proxy_pac.content, environment: Environment.new)
+
+        # Some errors can only be found, when evaluating the source
+        javascript.FindProxyForURL(uri.to_s, uri.host)
 
         self
       rescue => err
