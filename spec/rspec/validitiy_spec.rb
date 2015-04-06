@@ -33,11 +33,11 @@ RSpec.describe 'Validity', type: :proxy_pac do
       it { expect(proxy_pac).not_to be_valid }
     end
 
-    context 'when signature is wrong' do
+    context 'when undefined variable is referenced' do
       subject do
         <<-EOS.strip_heredoc.chomp
-        function FindProxyForURL(url) {
-          return "DIRECT";
+        function FindProxyForURL(url, host) {
+          return asdf;
         }
         EOS
       end
