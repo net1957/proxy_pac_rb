@@ -18,6 +18,18 @@ module ProxyPacRb
         file
       end
 
+      def time
+        fail
+      end
+
+      def environment
+        fail
+      end
+
+      def client_ip
+        fail
+      end
+
       private
 
       def root_path
