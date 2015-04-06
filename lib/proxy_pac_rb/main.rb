@@ -20,7 +20,9 @@ module ProxyPacRb
     end
 
     def require_file_matching_pattern(pattern)
-      Dir.glob(pattern).each { |f| require_relative f }
+      root = File.expand_path('../', __FILE__)
+      path = File.join(root, pattern)
+      Dir.glob(path).each { |f| require_relative f }
     end
   end
 end
