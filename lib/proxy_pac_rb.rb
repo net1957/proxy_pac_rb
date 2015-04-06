@@ -8,6 +8,7 @@ require 'optparse'
 require 'ostruct'
 require 'resolv'
 require 'time'
+require 'timeout'
 
 require 'proxy_pac_rb/version'
 require 'proxy_pac_rb/main'

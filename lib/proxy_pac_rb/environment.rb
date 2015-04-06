@@ -4,13 +4,14 @@ module ProxyPacRb
   class Environment
     private
 
-    attr_reader :days, :months, :client_ip, :time, :io, :javascript_function_templates
+    attr_reader :days, :months, :client_ip, :time, :io, :javascript_function_templates, :dns_timeout
 
     public
 
     attr_reader :available_methods
 
     def initialize(options = {})
+      @dns_timeout   = 1
       @days          = { 'MON' => 1, 'TUE' => 2, 'WED' => 3, 'THU' => 4, 'FRI' => 5, 'SAT' => 6, 'SUN' => 0 }
       @months        = { 'JAN' => 1, 'FEB' => 2, 'MAR' => 3, 'APR' => 4, 'MAY' => 5, 'JUN' => 6, 'JUL' => 7, 'AUG' => 8, 'SEP' => 9, 'OCT' => 10, 'NOV' => 11, 'DEC' => 12 }
 
@@ -74,18 +75,20 @@ module ProxyPacRb
     def resolve_host(host)
       return nil if host.blank?
 
-      Resolv.each_address(host.force_encoding('ASCII-8BIT')) do |address|
-        begin
-          return address if IPAddr.new(address).ipv4?
-        # rubocop:disable Lint/HandleExceptions
-        rescue ArgumentError
+      Timeout.timeout(dns_timeout) do
+        Resolv.each_address(host.force_encoding('ASCII-8BIT')) do |address|
+          begin
+            return address if IPAddr.new(address).ipv4?
+            # rubocop:disable Lint/HandleExceptions
+          rescue ArgumentError
+          end
+          # rubocop:enable Lint/HandleExceptions
         end
-        # rubocop:enable Lint/HandleExceptions
       end
 
       # We couldn't find an IPv4 address for the host
       nil
-    rescue Resolv::ResolvError, NoMethodError
+    rescue Resolv::ResolvError, NoMethodError, Timeout::Error
       # Have to rescue NoMethodError because jruby has a bug with non existant hostnames
       # See http://jira.codehaus.org/browse/JRUBY-6054
       nil
