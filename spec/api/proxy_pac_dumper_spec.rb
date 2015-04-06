@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 RSpec.describe ProxyPacDumper do
   subject(:proxy_pac) { instance_double('ProxyPac::ProxyPacFile') }
 
