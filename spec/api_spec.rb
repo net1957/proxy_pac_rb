@@ -141,28 +141,6 @@ RSpec.describe ProxyPacRb do
     end
   end
 
-  describe ProxyPacParser do
-    describe '#parse' do
-      let(:pac) { ProxyPacParser.new.parse(proxy_pac) }
-
-      context 'when is valid' do
-        it { expect(pac).to be_kind_of ProxyPac }
-      end
-
-      context 'when is valid' do
-        let(:content) do
-          <<-EOS.strip_heredoc.chomp
-          function FindProxyForURL(url, host) {
-           asdfasf $$ SDF
-          }
-          EOS
-        end
-
-        it { expect { pac }.to raise_error ParserError }
-      end
-    end
-  end
-
   describe ProxyPacLinter do
     describe '#lint' do
       let(:linter) {  ProxyPacLinter.new(silent: true) }
