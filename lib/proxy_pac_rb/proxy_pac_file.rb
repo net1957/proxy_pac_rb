@@ -24,7 +24,7 @@ module ProxyPacRb
     end
 
     def valid?
-      valid == true && readable?
+      valid == true
     end
 
     def javascript?
