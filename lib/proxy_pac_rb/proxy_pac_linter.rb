@@ -25,7 +25,7 @@ module ProxyPacRb
 
       proxy_pac.valid = true
     rescue LinterError => err
-      $stderr.puts err.message unless silent
+      # $stderr.puts err.message unless silent
 
       proxy_pac.message = err.message
       proxy_pac.valid = false
