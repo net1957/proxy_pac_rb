@@ -22,7 +22,7 @@ module ProxyPacRb
 
       Javascript.new(context)
     rescue StandardError => err
-      raise ParserError, err.message
+      raise CompilerError, err.message
     end
   end
 end

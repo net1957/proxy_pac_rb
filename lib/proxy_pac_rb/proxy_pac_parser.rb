@@ -17,10 +17,12 @@ module ProxyPacRb
     end
 
     def parse(proxy_pac)
-      fail ProxyPacInvalidError, "It does not make sense to parse invalid proxy.pac \"#{proxy_pac.source}\": #{proxy_pac.message}" \
-        unless proxy_pac.valid?
+      message = "It does not make sense to parse invalid proxy.pac \"#{proxy_pac.source}\": #{proxy_pac.message}" 
+      fail ParserError, message unless proxy_pac.valid?
 
       proxy_pac.javascript = compiler.compile(content: proxy_pac.content, environment: environment)
+    rescue => err
+      raise ParserError, err.message
     end
   end
 end
