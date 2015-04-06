@@ -35,7 +35,7 @@ module ProxyPacRb
       if fail_safe == true
         fail ProxyPacInvalidError, "The proxy.pac \"#{source}\" is not readable. Stopping here." unless readable?
         fail ProxyPacInvalidError, "The proxy.pac \"#{source}\" is not valid: #{message}. Stopping here." unless valid?
-        fail ProxyPacInvalidError, "The proxy.pac \"#{source}\" is could not be parsed: #{message}. Stopping here." unless javascript?
+        fail ProxyPacInvalidError, "The proxy.pac \"#{source}\" is could not be parsed. There's no compiled javascript to use to lookup a url: #{message}. Stopping here." unless javascript?
       end
 
       uri = Addressable::URI.heuristic_parse(url)
