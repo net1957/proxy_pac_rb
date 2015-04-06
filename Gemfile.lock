@@ -28,7 +28,7 @@ GEM
       debug_inspector (>= 0.0.1)
     blockenspiel (0.4.5)
     builder (3.2.2)
-    byebug (4.0.4)
+    byebug (4.0.5)
       columnize (= 0.9.0)
     childprocess (0.5.5)
       ffi (~> 1.0, >= 1.0.11)
@@ -38,7 +38,7 @@ GEM
       activesupport
       smart_colored
       xml-simple
-    coveralls (0.7.12)
+    coveralls (0.8.0)
       multi_json (~> 1.10)
       rest-client (>= 1.6.8, < 2)
       simplecov (~> 0.9.1)
@@ -61,7 +61,7 @@ GEM
     domain_name (0.5.23)
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
-    execjs (2.4.0)
+    execjs (2.5.0)
     fedux_org-stdlib (0.7.33)
       activesupport
     ffi (1.9.8)
@@ -150,7 +150,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.2.0)
     rspec-support (3.2.2)
-    rubocop (0.29.1)
+    rubocop (0.30.0)
       astrolabe (~> 1.3)
       parser (>= 2.2.0.1, < 3.0)
       powerpack (~> 0.1)
@@ -196,7 +196,7 @@ GEM
     unf_ext (0.0.6)
     versionomy (0.4.4)
       blockenspiel (>= 0.4.5)
-    webmock (1.20.4)
+    webmock (1.21.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
     xml-simple (1.1.5)
