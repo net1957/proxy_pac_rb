@@ -270,7 +270,80 @@ file.find('http://localhost') # => 'DIRECT'
 * timeRange(*args)
 * alert(msg) (output on stderr by default)
 
+## RSpec-integration
+
+```
+require 'proxy_pac_rb/rspec'
+```
+
+
+
+```ruby
+RSpec.describe('proxy.pac', type: :proxy_pac) {}
+```
+
+```ruby
+RSpec.describe('http://server/proxy.pac', type: :proxy_pac){}
+```
+
+```ruby
+RSpec.describe 'proxy.pac', type: :proxy_pac do
+  subject { 'proxy.pac' }
+
+  context 'when proxy pac exist' do
+    context 'when is file' do
+      it { expect(proxy_pac).to be_readable }
+    end
+
+    context 'when is url' do
+      it { expect(proxy_pac).to be_readable }
+    end
+  end
+
+  context 'Check equality of proxy pac' do
+    context 'when proxy.pac is eq' do
+      it { expect(proxy_pac).to eq 'proxy.pac' }
+    end
+
+    context 'when proxy.pac is not eq' do
+      it { expect(proxy_pac).not_to eq 'proxy.pac' }
+    end
+  end
+
+  context 'Check validity of proxy pac' do
+    context 'when proxy.pac is valid' do
+      it { expect(proxy_pac).to be_valid }
+    end
+
+    context 'when proxy.pac is not valid' do
+      it { expect(proxy_pac).not_to be_valid }
+    end
+  end
+
+  context 'Parse Proxy Pac' do
+    context 'when url is forwarded via' do
+      let(:url) { 'http://www1.example.com' }
+      it { expect(url).to be_downloaded_via 'proxy.example.com' }
+    end
+
+    context 'when url is not forwarded via' do
+      let(:url) { 'http://www2.example.com' }
+      it { expect(url).not_to be_downloaded_via 'proxy.example.com' }
+    end
+  end
+end
+```
+
 ## Developers
+
+After checking out the repo, run `script/bootstrap` to install dependencies. Then, run
+`script/console` for an interactive prompt that will allow you to experiment.
+
+To install this gem onto your local machine, run `bundle exec rake gem:install`. To
+release a new version, update the version number in `version.rb`, and then run
+`bundle exec rake gem:release` to create a git tag for the version, push git
+commits and tags, and push the `.gem` file to
+[rubygems.org](https://rubygems.org).
 
 ### Contributing
 
