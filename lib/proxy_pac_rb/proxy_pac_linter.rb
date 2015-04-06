@@ -68,6 +68,7 @@ module ProxyPacRb
         javascript = compiler.compile(content: proxy_pac.content, environment: Environment.new)
 
         # Some errors can only be found, when evaluating the source
+        # e.g. reference undefined variables
         javascript.FindProxyForURL(uri.to_s, uri.host)
 
         self
