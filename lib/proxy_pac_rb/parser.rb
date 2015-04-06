@@ -35,7 +35,7 @@ module ProxyPacRb
       loader.load(pac_file)
       linter.lint(pac_file)
       parser.parse(pac_file)
-      
+
       pac_file
     end
 

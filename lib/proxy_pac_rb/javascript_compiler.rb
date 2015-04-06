@@ -1,4 +1,5 @@
 module ProxyPacRb
+  # Compile javascript
   class JavascriptCompiler
     private
 

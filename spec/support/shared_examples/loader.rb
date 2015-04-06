@@ -3,8 +3,8 @@ RSpec.shared_examples 'a loadable proxy.pac' do
 end
 
 RSpec.shared_examples 'an un-readable proxy.pac' do
-  before(:each) do 
-    expect(proxy_pac).to receive(:message=) 
+  before(:each) do
+    expect(proxy_pac).to receive(:message=)
     expect(proxy_pac).to receive(:readable=).with(false)
   end
 
@@ -16,8 +16,8 @@ RSpec.shared_examples 'a readable proxy.pac' do
     expect(proxy_pac).to receive(:content=).with(content)
   end
 
-  before(:each) do 
-    expect(proxy_pac).not_to receive(:message=) 
+  before(:each) do
+    expect(proxy_pac).not_to receive(:message=)
     expect(proxy_pac).to receive(:readable=).with(true)
   end
 

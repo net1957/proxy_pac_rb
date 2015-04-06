@@ -24,7 +24,6 @@ RSpec.describe ProxyPacLoader do
     allow(proxy_pac).to receive(:source).and_return(source)
   end
 
-
   let(:loader) { ProxyPacLoader.new }
   let(:type) { :string }
 

@@ -1,5 +1,6 @@
 module ProxyPacRb
   module Rspec
+    # Helpers for proxy.pac tests
     module Helpers
       def proxy_pac
         source = if subject.nil? || Addressable::URI.parse(subject).host || /FindProxyForURL/ === subject

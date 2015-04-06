@@ -65,4 +65,3 @@ RSpec.describe ProxyPacDumper do
     end
   end
 end
-

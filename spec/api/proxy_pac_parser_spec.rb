@@ -27,7 +27,6 @@ RSpec.describe ProxyPacParser do
   end
 
   describe '#parse' do
-
     context 'when is valid' do
       before(:each) { expect(proxy_pac).to receive(:javascript=) }
       before(:each) { ProxyPacParser.new.parse(proxy_pac) }
