@@ -18,5 +18,9 @@ module ProxyPacRb
       self.debug_mode = true
       %w(pry byebug).each { |l| require l }
     end
+
+    def require_file_matching_pattern(pattern)
+      Dir.glob(pattern).each { |f| require_relative f }
+    end
   end
 end
