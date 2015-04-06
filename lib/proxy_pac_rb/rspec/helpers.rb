@@ -12,6 +12,7 @@ module ProxyPacRb
 
         _proxy_pac_loader.load(file)
         _proxy_pac_linter.lint(file)
+        _proxy_pac_parser.parse(file)
 
         file
       end
@@ -20,6 +21,10 @@ module ProxyPacRb
 
       def root_path
         @root_path ||= Dir.getwd
+      end
+
+      def _proxy_pac_parser
+        ProxyPacRb::ProxyPacParser.new
       end
 
       def _proxy_pac_loader
