@@ -2,7 +2,7 @@
 module ProxyPacRb
   # Pac file
   class ProxyPacFile
-    attr_accessor :valid, :type, :message, :readable, :javascript
+    attr_accessor :valid, :type, :message, :readable, :javascript, :parsable
     attr_reader :source
     attr_writer :content
 
@@ -25,6 +25,10 @@ module ProxyPacRb
 
     def valid?
       valid == true
+    end
+
+    def parsable?
+      parsable == true
     end
 
     def javascript?

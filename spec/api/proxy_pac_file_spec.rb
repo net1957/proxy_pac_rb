@@ -36,13 +36,6 @@ RSpec.describe ProxyPacFile do
 
       it { expect(proxy_pac).to be_valid }
     end
-
-    context 'when is not readable' do
-      before(:each) { proxy_pac.valid = true }
-      before(:each) { proxy_pac.readable = false }
-
-      it { expect(proxy_pac).not_to be_valid }
-    end
   end
 
   describe '#readable?' do

@@ -28,15 +28,15 @@ RSpec.describe ProxyPacParser do
 
   describe '#parse' do
     context 'when is valid' do
-      before(:each) { expect(proxy_pac).to receive(:javascript=) }
+      before(:each) do 
+        expect(proxy_pac).to receive(:javascript=)
+        expect(proxy_pac).to receive(:parsable=).with(true)
+      end
+
       before(:each) { ProxyPacParser.new.parse(proxy_pac) }
     end
 
     context 'when is invalid' do
-      before :each do
-        allow(proxy_pac).to receive(:message).and_return('message')
-      end
-
       let(:content) do
         <<-EOS.strip_heredoc.chomp
           function FindProxyForURL(url, host) {
@@ -45,7 +45,12 @@ RSpec.describe ProxyPacParser do
         EOS
       end
 
-      it { expect { ProxyPacParser.new.parse(proxy_pac) }.to raise_error ParserError }
+      before(:each) do 
+        expect(proxy_pac).to receive(:message=) 
+        expect(proxy_pac).to receive(:parsable=).with(false)
+      end
+
+      before(:each) { ProxyPacParser.new.parse(proxy_pac) }
     end
   end
 end
