@@ -26,21 +26,6 @@ RSpec.describe ProxyPacRb do
     allow(proxy_pac).to receive(:type?).with(:string).and_return(true)
   end
 
-  describe ProxyPacCompressor do
-    let(:compressor) { described_class.new }
-    let(:modified_content) { %(function FindProxyForURL(){return"DIRECT"}) }
-
-    before :each do
-      expect(proxy_pac).to receive(:content=).with(modified_content)
-    end
-
-    describe '#modify' do
-      context 'when string contains white paces' do
-        it { compressor.compress(proxy_pac) }
-      end
-    end
-  end
-
   describe ProxyPacDumper do
     let(:dumper) { ProxyPacDumper.new }
     let(:destination) { absolute_path('proxy.pac') }
