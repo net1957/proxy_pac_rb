@@ -2,7 +2,39 @@
 require 'spec_helper'
 
 RSpec.describe ProxyPacRb::Environment do
-  let(:environment) { Environment.new(client_ip: '127.0.0.1', time: Time.now) }
+  let(:client_ip) { '127.0.0.1' }
+  let(:time) { '1970-01-01 00:00:00' }
+  let(:environment) { Environment.new(client_ip: client_ip, time: time) }
+
+  describe '#initialize' do
+    context 'when valid ip address is given' do
+      it { expect { environment }.not_to raise_error }
+    end
+
+    context 'when invalid ip address is given' do
+      let(:client_ip) { 'invalid_ip' }
+      it { expect { environment }.to raise_error IPAddr::InvalidAddressError }
+    end
+
+    context 'when ip address is given as ip address-object' do
+      let(:client_ip) { IPAddr.new('127.0.0.1') }
+      it { expect { environment }.not_to raise_error }
+    end
+
+    context 'when valid time is given' do
+      it { expect { environment }.not_to raise_error }
+    end
+
+    context 'when invalid time is given' do
+      let(:time) { 'invalid_time' }
+      it { expect { environment }.to raise_error ArgumentError }
+    end
+
+    context 'when time is given as time object' do
+      let(:time) { Time.parse('1970-01-01 00:00:00') }
+      it { expect { environment }.not_to raise_error }
+    end
+  end
 
   describe '#isResolvable()' do
     context 'when is "localhost"' do

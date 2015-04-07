@@ -15,8 +15,8 @@ module ProxyPacRb
       @days          = { 'MON' => 1, 'TUE' => 2, 'WED' => 3, 'THU' => 4, 'FRI' => 5, 'SAT' => 6, 'SUN' => 0 }
       @months        = { 'JAN' => 1, 'FEB' => 2, 'MAR' => 3, 'APR' => 4, 'MAY' => 5, 'JUN' => 6, 'JUL' => 7, 'AUG' => 8, 'SEP' => 9, 'OCT' => 10, 'NOV' => 11, 'DEC' => 12 }
 
-      @client_ip     = options.fetch(:client_ip, '127.0.0.1')
-      @time          = options.fetch(:time, Time.now)
+      @client_ip     = IPAddr.new(options.fetch(:client_ip, '127.0.0.1').to_s).to_s
+      @time          = Time.parse(options.fetch(:time, Time.now).to_s).to_s
       @io            = options.fetch(:io, $stderr)
 
       @javascript_function_templates = ProxyPacJs
