@@ -50,6 +50,20 @@ RSpec.describe ProxyPacFile do
     end
   end
 
+
+  describe '#content?' do
+    let(:content) { 'content' }
+
+    context 'when has content' do
+      before(:each) { proxy_pac.content = content }
+      it { expect(proxy_pac).to be_content }
+    end
+
+    context 'when does not have content' do
+      it { expect(proxy_pac).not_to be_content }
+    end
+  end
+
   describe '#valid?' do
     context 'when is invalid' do
       it { expect(proxy_pac).not_to be_valid }

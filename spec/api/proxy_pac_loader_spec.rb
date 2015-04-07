@@ -37,6 +37,13 @@ RSpec.describe ProxyPacLoader do
       it_behaves_like 'a readable proxy.pac'
     end
 
+    context 'when proxy pac has already been loaded' do
+      before(:each) { allow(proxy_pac).to receive(:content?).and_return(true) }
+      before(:each) { expect(proxy_pac).not_to receive(:content=) }
+
+      it { loader.load(proxy_pac) }
+    end
+
     context 'when proxy pac is nil' do
       let(:source) { nil }
       let(:type) { :null }

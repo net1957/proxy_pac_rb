@@ -25,6 +25,10 @@ module ProxyPacRb
       end
     end
 
+    def content?
+      !@content.nil?
+    end
+
     def content
       @content.to_s.dup
     end

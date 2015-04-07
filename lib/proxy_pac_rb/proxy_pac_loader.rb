@@ -23,6 +23,8 @@ module ProxyPacRb
     # @param [#source] proxy_pac
     #   The proxy.pac
     def load(proxy_pac)
+      return if proxy_pac.content?
+
       loaders.find(default_loader) { |l| l.suitable_for? proxy_pac }.load(proxy_pac)
 
       proxy_pac.readable = true
