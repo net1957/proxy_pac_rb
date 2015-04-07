@@ -50,7 +50,6 @@ RSpec.describe ProxyPacFile do
     end
   end
 
-
   describe '#content?' do
     let(:content) { 'content' }
 
