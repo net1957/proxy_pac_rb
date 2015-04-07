@@ -302,11 +302,11 @@ RSpec.describe 'proxy.pac', type: :proxy_pac do
 
   context 'Check equality of proxy pac' do
     context 'when proxy.pac is eq' do
-      it { expect(proxy_pac).to eq 'proxy.pac' }
+      it { expect(proxy_pac).to equal 'proxy.pac' }
     end
 
     context 'when proxy.pac is not eq' do
-      it { expect(proxy_pac).not_to eq 'proxy.pac' }
+      it { expect(proxy_pac).not_to equal 'proxy.pac' }
     end
   end
 
