@@ -28,7 +28,7 @@ RSpec.describe ProxyPacParser do
 
   describe '#parse' do
     context 'when is valid' do
-      before(:each) do 
+      before(:each) do
         expect(proxy_pac).to receive(:javascript=)
         expect(proxy_pac).to receive(:parsable=).with(true)
       end
@@ -45,8 +45,8 @@ RSpec.describe ProxyPacParser do
         EOS
       end
 
-      before(:each) do 
-        expect(proxy_pac).to receive(:message=) 
+      before(:each) do
+        expect(proxy_pac).to receive(:message=)
         expect(proxy_pac).to receive(:parsable=).with(false)
       end
 
