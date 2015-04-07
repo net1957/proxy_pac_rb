@@ -30,7 +30,9 @@ module ProxyPacRb
     end
 
     def content
-      @content.to_s.dup
+      return nil if @content.nil?
+
+      @content.dup
     end
 
     def <=>(other)
