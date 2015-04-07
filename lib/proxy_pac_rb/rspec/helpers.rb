@@ -19,25 +19,25 @@ module ProxyPacRb
       end
 
       def time
-        fail
-      end
-
-      def environment
-        fail
+        '1970-01-01 00:00:00'
       end
 
       def client_ip
-        fail
+        '127.0.0.1'
       end
-
-      private
 
       def root_path
         @root_path ||= Dir.getwd
       end
 
+      private
+
+      def _environment
+        Environment.new(time: time, client_ip: client_ip)
+      end
+
       def _proxy_pac_parser
-        ProxyPacRb::ProxyPacParser.new
+        ProxyPacRb::ProxyPacParser.new(environment: _environment)
       end
 
       def _proxy_pac_loader

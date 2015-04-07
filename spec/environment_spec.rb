@@ -1,161 +1,172 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe ProxyPacRb::Environment do
-  let(:environment) do
-    Environment.new(client_ip: '127.0.0.1', time: Time.now)
-  end
+RSpec.describe ProxyPacRb::Environment do
+  let(:environment) { Environment.new(client_ip: '127.0.0.1', time: Time.now) }
 
   describe '#isResolvable()' do
-    it 'should return true for localhost' do
-      expect(environment.isResolvable('localhost')).to be true
+    context 'when is "localhost"' do
+      it { expect(environment.isResolvable('localhost')).to be true }
     end
 
-    it 'should return false for unexist.domain.localdomain' do
-      expect(environment.isResolvable('unexist.domain.localdomain')).to be false
+    context 'when is "unexist.domain.localdomain"' do
+      it { expect(environment.isResolvable('unexist.domain.localdomain')).to be false }
     end
   end
 
   describe '#isPlainHostName' do
-    it 'returns true for google' do
-      result = environment.isPlainHostName('google')
-      expect(result).to be true
+    context 'when is url contains plain hostname "example"' do
+      let(:result) { environment.isPlainHostName('example') }
+      it { expect(result).to be true }
     end
 
-    it 'returns false for google.com' do
-      result = environment.isPlainHostName('google.com')
-      expect(result).to be false
+    context 'when is url contains hostname with domain "example.com"' do
+      let(:result) { environment.isPlainHostName('example.com') }
+      it { expect(result).to be false }
     end
   end
 
   describe '#dnsDomainIs' do
-    it 'returns true for maps.google.com' do
-      result = environment.dnsDomainIs('maps.google.com', '.google.com')
-      expect(result).to be true
+    context 'when domain matches fqdn' do
+      let(:result) { environment.dnsDomainIs('maps.example.com', '.example.com') }
+      it { expect(result).to be true }
     end
 
-    it 'returns false for maps.ms.com' do
-      result = environment.dnsDomainIs('maps.ms.com', '.google.com')
-      expect(result).to be false
+    context 'when domain does not match fqdn' do
+      let(:result) { environment.dnsDomainIs('maps.example.com', '.example.net') }
+      it { expect(result).to be false }
     end
   end
 
   describe '#localHostOrDomainIs' do
-    it 'returns true for maps.google.com' do
-      result = environment.localHostOrDomainIs('maps.google.com', 'maps.google.com')
-      expect(result).to be true
+    context 'when fqdn matches fqdn' do
+      let(:result) { environment.localHostOrDomainIs('maps.example.com', 'maps.example.com') }
+      it { expect(result).to be true }
     end
 
-    it 'returns true for maps' do
-      result = environment.localHostOrDomainIs('maps', 'maps.google.com')
-      expect(result).to be true
+    context 'when plain host is included in fqdn' do
+      let(:result) { environment.localHostOrDomainIs('maps', 'maps.example.com') }
+      it { expect(result).to be true }
     end
 
-    it 'returns false for maps.ms.com' do
-      result = environment.dnsDomainIs('maps.ms.com', '.google.com')
-      expect(result).to be false
+    context 'when fqdn does not match fqdn' do
+      let(:result) { environment.localHostOrDomainIs('maps.example.net', 'maps.example.com') }
+      it { expect(result).to be false }
+    end
+
+    context 'when plain host is not included in fqdn' do
+      let(:result) { environment.localHostOrDomainIs('text', 'maps.example.com') }
+      it { expect(result).to be false }
     end
   end
 
   describe '#isInNet' do
-    it 'returns true for 127.0.0.1' do
-      result = environment.isInNet('127.0.0.1', '127.0.0.0', '255.255.255.0')
-      expect(result).to be true
+    context 'when ip is included in network' do
+      let(:result) { environment.isInNet('127.0.0.1', '127.0.0.0', '255.255.255.0') }
+      it { expect(result).to be true }
     end
 
-    it 'returns false for 10.0.0.1' do
-      result = environment.isInNet('10.0.0.1', '127.0.0.0', '255.255.255.0')
-      expect(result).to be false
+    context 'when ip is not included in network' do
+      let(:result) { environment.isInNet('10.0.0.1', '127.0.0.0', '255.255.255.0') }
+      it { expect(result).to be false }
     end
 
-    it 'resolves host name' do
-      name =  'google-public-dns-a.google.com'
-      result = environment.isInNet(name, '8.0.0.0', '255.0.0.0')
-      expect(result).to eq true
+    context 'when a resolveable hostname is given' do
+      let(:result) { environment.isInNet('www.example.net', '93.0.0.0', '255.0.0.0') }
+      it { expect(result).to eq true }
     end
 
-    it 'handles not resolvable host names' do
-      name =  'asdf.in.localhost.localdomain'
-      result = environment.isInNet(name, '8.0.0.0', '255.0.0.0')
-      expect(result).to eq false
+    context 'when a non-resolveable hostname is given' do
+      let(:result) { environment.isInNet('www.example.net.localdomain', '93.0.0.0', '255.0.0.0') }
+      it { expect(result).to eq false }
     end
 
-    it 'handles empty strings' do
-      result = environment.isInNet('', '8.0.0.0', '255.0.0.0')
-      expect(result).to eq false
+    context 'when input is nil' do
+      let(:result) { environment.isInNet(nil, '93.0.0.0', '255.0.0.0') }
+      it { expect(result).to eq false }
     end
 
-    it 'handles nil' do
-      result = environment.isInNet(nil, '8.0.0.0', '255.0.0.0')
-      expect(result).to eq false
+    context 'when input is empty string ""' do
+      let(:result) { environment.isInNet('', '93.0.0.0', '255.0.0.0') }
+      it { expect(result).to eq false }
     end
   end
 
   describe '#dnsResolve' do
-    it 'returns the ip address for domain' do
-      ip   = '8.8.8.8'
-      name =  'google-public-dns-a.google.com'
-      expect(environment.dnsResolve(name)).to eq(ip)
+    context 'when a resolveable hostname is given' do
+      let(:result) { environment.dnsResolve('www.example.net') }
+      it { expect(result).to eq '93.184.216.34' }
     end
 
-    it 'return nil for a not resolvable host name' do
-      name =  'not.resolvable.localhost.localdomain'
-      expect(environment.dnsResolve(name)).to eq(nil)
+    context 'when a resolveable hostname is given' do
+      let(:result) { environment.dnsResolve('www.example.net.localdomain') }
+      it { expect(result).to eq nil }
     end
 
-    it 'handles nil values as input' do
-      expect(environment.dnsResolve(nil)).to eq(nil)
+    context 'when input is nil' do
+      let(:result) { environment.dnsResolve(nil) }
+      it { expect(result).to eq nil }
     end
 
-    it 'handles empty string as input' do
-      expect(environment.dnsResolve('')).to eq(nil)
+    context 'when input is empty string ""' do
+      let(:result) { environment.dnsResolve('') }
+      it { expect(result).to eq nil }
     end
 
-    it 'handles garbage as input' do
-      expect(environment.dnsResolve('§§jk:')).to eq(nil)
+    context 'when input is gargabe' do
+      let(:result) { environment.dnsResolve('§§jk:') }
+      it { expect(result).to eq nil }
     end
   end
 
   describe '#dnsDomainLevels' do
-    it 'returns the count of domain levels (dots)' do
-      result = environment.dnsDomainLevels('maps.google.com')
-      expect(result).to eq(2)
+    context 'when contains subdomains' do
+      let(:result) { environment.dnsDomainLevels('maps.example.com') }
+      it { expect(result).to eq 2 }
+    end
+
+    context 'when does not contain subdomains' do
+      let(:result) { environment.dnsDomainLevels('maps') }
+      it { expect(result).to eq 0 }
     end
   end
 
   describe '#shExpMatch' do
-    it 'returns true for maps.google.com' do
-      result = environment.shExpMatch('maps.google.com', '*.com')
-      expect(result).to be true
+    context 'when pattern matches hostname' do
+      let(:result) { environment.shExpMatch('maps.example.com', '*.com') }
+      it { expect(result).to be true }
     end
 
-    it 'returns false for maps.ms.com' do
-      result = environment.shExpMatch('maps.ms.com', '*.de')
-      expect(result).to be false
+    context 'when pattern does not match hostname' do
+      let(:result) { environment.shExpMatch('maps.example.com', '*.de') }
+      it { expect(result).to be false }
     end
   end
 
   describe '#alert' do
-    it 'outputs msg' do
-      result = capture(:stderr) do
-        environment.alert('message')
+    context 'when message is given' do
+      let(:result) do
+        capture(:stderr) do
+          environment.alert('message')
+        end.chomp
       end
 
-      expect(result.chomp).to eq('message')
+      it { expect(result).to eq 'message' }
     end
   end
 
   describe '#prepare' do
-    it 'adds neccessary functions to source file' do
-      string = ''
-      environment.prepare(string)
+    context 'when valid' do
+      let(:string) { '' }
+
+      before(:each) { environment.prepare(string) }
 
       %w(
         myIpAddress
         weekdayRange
         dateRange
         timeRange
-      ).each { |f| expect(string).to include(f) }
+      ).each { |f| it { expect(string).to include(f) } }
     end
   end
 end
