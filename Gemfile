@@ -9,8 +9,8 @@ group :debug do
 
   gem 'pry-doc', require: false
   gem 'pry-stack_explorer', require: false
-  gem 'pry-exception_explorer', require: false
-  gem 'pry-rescue', require: false
+  # gem 'pry-exception_explorer', require: false
+  # gem 'pry-rescue', require: false
   gem 'pry-byebug', require: false
 end
 

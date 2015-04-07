@@ -86,7 +86,6 @@ GEM
       sparkr (>= 0.2.0)
       term-ansicolor
       yard (~> 0.8.7.5)
-    interception (0.5)
     json (1.8.2)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -116,11 +115,6 @@ GEM
     pry-doc (0.6.0)
       pry (~> 0.9)
       yard (~> 0.8)
-    pry-exception_explorer (0.2.3)
-      pry-stack_explorer (>= 0.4.6)
-    pry-rescue (1.4.1)
-      interception (>= 0.5)
-      pry
     pry-stack_explorer (0.4.9.2)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
@@ -227,8 +221,6 @@ DEPENDENCIES
   pry
   pry-byebug
   pry-doc
-  pry-exception_explorer
-  pry-rescue
   pry-stack_explorer
   rack
   rack-test
