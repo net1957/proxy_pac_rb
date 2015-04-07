@@ -48,7 +48,7 @@ Feature: Resolve proxy
       return 'PROXY localhost:3128';
     }
     """
-    When I successfully run `pprb find proxy -p http://127.0.0.1:4567/proxy.pac -u www.example.org`
+    When I successfully run `pprb find proxy -p http://127.0.0.1:65535/proxy.pac -u www.example.org`
     Then the output should contain:
     """
     PROXY localhost:3128

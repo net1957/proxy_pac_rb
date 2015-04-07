@@ -32,6 +32,8 @@ module ProxyPacRb
             $stderr.printf("%30s: %-s\n", u, file.find(u))
           rescue UrlInvalidError
             $stderr.puts "You provide an invalid url \"#{u}\". Please use a correct one."
+          rescue ProxyPacRb::ProxyPacInvalidError => err
+            $stderr.puts err.message
           end
         end
       end

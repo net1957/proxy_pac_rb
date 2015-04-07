@@ -7,6 +7,7 @@ require 'uglifier'
 require 'optparse'
 require 'ostruct'
 require 'resolv'
+require 'net/http'
 require 'time'
 require 'timeout'
 

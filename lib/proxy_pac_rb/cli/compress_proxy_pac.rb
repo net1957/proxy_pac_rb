@@ -30,7 +30,7 @@ module ProxyPacRb
           if p.valid?
             true
           else
-            $stderr.puts %(proxy.pac "#{p.source}" is of type #{p.type} and is invalid. I'm going to ignore that file.)
+            $stderr.puts %(proxy.pac "#{p.source}" is of type #{p.type} and is invalid: #{p.message}. I'm going to ignore that file.)
 
             false
           end
