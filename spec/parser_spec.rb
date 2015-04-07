@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe ProxyPacRb::Parser do
+RSpec.describe ProxyPacRb::Parser do
   subject(:proxy_pac) { Parser.new(environment: environment).parse(source) }
 
   let(:environment) { Environment.new }
