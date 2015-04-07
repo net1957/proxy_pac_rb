@@ -272,18 +272,83 @@ file.find('http://localhost') # => 'DIRECT'
 
 ## RSpec-integration
 
+`proxy_pac_rb` comes with helpers and matchers for `rspec`. To make those
+helpers and matchers available in your project, add this code snippet in your
+project:
+
 ```
 require 'proxy_pac_rb/rspec'
 ```
 
+### Helpers
 
+* `proxy_pac`:
+
+    This helper makes a proxy.pac available. It requires a source for for your
+    proxy.pac given in `subject { }` - e.g. a file, a string, or a url. It
+    represents a [`ProxyPacFile`](lib/proxy_pac_rb/proxy_pac_file.rb).
+
+* `time`:
+
+    The `time`-helper makes `1970-01-01 00:00:00` as time available. Overwrite
+    this helper on will with another time string or a time-object - e.g
+    `let(:time) { Time.now }`.
+
+* `client_ip`:
+
+    The `client_ip`-helper makes `127.0.0.1` available. Overwrite it with a
+    different ip-address as string or an object which returns an ip-address on
+    `#to_s`.
+
+* `root_path`:
+
+    The `root_path`-helper is meant for overriding. It is used to find your
+    "proxy.pac"-files. By default its value is `Dir.getwd` which is set by
+    `rspec`.
+
+### Examples
+
+To make it easier for you to start, you find some examples below.
+
+#### Type for specs
+
+It is important that you flag your specs with `type: :proxy_pac`. Otherwise the
+helpers are not included and not available in your examples.
 
 ```ruby
-RSpec.describe('proxy.pac', type: :proxy_pac) {}
+RSpec.describe 'proxy.pac', type: :proxy_pac do
 ```
 
+#### Supported sources
+
+*Local File*
+
 ```ruby
-RSpec.describe('http://server/proxy.pac', type: :proxy_pac){}
+RSpec.describe 'proxy.pac', type: :proxy_pac do
+  subject { 'proxy.pac' }
+end
+```
+
+*URL*
+
+```ruby
+RSpec.describe 'http://server/proxy.pac', type: :proxy_pac do
+  subject { 'http://server/proxy.pac' }
+end
+```
+
+*String*
+
+```ruby
+RSpec.describe 'http://server/proxy.pac', type: :proxy_pac do
+  subject do
+    <<-EOS.strip_heredoc.chomp
+      function FindProxyForURL(url, host) {
+        return "DIRECT";
+      }
+    EOS
+  end
+end
 ```
 
 ```ruby
