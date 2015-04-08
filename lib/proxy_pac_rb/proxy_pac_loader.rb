@@ -37,7 +37,7 @@ module ProxyPacRb
   # Load proxy pac from string
   class ProxyPacStringLoader
     def load(proxy_pac)
-      proxy_pac.content = proxy_pac.source.to_s
+      proxy_pac.content = proxy_pac.source.to_s.chomp
       proxy_pac.type = :string
 
       self
@@ -84,7 +84,7 @@ module ProxyPacRb
   # Load proxy pac from url
   class ProxyPacUriLoader
     def load(proxy_pac)
-      content = Net::HTTP.get(URI(proxy_pac.source.to_s))
+      content = Net::HTTP.get(URI(proxy_pac.source.to_s)).chomp
 
       proxy_pac.content = content
       proxy_pac.type = :url

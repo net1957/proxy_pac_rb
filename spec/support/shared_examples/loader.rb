@@ -14,7 +14,7 @@ end
 
 RSpec.shared_examples 'a readable proxy.pac' do
   before :each do
-    expect(proxy_pac).to receive(:content=).with(content)
+    expect(proxy_pac).to receive(:content=).with(content.chomp)
     allow(proxy_pac).to receive(:content?).and_return(false)
   end
 
