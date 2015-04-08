@@ -1,4 +1,3 @@
-# encoding: utf-8
 module ProxyPacRb
   module Cli
     # Find proxy for url

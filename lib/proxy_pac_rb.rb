@@ -37,6 +37,8 @@ require 'proxy_pac_rb/cli_validator'
 
 require 'proxy_pac_rb/cli/shared'
 require 'proxy_pac_rb/cli/find_proxy'
+require 'proxy_pac_rb/cli/init_proxy_pac'
+require 'proxy_pac_rb/cli/init'
 require 'proxy_pac_rb/cli/lint_proxy_pac'
 require 'proxy_pac_rb/cli/lint'
 require 'proxy_pac_rb/cli/compress_proxy_pac'

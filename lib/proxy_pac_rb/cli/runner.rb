@@ -15,6 +15,9 @@ module ProxyPacRb
       desc 'compress', 'Compress something'
       subcommand 'compress', Compress
 
+      desc 'init', 'Init something'
+      subcommand 'init', Init
+
       desc 'show', 'Show something'
       subcommand 'show', Show
 
