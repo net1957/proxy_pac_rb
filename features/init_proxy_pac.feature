@@ -29,7 +29,6 @@ Feature: Init proxy pac
     Overwrite
     """
 
-    @wip
   Scenario: Add skeleton rspec
     Given a proxy.pac named "proxy" does not exist
     When I successfully run `pprb init proxy_pac --test rspec`
@@ -43,6 +42,6 @@ Feature: Init proxy pac
     Then a directory named "spec/support/matchers" should exist
 
   Scenario: Add skeleton middleman
-    Given a proxy.pac named "proxy" does not exist
-    When I successfully run `pprb init proxy_pac --builder middleman`
-    Then a file named "spec/spec_helper.rb" should exist
+    Given a proxy.pac named "source/proxy" does not exist
+    When I successfully run `pprb init proxy_pac --build middleman`
+    Then a file named "source/proxy.pac" should exist

@@ -7,10 +7,12 @@ module ProxyPacRb
 
       class_option :proxy_pac, type: :string, desc: 'Proxy.pac-file', aliases: '-p', default: 'proxy.pac'
       class_option :test, enum: ['rspec'], desc: 'Test-framework - supported: rspec', aliases: '-t'
-      class_option :builder, enum: ['middleman'], desc: 'Builder-framework - supported: middleman', aliases: '-b'
+      class_option :build, enum: ['middleman'], desc: 'Builder-framework - supported: middleman', aliases: '-b'
 
       def pre_init
         enable_debug_mode
+
+        @destination_directory = Dir.getwd
       end
 
       def add_sources
@@ -19,10 +21,6 @@ module ProxyPacRb
 
       def create_default_files
         directory 'default/', './'
-      end
-
-      def create_proxy_pac
-        template 'new_proxy_pac.pac.erb', options[:proxy_pac]
       end
 
       def create_test_framework_files
@@ -67,10 +65,10 @@ module ProxyPacRb
         EOS
       end
 
-      def create_builder_files
-        return unless options[:builder] == 'middleman'
+      def create_build_files
+        return unless options[:build] == 'middleman'
 
-        directory 'builder/middleman', './'
+        directory 'build/middleman', './'
 
         append_file 'Gemfile', <<-EOS.strip_heredoc
         gem 'middleman', '~>3.3.10'
@@ -89,7 +87,11 @@ module ProxyPacRb
         end
         EOS
 
+        @destination_directory = File.join(@destination_directory, 'source')
+      end
 
+      def create_proxy_pac
+        template 'new_proxy_pac.pac.erb', File.join(@destination_directory, options[:proxy_pac])
       end
     end
   end

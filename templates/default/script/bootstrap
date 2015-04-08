@@ -13,8 +13,8 @@ echo -ne "$info_msg Checking if ruby installed? "
 which 'ruby' >/dev/null 2>error.log || ( echo -e "$error_msg\n\nCould not find \`ruby\`. Please install ruby or add it to PATH"; output_error_log; exit 1 )
 echo OK
 
-echo -en "$info_msg rubygem \"rake\" "
-gem install bundler >/dev/null 2>error.log || ( echo -e "$error_msg\n\nAn error occurred during installation of rake. Run \`gem install rake\` yourself."; output_error_log; exit 1 )
+echo -en "$info_msg rubygem \"bundler\" "
+gem install bundler >/dev/null 2>error.log || ( echo -e "$error_msg\n\nAn error occurred during installation of bundler Run \`gem install bundler\` yourself."; output_error_log; exit 1 )
 echo OK
 
 echo -en "$info_msg Running bundle install \"$rake_task\" "
