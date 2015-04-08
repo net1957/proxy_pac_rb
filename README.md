@@ -70,7 +70,7 @@ pprb find proxy -c 127.0.0.1 -t "2014-03-09 12:00:00" -p sample.pac -u https://g
 You can compress a proxy.pac with `pprb` to reduce the amount of data
 transferred to download the proxy.pac.
 
-```
+```bash
 # Download pac
 curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac
 
@@ -82,12 +82,38 @@ pprb compress proxy_pac -p sample.pac
 
 You can lint a proxy.pac with `pprb` to check a proxy.pac before deploying it.
 
-```
+```bash
 # Download pac
 curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac
 
 # Lint pac
 pprb lint proxy_pac -p sample.pac
+```
+
+#### Init new proxy.pac
+
+You can use the following command to start a new proxy.pac:
+
+*Plain*
+
+```bash
+pprb init proxy_pac
+```
+
+*Add rspec*
+
+To test your proxy.pac you can use `rspec`.
+
+```bash
+pprb init proxy_pac --test rspec
+```
+
+*Add middleman*
+
+To build your proxy.pac you can use `middleman`.
+
+```bash
+pprb init proxy_pac --build middleman
 ```
 
 ### "rack"-middleware
