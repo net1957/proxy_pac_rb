@@ -46,7 +46,7 @@ RSpec.describe ProxyPacFile do
 
     context 'when is "content"' do
       let(:content) { nil }
-      it { expect(proxy_pac.content).to eq '' }
+      it { expect(proxy_pac.content).to eq nil }
     end
   end
 

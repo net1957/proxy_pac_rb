@@ -44,7 +44,7 @@ module ProxyPacRb
                     %(proxy.pac-file "#{proxy_pac.source}" does not contain "FindProxyForURL".)
                   end
 
-        fail LinterError, message unless proxy_pac.content.include?('FindProxyForURL')
+        fail LinterError, message unless proxy_pac.content.to_s.include?('FindProxyForURL')
 
         self
       end
