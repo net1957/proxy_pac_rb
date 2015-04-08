@@ -125,8 +125,9 @@ should work with every `rack`-compliant-server.
 
 #### Prerequisites
 
-Make sure the content is served with "Content-Type":
-'application/x-ns-proxy-autoconfig'. Otherwise the content is ignored.
+Make sure the content is served with `"Content-Type":
+'application/x-ns-proxy-autoconfig'`. Otherwise the content is ignored by both
+middlewares.
 
 #### Warning
 
@@ -211,7 +212,7 @@ code snippet captured from the `middleman`-configuration file `config.rb`:
 ```ruby
 require 'proxy_pac_rb'
 
-file = ProxyPacRb::Parser.new.load('https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac')
+file = ProxyPacRb::Parser.new.parse('https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac')
 file.find('https://github.com')        # => "DIRECT"
 ```
 
@@ -224,7 +225,7 @@ curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files
 ```ruby
 require 'proxy_pac_rb'
 
-file = ProxyPacRb::Parser.new.read("sample.pac")
+file = ProxyPacRb::Parser.new.parse("sample.pac")
 file.find('https://github.com')        # => "DIRECT"
 ```
 
@@ -233,7 +234,7 @@ file.find('https://github.com')        # => "DIRECT"
 ```ruby
 require 'proxy_pac_rb'
 
-file = ProxyPacRb::Parser.new.source <<-JS
+file = ProxyPacRb::Parser.new.parse <<-JS
   function FindProxyForURL(url, host) {
     return "DIRECT";
   }
@@ -248,11 +249,11 @@ file.find('http://localhost') # => "DIRECT"
 require 'proxy_pac_rb'
 
 environment = ProxyPacRb::Environment.new(client_ip: '127.0.0.1')
-file = ProxyPacRb::Parser.new(environment).load('https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample2.pac')
+file = ProxyPacRb::Parser.new(environment).parse('https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample2.pac')
 file.find('https://github.com')        # => "PROXY localhost:8080"
 
 environment = ProxyPacRb::Environment.new(client_ip: '127.0.0.2')
-file = ProxyPacRb::Parser.new(environment).load('https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample2.pac')
+file = ProxyPacRb::Parser.new(environment).parse('https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample2.pac')
 file.find('https://github.com')        # => "DIRECT"
 ```
 
@@ -272,11 +273,11 @@ function FindProxyForURL(url, host) {
 EOS
 
 environment = ProxyPacRb::Environment.new(time: Time.parse('2014-07-06 12:00'))
-file = ProxyPacRb::Parser.new(environment).source(string)
+file = ProxyPacRb::Parser.new(environment).parse(string)
 file.find('http://localhost') # => 'PROXY localhost:8080'
 
 environment = ProxyPacRb::Environment.new(time: Time.parse('2014-03-08 6:00'))
-file = ProxyPacRb::Parser.new(environment).source(string)
+file = ProxyPacRb::Parser.new(environment).parse(string)
 file.find('http://localhost') # => 'DIRECT'
 ```
 
@@ -310,14 +311,14 @@ require 'proxy_pac_rb/rspec'
 
 * `proxy_pac`:
 
-    This helper makes a proxy.pac available. It requires a source for for your
+    This helper makes a proxy.pac available. It requires a source for your
     proxy.pac given in `subject { }` - e.g. a file, a string, or a url. It
     represents a [`ProxyPacFile`](lib/proxy_pac_rb/proxy_pac_file.rb).
 
 * `time`:
 
     The `time`-helper makes `1970-01-01 00:00:00` as time available. Overwrite
-    this helper on will with another time string or a time-object - e.g
+    this helper at will with another time string or a time-object - e.g
     `let(:time) { Time.now }`.
 
 * `client_ip`:
