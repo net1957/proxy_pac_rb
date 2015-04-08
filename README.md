@@ -310,7 +310,7 @@ require 'proxy_pac_rb/rspec'
 
 To make it easier for you to start, you find some examples below.
 
-#### Type for specs
+**Type for specs**
 
 It is important that you flag your specs with `type: :proxy_pac`. Otherwise the
 helpers are not included and not available in your examples.
@@ -319,7 +319,21 @@ helpers are not included and not available in your examples.
 RSpec.describe 'proxy.pac', type: :proxy_pac do
 ```
 
-#### Supported sources
+**Supported sources**
+
+*String*
+
+```ruby
+RSpec.describe 'String', type: :proxy_pac do
+  subject do
+    <<-EOS.strip_heredoc.chomp
+      function FindProxyForURL(url, host) {
+        return "DIRECT";
+      }
+    EOS
+  end
+end
+```
 
 *Local File*
 
@@ -337,10 +351,40 @@ RSpec.describe 'http://server/proxy.pac', type: :proxy_pac do
 end
 ```
 
-*String*
+**Matchers**
+
+*Readable*
+
+To check if a proxy.pac could be read from filesystem or downloaded via HTTP,
+check `be_readable`.
 
 ```ruby
-RSpec.describe 'http://server/proxy.pac', type: :proxy_pac do
+require 'proxy_pac_rb/rspec'
+
+RSpec.describe 'proxy.pac', type: :proxy_pac do
+  context 'when proxy pac exist' do
+    context 'when is file' do
+      subject { 'proxy.pac' }
+      it { expect(proxy_pac).to be_readable }
+    end
+
+    context 'when is url' do
+      subject { 'http://www.example.com/proxy.pac' }
+      it { expect(proxy_pac).to be_readable }
+    end
+  end
+end
+```
+
+*Equal*
+
+If you want to check if a proxy.pac is the same you can use the
+`be_the_same_proxy_pac_file`-matcher.
+
+```ruby
+require 'proxy_pac_rb/rspec'
+
+RSpec.describe 'proxy.pac', type: :proxy_pac do
   subject do
     <<-EOS.strip_heredoc.chomp
       function FindProxyForURL(url, host) {
@@ -348,23 +392,6 @@ RSpec.describe 'http://server/proxy.pac', type: :proxy_pac do
       }
     EOS
   end
-end
-```
-
-```ruby
-RSpec.describe 'proxy.pac', type: :proxy_pac do
-  subject { 'proxy.pac' }
-
-  context 'when proxy pac exist' do
-    context 'when is file' do
-      it { expect(proxy_pac).to be_readable }
-    end
-
-    context 'when is url' do
-      it { expect(proxy_pac).to be_readable }
-    end
-  end
-
   context 'Check equality of proxy pac' do
     context 'when proxy.pac is eq' do
       it { expect(proxy_pac).to be_the_same_proxy_pac_file 'proxy.pac' }
@@ -374,26 +401,95 @@ RSpec.describe 'proxy.pac', type: :proxy_pac do
       it { expect(proxy_pac).not_to be_the_same_proxy_pac_file 'proxy.pac' }
     end
   end
+end
+```
 
+This is quite handy to compare a local proxy.pac with a remote one - e.g. a
+deployed one.
+
+```ruby
+require 'proxy_pac_rb/rspec'
+
+RSpec.describe 'proxy.pac', type: :proxy_pac do
+  let(:local_proxy_pac) { ProxyPacRb::ProxyPacFile.new(source: file) }
+
+  before(:each) do
+    ProxyPacRb::ProxyPacLoader.new.load(local_proxy_pac)
+    ProxyPacRb::ProxyPacCompressor.new.compress(local_proxy_pac) if local_proxy_pac.readable?
+  end
+
+  context 'when no proxy.pac is given' do
+    subject { 'http://server.example.com/proxy.pac' }
+    let(:file) { 'source/proxy.pac' }
+
+    it { expect(proxy_pac).to be_the_same_proxy_pac_file(local_proxy_pac) }
+  end
+end
+```
+
+*Valid*
+
+You want to check if your proxy.pac is valid. This will find `reference errors`
+(e.g. unknown variables) and `syntax errors`.
+
+```ruby
+require 'proxy_pac_rb/rspec'
+
+RSpec.describe 'proxy.pac', type: :proxy_pac do
+  subject do
+    <<-EOS.strip_heredoc.chomp
+      function FindProxyForURL(url, host) {
+        return "DIRECT";
+      }
+    EOS
+  end
   context 'Check validity of proxy pac' do
     context 'when proxy.pac is valid' do
       it { expect(proxy_pac).to be_valid }
     end
 
     context 'when proxy.pac is not valid' do
+      subject do
+        <<-EOS.strip_heredoc.chomp
+          function FindProxyForURL(url, host) {
+            return adsf;
+          }
+        EOS
+      end
       it { expect(proxy_pac).not_to be_valid }
     end
   end
+end
+```
 
+*Parse proxy.pac*
+
+To make some logic checks use the `be_downloaded_via`-matcher. This will parse
+the proxy.pac and returns the proxy to be used for a given url.
+
+```ruby
+require 'proxy_pac_rb/rspec'
+RSpec.describe 'proxy.pac', type: :proxy_pac do
+  subject do
+    <<-EOS.strip_heredoc.chomp
+      function FindProxyForURL(url, host) {
+        if (dnsDomainIs(host, 'www1.example.com'')) {
+          return "PROXY proxy1.example.com:8080";
+        } else {
+          return "PROXY proxy2.example.net:8080";
+        }
+      }
+    EOS
+  end
   context 'Parse Proxy Pac' do
     context 'when url is forwarded via' do
       let(:url) { 'http://www1.example.com' }
-      it { expect(url).to be_downloaded_via 'proxy.example.com' }
+      it { expect(url).to be_downloaded_via 'PROXY proxy.example.com:8080' }
     end
 
     context 'when url is not forwarded via' do
       let(:url) { 'http://www2.example.com' }
-      it { expect(url).not_to be_downloaded_via 'proxy.example.com' }
+      it { expect(url).not_to be_downloaded_via 'PROXY proxy.example.com:8080' }
     end
   end
 end
@@ -412,7 +508,8 @@ commits and tags, and push the `.gem` file to
 
 ### Contributing
 
-If you want to contribute: fork, branch & pull request.
+If you want to contribute: fork, branch & pull request and please see
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Running Tests
 
