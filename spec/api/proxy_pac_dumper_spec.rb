@@ -34,7 +34,7 @@ RSpec.describe ProxyPacDumper do
 
     context 'when proxy pac is string' do
       before :each do
-        in_current_dir do
+        in_current_directory do
           dumper.dump(proxy_pac, type: :string)
         end
       end
@@ -51,13 +51,13 @@ RSpec.describe ProxyPacDumper do
       end
 
       before :each do
-        in_current_dir do
+        in_current_directory do
           dumper.dump(proxy_pac, type: :template)
         end
       end
 
       around :example do |example|
-        in_current_dir { example.call }
+        in_current_directory { example.call }
       end
 
       it { expect(destination).to be_existing_file }

@@ -87,4 +87,30 @@ RSpec.describe ProxyPacFile do
       it { expect(proxy_pac).to be_readable }
     end
   end
+
+  describe '#find' do
+    before :each do
+      proxy_pac.readable = true
+      proxy_pac.valid    = true
+      proxy_pac.content  = source
+
+      parser = ProxyPacParser.new
+      parser.parse(proxy_pac)
+    end
+
+    context 'when ip is used as url' do
+      let(:url) { '127.0.0.1' }
+      it { expect(proxy_pac.find(url)).to eq 'DIRECT' }
+    end
+
+    context 'when plain host is used as url' do
+      let(:url) { 'localhost' }
+      it { expect(proxy_pac.find(url)).to eq 'DIRECT' }
+    end
+
+    context 'when fqdn is used as url' do
+      let(:url) { 'localhost.localdomain' }
+      it { expect(proxy_pac.find(url)).to eq 'DIRECT' }
+    end
+  end
 end

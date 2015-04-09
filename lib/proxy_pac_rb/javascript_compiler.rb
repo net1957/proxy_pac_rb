@@ -16,9 +16,11 @@ module ProxyPacRb
     def compile(content:, environment:)
       fail Exceptions::RuntimeUnavailable, "#{runtime.name} is unavailable on this system" unless runtime.available?
 
-      environment.prepare(content)
+      proxy_pac_content = content.to_s.dup
 
-      context = runtime.compile(content)
+      environment.prepare(proxy_pac_content)
+
+      context = runtime.compile(proxy_pac_content)
       context.include environment
 
       Javascript.new(context)

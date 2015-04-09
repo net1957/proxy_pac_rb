@@ -16,12 +16,12 @@ end
 
 group :development, :test do
   gem 'activesupport', '~> 4.0.0', require: false
-  gem 'aruba', require: false
+  gem 'aruba', require: false, git: 'https://github.com/cucumber/aruba'
   gem 'awesome_print', require: 'ap'
   gem 'bundler', '~> 1.3', require: false
   gem 'command_exec', require: false
   gem 'coveralls', require: false
-  gem 'cucumber', require: false
+  gem 'cucumber', require: false, git: 'https://github.com/cucumber/cucumber'
   gem 'erubis'
   gem 'fedux_org-stdlib', '~>0.7.25', require: false
   gem 'filegen'

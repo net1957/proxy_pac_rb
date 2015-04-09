@@ -17,7 +17,7 @@ end
 RSpec.configure do |c|
   c.include SpecHelper::Aruba
   c.before :each do
-    clean_current_dir
+    clean_current_directory
     restore_env
   end
 end

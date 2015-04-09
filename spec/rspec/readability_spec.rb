@@ -11,7 +11,7 @@ RSpec.describe 'Readability', type: :proxy_pac do
   end
 
   context 'when is file' do
-    let(:root_path) { current_dir }
+    let(:root_path) { current_directory }
 
     subject { 'proxy.pac' }
 
