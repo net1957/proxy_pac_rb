@@ -22,7 +22,7 @@ GIT
 PATH
   remote: .
   specs:
-    proxy_pac_rb (0.5.1)
+    proxy_pac_rb (0.5.2)
       activesupport
       addressable
       uglifier
@@ -71,7 +71,7 @@ GEM
     domain_name (0.5.23)
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
-    execjs (2.5.0)
+    execjs (2.5.1)
     fedux_org-stdlib (0.7.33)
       activesupport
     ffi (1.9.8)
