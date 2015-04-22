@@ -4,10 +4,11 @@ RSpec.describe ProxyPacCompressor do
   subject(:proxy_pac) { instance_double('ProxyPac::ProxyPacFile') }
 
   let(:compressor) { described_class.new }
-  let(:modified_content) { %(function FindProxyForURL(){return"DIRECT"}) }
+  let(:modified_content) { %(function FindProxyForURL() {\n    return \"DIRECT\";\n}) }
 
   let(:content) do
     <<-EOS.strip_heredoc.chomp
+      // comment
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
