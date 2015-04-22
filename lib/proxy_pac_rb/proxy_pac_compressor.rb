@@ -53,7 +53,7 @@ module ProxyPacRb
           # angular: false,       # Process @ngInject annotations
           # keep_fargs: false,     # Preserve unused function arguments
           # keep_fnames: true     # Preserve function names
-        },
+        }
       }
 
       proxy_pac.content = Uglifier.new(options).compile(proxy_pac.content)
