@@ -20,16 +20,23 @@ module ProxyPacRb
     class ProxyPacCompressor
       private
 
-      attr_reader :compressor, :loader, :enabled
+      attr_reader :compressor, :loader, :enabled, :options
 
       public
 
       def initialize(
         app,
-        enabled: true
+        enabled: true,
+        options: nil
       )
         @app        = app
-        @compressor = ProxyPacRb::ProxyPacCompressor.new
+
+        @compressor = if options.blank?
+                        ProxyPacRb::ProxyPacCompressor.new
+                      else
+                        ProxyPacRb::ProxyPacCompressor.new(options: options)
+                      end
+
         @loader     = ProxyPacRb::ProxyPacLoader.new
         @enabled    = enabled
       end

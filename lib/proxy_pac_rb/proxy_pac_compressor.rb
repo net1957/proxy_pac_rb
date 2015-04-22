@@ -2,8 +2,14 @@
 module ProxyPacRb
   # Compress javascript files
   class ProxyPacCompressor
-    def compress(proxy_pac)
-      options = {
+    private
+
+    attr_reader :options
+
+    public
+
+    def initialize(
+      options: {
         output: {
           # ascii_only: true,        # Escape non-ASCII characters
           # comments: :copyright,    # Preserve comments (:all, :jsdoc, :copyright, :none, Regexp (see below))
@@ -55,7 +61,11 @@ module ProxyPacRb
           # keep_fnames: true     # Preserve function names
         }
       }
+    )
+      @options = options
+    end
 
+    def compress(proxy_pac)
       proxy_pac.content = Uglifier.new(options).compile(proxy_pac.content)
     end
   end

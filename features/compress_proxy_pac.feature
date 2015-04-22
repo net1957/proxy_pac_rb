@@ -8,26 +8,32 @@ Feature: Compress proxy pac
     Given a file named "proxy.pac.in" with:
     """
     function FindProxyForURL(url, host) {
+      // comment
       return 'PROXY localhost:3128';
     }
     """
     When I successfully run `pprb compress pac_file -p proxy.pac.in`
     Then the file "proxy.pac" should contain:
     """
-    function FindProxyForURL(){return"PROXY localhost:3128"}
+    function FindProxyForURL() {
+        return "PROXY localhost:3128";
+    }
     """
 
   Scenario: Existing proxy.pac
     Given a file named "proxy.pac" with:
     """
     function FindProxyForURL(url, host) {
+      // comment
       return 'PROXY localhost:3128';
     }
     """
     When I successfully run `pprb compress pac_file -p proxy.pac`
     Then the file "proxy.pac.out" should contain:
     """
-    function FindProxyForURL(){return"PROXY localhost:3128"}
+    function FindProxyForURL() {
+        return "PROXY localhost:3128";
+    }
     """
 
   Scenario: Checks for valid proxy pac
@@ -48,31 +54,40 @@ Feature: Compress proxy pac
     Given a file named "proxy1.pac.in" with:
     """
     function FindProxyForURL(url, host) {
+      // comment
       return 'PROXY localhost:3128';
     }
     """
     And a file named "proxy2.pac.in" with:
     """
     function FindProxyForURL(url, host) {
+      // comment
       return 'PROXY localhost:3128';
     }
     """
     And a file named "proxy3.pac" with:
     """
     function FindProxyForURL(url, host) {
+      // comment
       return 'PROXY localhost:3128';
     }
     """
     When I successfully run `pprb compress pac_file -p proxy1.pac.in proxy2.pac.in proxy3.pac`
     Then the file "proxy1.pac" should contain:
     """
-    function FindProxyForURL(){return"PROXY localhost:3128"}
+    function FindProxyForURL() {
+        return "PROXY localhost:3128";
+    }
     """
     And the file "proxy2.pac" should contain:
     """
-    function FindProxyForURL(){return"PROXY localhost:3128"}
+    function FindProxyForURL() {
+        return "PROXY localhost:3128";
+    }
     """
     And the file "proxy3.pac.out" should contain:
     """
-    function FindProxyForURL(){return"PROXY localhost:3128"}
+    function FindProxyForURL() {
+        return "PROXY localhost:3128";
+    }
     """

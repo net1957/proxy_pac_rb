@@ -173,6 +173,15 @@ require 'proxy_pac_rb/rack/proxy_pac_compressor'
 use ProxyPacRb::Rack::ProxyPacCompressor
 ```
 
+If you need to change some settings, please pass it a `options`-parameter.
+Please see the (`uglifier`)[https://github.com/lautis/uglifier] for more
+information about this.
+
+```ruby
+require 'proxy_pac_rb/rack/proxy_pac_compressor'
+use ProxyPacRb::Rack::ProxyPacCompressor.new(options: {})
+```
+
 #### Using "rack"-middleware with "middleman"
 
 If you want to use the `rack`-middleware with `middleman` look at the following
