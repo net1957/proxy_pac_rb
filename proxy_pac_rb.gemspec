@@ -23,7 +23,7 @@ DESC
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'addressable', '~>2.3.8'
-  spec.add_runtime_dependency 'activesupport', '~>4.2.0'
+  spec.add_runtime_dependency 'activesupport', '~>4.1'
   spec.add_runtime_dependency 'uglifier', '~> 2.7.1'
 
   spec.required_ruby_version = '~> 2.0'
