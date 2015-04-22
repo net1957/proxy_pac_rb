@@ -1,4 +1,3 @@
-# encoding: utf-8
 lib = ::File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'proxy_pac_rb/version'
@@ -23,9 +22,9 @@ DESC
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'addressable'
-  spec.add_runtime_dependency 'activesupport'
-  spec.add_runtime_dependency 'uglifier'
+  spec.add_runtime_dependency 'addressable', '~>2.3.8'
+  spec.add_runtime_dependency 'activesupport', '~>4.2.0'
+  spec.add_runtime_dependency 'uglifier', '~> 2.7.1'
 
   spec.required_ruby_version = '~> 2.0'
 end

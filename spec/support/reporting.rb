@@ -1,2 +1,1 @@
-# encoding: utf-8
-require 'active_support/core_ext/kernel/reporting'
+require 'fedux_org_stdlib/core_ext/kernel/reporting'
