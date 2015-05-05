@@ -125,22 +125,22 @@ RSpec.describe ProxyPacRb::Environment do
 
     context 'when base ip is empty string' do
       let(:result) { environment.isInNet('127.0.0.1', '', '255.0.0.0') }
-      it { expect{ result }.to raise_error ArgumentError }
+      it { expect { result }.to raise_error ArgumentError }
     end
 
     context 'when base ip is nil' do
       let(:result) { environment.isInNet('127.0.0.1', nil, '255.0.0.0') }
-      it { expect{ result }.to raise_error ArgumentError }
+      it { expect { result }.to raise_error ArgumentError }
     end
 
     context 'when mask is empty string ""' do
       let(:result) { environment.isInNet('127.0.0.1', '93.0.0.0', '') }
-      it { expect{ result }.to raise_error ArgumentError }
+      it { expect { result }.to raise_error ArgumentError }
     end
 
     context 'when mask is nil' do
       let(:result) { environment.isInNet('127.0.0.1', '93.0.0.0', nil) }
-      it { expect{ result }.to raise_error ArgumentError }
+      it { expect { result }.to raise_error ArgumentError }
     end
   end
 
