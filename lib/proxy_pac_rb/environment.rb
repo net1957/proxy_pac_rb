@@ -54,8 +54,11 @@ module ProxyPacRb
       !resolve_host(host).blank?
     end
 
-    def isInNet(host, pattern, mask)
-      IPAddr.new(pattern).mask(mask).include? resolve_host(host)
+    def isInNet(host, base_ip, mask)
+      raise ArgumentError, "<base ip> needs to be defined" if base_ip.nil? || base_ip.empty?
+      raise ArgumentError, "<mask> needs to be defined" if mask.nil? || mask.empty?
+
+      IPAddr.new(base_ip).mask(mask).include? resolve_host(host)
     end
 
     def dnsResolve(host)
