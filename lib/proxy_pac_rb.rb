@@ -1,5 +1,6 @@
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/string/strip'
+require 'active_support/core_ext/string/filters'
 require 'addressable/uri'
 require 'ipaddr'
 require 'thor'
