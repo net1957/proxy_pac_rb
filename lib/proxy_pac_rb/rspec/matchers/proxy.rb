@@ -13,6 +13,8 @@ RSpec::Matchers.define :be_the_same_proxy_pac_file do |expected|
     @file_a == @file_b
   end
 
+  diffable
+
   failure_message do
     format(%(expected that proxy.pac "%s" is equal to proxy.pac "%s", but it is not equal.), @file_a.source.truncate_words(10), @file_b.source.truncate_words(10))
   end
