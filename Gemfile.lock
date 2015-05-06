@@ -22,7 +22,7 @@ GIT
 PATH
   remote: .
   specs:
-    proxy_pac_rb (0.5.8)
+    proxy_pac_rb (0.5.9)
       activesupport (~> 4.1)
       addressable (~> 2.3.8)
       uglifier (~> 2.7.1)

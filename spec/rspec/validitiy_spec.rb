@@ -12,6 +12,21 @@ RSpec.describe 'Validity', type: :proxy_pac do
 
   context 'when is valid' do
     it { expect(proxy_pac).to be_valid }
+
+    context 'although it makes URI to raise invalid url error' do
+      subject do
+        <<-EOS.strip_heredoc.chomp
+        function FindProxyForURL(url, host) {
+          // comment
+          if ( dnsDomainIs ( host, "example.org") ) {
+            return "PROXY 10.0.0.0:8080";
+          }
+        }
+        EOS
+      end
+
+      it { expect(proxy_pac).to be_valid }
+    end
   end
 
   context 'when is not valid' do
