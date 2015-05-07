@@ -60,7 +60,7 @@ module ProxyPacRb
           # keep_fargs: false,     # Preserve unused function arguments
           # keep_fnames: true     # Preserve function names
         }
-      }.merge options
+      }.deep_merge options
 
       @options = opts
     end
