@@ -8,8 +8,8 @@ module ProxyPacRb
 
     public
 
-    def initialize(
-      options: {
+    def initialize(options: {})
+      opts = {
         output: {
           # ascii_only: true,        # Escape non-ASCII characters
           # comments: :copyright,    # Preserve comments (:all, :jsdoc, :copyright, :none, Regexp (see below))
@@ -60,9 +60,9 @@ module ProxyPacRb
           # keep_fargs: false,     # Preserve unused function arguments
           # keep_fnames: true     # Preserve function names
         }
-      }
-    )
-      @options = options
+      }.merge options
+
+      @options = opts
     end
 
     def compress(proxy_pac)
