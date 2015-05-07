@@ -1,3 +1,5 @@
+require 'proxy_pac_rb'
+
 RSpec::Matchers.define :be_downloaded_via do |expected|
   match do |actual|
     proxy_pac.find(actual) == expected

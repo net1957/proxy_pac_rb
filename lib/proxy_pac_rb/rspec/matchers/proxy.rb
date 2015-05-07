@@ -1,3 +1,5 @@
+require 'proxy_pac_rb'
+
 RSpec::Matchers.define :be_the_same_proxy_pac_file do |expected|
   define_method :loader do
     ProxyPacRb::ProxyPacLoader.new
