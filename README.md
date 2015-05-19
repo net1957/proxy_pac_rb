@@ -59,6 +59,9 @@ pprb find proxy -c 127.0.0.1 -t "2014-03-09 12:00:00" -p sample.pac -u https://g
 # Or download via pprb directly and parse pac #2
 pprb find proxy -c 127.0.0.1 -t "2014-03-09 12:00:00" -p https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac -u https://github.com
 
+# Or download this example if you are behind a coporate proxy via pprb directly and parse pac #3
+pprb find proxy -c 127.0.0.1 -t "2014-03-09 12:00:00" -p https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac -u https://github.com --use-proxy
+
 # =>                url: result
 # => https://github.com: DIRECT
 ```
