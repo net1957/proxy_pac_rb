@@ -79,7 +79,9 @@ module ProxyPacRb
       private
 
       def lock
-        result, exception = nil, nil
+        result    = nil
+        exception = nil
+
         V8::C::Locker() do
           begin
             result = yield
