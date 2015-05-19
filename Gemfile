@@ -22,7 +22,7 @@ group :development, :test do
   gem 'coveralls', require: false
   gem 'cucumber', require: false
   gem 'erubis'
-  gem 'fedux_org-stdlib', '~>0.11.16', require: false
+  gem 'fedux_org-stdlib', '~>0.11.17', require: false
   gem 'filegen'
   gem 'foreman', require: false
   gem 'fuubar', require: false
