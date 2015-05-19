@@ -24,6 +24,7 @@ RSpec.describe ProxyPacLinter do
     allow(proxy_pac).to receive(:content).and_return(content)
     allow(proxy_pac).to receive(:valid).and_return(true)
     allow(proxy_pac).to receive(:type?).with(:string).and_return(true)
+    allow(proxy_pac).to receive(:readable?).and_return(true)
   end
 
   describe '#lint' do

@@ -21,6 +21,8 @@ module ProxyPacRb
     # @param [#source] proxy_pac
     #   The proxy.pac
     def lint(proxy_pac)
+      return unless proxy_pac.readable?
+
       rules.each { |r| r.lint(proxy_pac) }
 
       proxy_pac.valid = true
