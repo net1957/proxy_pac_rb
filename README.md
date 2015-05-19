@@ -52,11 +52,12 @@ After installing the `proxy_pac_rb` gem you must install a JavaScript runtime. C
 *Use*
 
 ```bash
-# Download pac
+# Download via curl and parse pac
 curl -L -o sample.pac https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac
-
-# Parse pac
 pprb find proxy -c 127.0.0.1 -t "2014-03-09 12:00:00" -p sample.pac -u https://github.com
+
+# Or download via pprb directly and parse pac #2
+pprb find proxy -c 127.0.0.1 -t "2014-03-09 12:00:00" -p https://github.com/fedux-org/proxy_pac_rb/raw/master/files/sample.pac -u https://github.com
 
 # =>                url: result
 # => https://github.com: DIRECT
