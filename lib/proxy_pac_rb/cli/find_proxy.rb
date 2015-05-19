@@ -9,6 +9,7 @@ module ProxyPacRb
       class_option :time, default: Time.now.to_s, desc: 'Time to use during lookup url', aliases: '-t'
       class_option :proxy_pac, desc: 'Proxy.pac-file', aliases: '-p', required: true
       class_option :urls, type: :array, desc: 'URLs to check against proxy pac', aliases: '-u', required: true
+      class_option :use_proxy, default: false, type: :boolean, desc: 'Use proxy to download proxy pac (default false)'
 
       def pre_init
         enable_debug_mode
@@ -21,6 +22,8 @@ module ProxyPacRb
           client_ip: IPAddr.new(options[:client_ip]),
           time: Time.parse(options[:time])
         )
+
+        remove_proxy_environment_variables unless options[:use_proxy]
 
         file = ProxyPacRb::Parser.new(environment: environment).parse(options[:proxy_pac])
 

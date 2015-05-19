@@ -84,10 +84,8 @@ module ProxyPacRb
   # Load proxy pac from url
   class ProxyPacUriLoader
     def load(proxy_pac)
-      content = Net::HTTP.get(URI(proxy_pac.source.to_s)).chomp
-
-      proxy_pac.content = content
-      proxy_pac.type = :url
+      proxy_pac.content = download_proxy_pac(proxy_pac.source.to_s)
+      proxy_pac.type    = :url
     end
 
     def suitable_for?(proxy_pac)
@@ -104,28 +102,9 @@ module ProxyPacRb
 
     private
 
-    def with_proxy_environment_variables
-      backup = []
-
-      %w(
-        http_proxy
-        https_proxy
-        HTTP_PROXY
-        HTTPS_PROXY
-      ).each do |v|
-        backup << ENV.delete(v)
-      end
-
-      yield
-    ensure
-      %w(
-        http_proxy
-        https_proxy
-        HTTP_PROXY
-        HTTPS_PROXY
-      ).each do |v|
-        ENV[v] = backup.shift
-      end
+    def download_proxy_pac(url)
+      Excon.defaults[:middlewares] << Excon::Middleware::RedirectFollower
+      Excon.get(url).body.chomp
     end
   end
 end
