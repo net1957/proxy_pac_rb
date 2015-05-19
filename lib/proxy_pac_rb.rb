@@ -12,6 +12,7 @@ require 'resolv'
 require 'net/http'
 require 'time'
 require 'timeout'
+require 'pathname'
 
 require 'proxy_pac_rb/version'
 require 'proxy_pac_rb/main'
