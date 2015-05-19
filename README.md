@@ -533,8 +533,9 @@ end
 
 ## Developers
 
-After checking out the repo, run `script/bootstrap` to install dependencies. Then, run
-`script/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `script/bootstrap` to install dependencies.
+Then, run `script/console` for an interactive prompt that will allow you to
+experiment. To run tests execute `script/test`.
 
 To install this gem onto your local machine, run `bundle exec rake gem:install`. To
 release a new version, update the version number in `version.rb`, and then run

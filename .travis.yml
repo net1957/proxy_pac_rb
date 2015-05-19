@@ -5,4 +5,4 @@ bundler_args: --without development debug profile
 rvm:
   - 2.1.5
   - 2.2.1
-script: script/ci
+script: script/test
