@@ -1,11 +1,11 @@
-require 'rspec_integration_spec_helper'
+require 'spec_helper'
 
-RSpec.describe ProxyPacRb::Rspec::Configuration do
-  subject(:config) { described_class.new }
-
-  it { expect(config).not_to be_nil }
+RSpec.describe ProxyPacRb::CodeConfiguration do
+  it_behaves_like 'a basic configuration'
 
   describe '#use_proxy' do
+    subject(:config) { described_class.new }
+
     context 'when default is used' do
       it { expect(config.use_proxy).to be false }
     end
@@ -19,19 +19,6 @@ RSpec.describe ProxyPacRb::Rspec::Configuration do
       context 'when invalid value' do
         it { expect {  config.use_proxy = '' }.to raise_error ArgumentError }
       end
-    end
-  end
-
-  describe 'option?' do
-    let(:name) { :use_proxy }
-
-    context 'when valid option' do
-      it { expect(name).to be_valid_option }
-    end
-
-    context 'when invalid_option' do
-      let(:name) { :blub }
-      it { expect(name).not_to be_valid_option }
     end
   end
 end

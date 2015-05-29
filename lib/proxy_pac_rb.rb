@@ -37,6 +37,9 @@ require 'proxy_pac_rb/proxy_pac_loader'
 require 'proxy_pac_rb/proxy_pac_linter'
 require 'proxy_pac_rb/proxy_pac_parser'
 
+require 'proxy_pac_rb/basic_configuration'
+require 'proxy_pac_rb/code_configuration'
+
 require 'proxy_pac_rb/cli_validator'
 
 require 'proxy_pac_rb/cli/shared'
