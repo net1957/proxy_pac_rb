@@ -26,24 +26,18 @@ end
 RSpec.configure do |config|
   config.include ProxyPacRb::Rspec::Helpers, type: :proxy_pac
 
-  current_example  = -> { context.example }
-
-  config.before :each do
-    current_metadata = current_example.call.metadata
-
+  config.before :each do |example|
     next unless self.class.include?(ProxyPacRb::Rspec::Helpers)
 
-    current_metadata[:proxy_pac_rb_config] = ProxyPacRb.configure.dup \
-      unless current_metadata.key?(:proxy_pac_rb_config) \
-        && current_metadata[:proxy_pac_rb_config].is_a?(ProxyPacRb::CodeConfiguration)
+    @proxy_pac_rb_config = ProxyPacRb.configure.dup \
+      unless defined?(@proxy_pac_rb_config) \
+        && @proxy_pac_rb_config.is_a?(ProxyPacRb::CodeConfiguration)
 
-    current_config   = current_metadata[:proxy_pac_rb_config]
-
-    current_metadata.select { |k,v| k != :proxy_pac_rb_config }.each do |k, v|
-      current_config.set_if_option(k, v)
+    example.metadata.select { |k,v| k != :proxy_pac_rb_config }.each do |k, v|
+      @proxy_pac_rb_config.set_if_option(k, v)
     end
 
-    if current_config.use_proxy == true
+    if @proxy_pac_rb_config.use_proxy == false
       %w(
            http_proxy
            https_proxy

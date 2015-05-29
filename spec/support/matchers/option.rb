@@ -14,14 +14,18 @@ end
 
 RSpec::Matchers.define :have_option_value do |expected|
   match do |actual|
-    values_match? subject.public_send(actual.to_sym), expected
+    @old_actual = actual
+    @actual     = subject.public_send(actual.to_sym)
+    values_match? expected, @actual
   end
 
+  diffable
+
   failure_message do |actual|
-    format(%(expected that option "%s" has value "%s"), actual, expected)
+    format(%(expected that option "%s" has value "%s"), @old_actual, expected)
   end
 
   failure_message_when_negated do |actual|
-    format(%(expected that option "%s" does not have value "%s"), actual, expected)
+    format(%(expected that option "%s" does not have value "%s"), @old_actual, expected)
   end
 end
