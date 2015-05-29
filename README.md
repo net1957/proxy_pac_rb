@@ -343,6 +343,23 @@ require 'proxy_pac_rb/rspec'
     "proxy.pac"-files. By default its value is `Dir.getwd` which is set by
     `rspec`.
 
+### Configuration
+
+You can either configure `ProxyPacRb` either via a global `ProxyPacRb.configure`-block:
+
+```ruby
+ProxyPacRb.configure do |config|
+  config.use_proxy = true
+end
+```
+
+or via `RSpec`-metadata:
+
+```ruby
+RSpec.describe 'proxy.pac', type: :proxy_pac, use_proxy: true do
+end
+```
+
 ### Examples
 
 To make it easier for you to start, you find some examples below.
