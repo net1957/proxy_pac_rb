@@ -21,11 +21,11 @@ RSpec::Matchers.define :have_option_value do |expected|
 
   diffable
 
-  failure_message do |actual|
+  failure_message do |_actual|
     format(%(expected that option "%s" has value "%s"), @old_actual, expected)
   end
 
-  failure_message_when_negated do |actual|
+  failure_message_when_negated do |_actual|
     format(%(expected that option "%s" does not have value "%s"), @old_actual, expected)
   end
 end

@@ -1,8 +1,8 @@
 RSpec.shared_examples 'a basic configuration' do
-  subject(:config) { Class.new(described_class).new }
-
-  before :each do
-    config.class.option :use_test, contract: { Contracts::Bool => Contracts::Bool }, default: false
+  subject(:config) do
+    Class.new(described_class) do
+      option :use_test, contract: { Contracts::Bool => Contracts::Bool }, default: false
+    end.new
   end
 
   it { expect(config).not_to be_nil }
@@ -34,6 +34,5 @@ RSpec.shared_examples 'a basic configuration' do
 
       it { expect { config.set_if_option(name, value) }.not_to raise_error }
     end
-
   end
 end

@@ -3,33 +3,34 @@ module ProxyPacRb
   class BasicConfiguration
     include Contracts
 
+    # A configuration option
     class Option
       attr_accessor :name, :value
 
       def initialize(name:, value:)
-        @name = name
+        @name  = name
         @value = value
       end
     end
 
     class << self
-      def options
-        @options ||= Set.new
+      def known_options
+        @known_options ||= {}
       end
 
       def option_writer(name, contract:, default:)
-        opt = find_or_add_option(name, default)
-        opt.value = default
+        add_option(name, default)
 
         Contract contract
-        define_method("#{name}=") { |v| opt.value = v }
+        define_method("#{name}=") { |v| find_option(name).value = v }
 
         self
       end
 
-      def option_reader(name)
-        opt = find_or_add_option(name)
-        define_method("#{name}") { opt.value }
+      def option_reader(name, value: nil)
+        add_option(name, value)
+
+        define_method(name) { find_option(name).value }
 
         self
       end
@@ -41,19 +42,21 @@ module ProxyPacRb
 
       private
 
-      def find_or_add_option(name, value = nil)
-        opt = options.find(->{ Option.new(name: name, value: value) }) { |o| o.name == name }
-        options << opt
+      def add_option(name, value = nil)
+        return if known_options.key?(name)
 
-        opt
+        known_options[name] = Option.new(name: name, value: value)
+
+        self
       end
     end
 
-    def initialize
-      after_initialize
-    end
+    attr_reader :local_options
+    private :local_options
 
-    def after_initialize; end
+    def initialize
+      @local_options = self.class.known_options.deep_dup
+    end
 
     # @yield [Configuration]
     #
@@ -62,17 +65,21 @@ module ProxyPacRb
       yield self if block_given?
     end
 
-    def options
-      self.class.options
-    end
-
     def option?(name)
-      options.any? { |o| o.name == name }
+      local_options.any? { |_, v| v.name == name }
     end
 
     # Set if name is option
     def set_if_option(name, *args)
       public_send("#{name}=".to_sym, *args) if option? name
+    end
+
+    private
+
+    def find_option(name)
+      fail NotImplementedError, %(Unknown option "#{name}") unless option? name
+
+      local_options[name]
     end
   end
 end

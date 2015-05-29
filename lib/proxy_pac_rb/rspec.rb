@@ -30,22 +30,21 @@ RSpec.configure do |config|
     next unless self.class.include?(ProxyPacRb::Rspec::Helpers)
 
     @proxy_pac_rb_config = ProxyPacRb.configure.dup \
-      unless defined?(@proxy_pac_rb_config) \
-        && @proxy_pac_rb_config.is_a?(ProxyPacRb::CodeConfiguration)
+      unless defined?(@proxy_pac_rb_config) && @proxy_pac_rb_config.is_a?(ProxyPacRb::CodeConfiguration)
 
-    example.metadata.select { |k,v| k != :proxy_pac_rb_config }.each do |k, v|
+    example.metadata.select { |k, _v| k != :proxy_pac_rb_config }.each do |k, v|
       @proxy_pac_rb_config.set_if_option(k, v)
     end
 
     if @proxy_pac_rb_config.use_proxy == false
       %w(
-           http_proxy
-           https_proxy
-           HTTP_PROXY
-           HTTPS_PROXY
+        http_proxy
+        https_proxy
+        HTTP_PROXY
+        HTTPS_PROXY
       ).each do |v|
         ENV.delete(v)
       end
     end
-    end
   end
+end
