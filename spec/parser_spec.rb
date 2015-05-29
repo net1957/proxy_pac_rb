@@ -27,7 +27,7 @@ RSpec.describe ProxyPacRb::Parser do
   end
 
   context 'when path is given' do
-    let(:source) { absolute_path('proxy.pac') }
+    let(:source) { expand_path('proxy.pac') }
     before(:each) { write_file(source, content) }
 
     it { expect(proxy_pac).not_to be_nil }

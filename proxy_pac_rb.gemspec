@@ -26,6 +26,7 @@ DESC
   spec.add_runtime_dependency 'activesupport', '~>4.1'
   spec.add_runtime_dependency 'uglifier', '~> 2.7.1'
   spec.add_runtime_dependency 'excon', '~> 0.45.3'
+  spec.add_runtime_dependency 'contracts', '~> 0.9'
 
   spec.required_ruby_version = '~> 2.0'
 end

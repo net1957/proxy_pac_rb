@@ -53,7 +53,7 @@ RSpec.describe ProxyPacLoader do
     context 'when proxy pac is file' do
       let(:file) { 'proxy.pac' }
       let(:type) { :file }
-      let(:source) { absolute_path(file) }
+      let(:source) { expand_path(file) }
 
       before(:each) { allow(proxy_pac).to receive(:source).and_return(source) }
 

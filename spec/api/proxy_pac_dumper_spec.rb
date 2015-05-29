@@ -25,7 +25,7 @@ RSpec.describe ProxyPacDumper do
   end
 
   let(:dumper) { ProxyPacDumper.new }
-  let(:destination) { absolute_path('proxy.pac') }
+  let(:destination) { expand_path('proxy.pac') }
 
   describe '#dump' do
     before :each do
