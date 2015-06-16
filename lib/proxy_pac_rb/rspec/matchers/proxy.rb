@@ -59,7 +59,7 @@ module RSpec
     # @param [RSpec::Matcher] expected
     #    The matcher
     def be_the_same_proxy_pac_file(expected)
-      ProxyPacLoader::RSpecMatchers::BeTheSameProxyPacFile.new(expected)
+      ProxyPacRb::RSpecMatchers::BeTheSameProxyPacFile.new(expected)
     end
   end
 end
