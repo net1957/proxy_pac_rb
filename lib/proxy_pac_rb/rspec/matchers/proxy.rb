@@ -1,27 +1,81 @@
 require 'proxy_pac_rb'
 
-RSpec::Matchers.define :be_the_same_proxy_pac_file do |expected|
-  define_method :loader do
-    ProxyPacRb::ProxyPacLoader.new
-  end
+module ProxyPacRb
+  module RSpecMatchers
+    class BeTheSameProxyPacFile < BaseMatcher
+      def initialize(expected)
+        @file_a = begin
+                      file = ProxyPacRb::ProxyPacFile.new(source: expected)
+                      loader.load(file)
 
-  match do |actual|
-    @file_a = ProxyPacRb::ProxyPacFile.new(source: actual)
-    loader.load(@file_a)
+                      file
+                    end
 
-    @file_b = ProxyPacRb::ProxyPacFile.new(source: expected)
-    loader.load(@file_b)
+        @expected = @file_a.content
+      end
 
-    @file_a == @file_b
-  end
+      def matches?(actual)
+        @file_b = begin
+                    file = ProxyPacRb::ProxyPacFile.new(source: actual)
+                    loader.load(file)
 
-  diffable
+                    file
+                  end
 
-  failure_message do
-    format(%(expected that proxy.pac "%s" is equal to proxy.pac "%s", but it is not equal.), @file_a.source.truncate(30), @file_b.source.truncate(30))
-  end
+        @actual = @file_b.content
 
-  failure_message_when_negated do
-    format(%(expected that proxy.pac "%s" is not equal to proxy.pac "%s", but it is equal.), @file_a.source.truncate(30), @file_b.source.truncate(30))
+        values_match?(@expected, @actual)
+      end
+
+      def diffable?
+        true
+      end
+
+      def failure_message
+        format(%(expected that proxy.pac "%s" is equal to proxy.pac "%s", but it is not.), @file_a.source.truncate(30), @file_b.source.truncate(30))
+      end
+
+      def failure_message_when_negated
+        format(%(expected that proxy.pac "%s" is not equal to proxy.pac "%s", but it is the same.), @file_a.source.truncate(30), @file_b.source.truncate(30))
+      end
+
+      private
+
+      def loader
+        @loader ||= ProxyPacRb::ProxyPacLoader.new
+      end
+    end
   end
 end
+
+module RSpec
+  module Matchers
+    def be_the_same_proxy_pac_file(expected)
+      ProxyPacLoader::RSpecMatchers::BeTheSameProxyPacFile.new(expected)
+    end
+  end
+end
+
+# RSpec::Matchers.define :be_the_same_proxy_pac_file do |expected|
+#   def loader
+#     @loader ||= ProxyPacRb::ProxyPacLoader.new
+#   end
+# 
+#   match do |actual|
+# 
+#     @file_b = begin
+#                 file = ProxyPacRb::ProxyPacFile.new(source: expected)
+#                 loader.load(file)
+# 
+#                 file
+#               end
+# 
+#     @actual = @file_a.content
+#     @expected = @file_b.content
+# 
+#     binding.pry
+# 
+#     values_match?(@expected, @actual)
+#   end
+# 
+# end

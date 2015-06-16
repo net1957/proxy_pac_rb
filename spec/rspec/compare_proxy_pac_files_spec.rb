@@ -26,12 +26,23 @@ RSpec.describe 'Compare to proxy.pac-files', type: :proxy_pac do
     EOS
   end
 
-  context 'when file "a" is already a ProxyPacFile' do
+  context 'when expected is a ProxyPacFile' do
     it { expect(proxy_pac).to be_the_same_proxy_pac_file file_b }
   end
 
-  context 'when file "b" is already a ProxyPacFile' do
+  context 'when actual a ProxyPacFile and' do
     it { expect(file_b).to be_the_same_proxy_pac_file proxy_pac }
+  end
+
+  context 'when both are ProxyPacFile' do
+    let(:already_proxy_pac) { ProxyPacFile.new(source: file_b) }
+
+    before :each do
+      loader = ProxyPacRb::ProxyPacLoader.new
+      loader.load(already_proxy_pac)
+    end
+
+    it { expect(already_proxy_pac).to be_the_same_proxy_pac_file proxy_pac }
   end
 
   context 'when file "a" and file "b" are strings' do

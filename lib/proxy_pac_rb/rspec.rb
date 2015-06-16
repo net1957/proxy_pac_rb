@@ -1,6 +1,7 @@
 require 'proxy_pac_rb'
 require 'rspec'
 
+require 'proxy_pac_rb/rspec/matchers/base_matcher'
 require 'proxy_pac_rb/rspec/helpers'
 ProxyPacRb.require_file_matching_pattern('rspec/matchers/*.rb')
 ProxyPacRb.require_file_matching_pattern('rspec/shared_examples/*.rb')
