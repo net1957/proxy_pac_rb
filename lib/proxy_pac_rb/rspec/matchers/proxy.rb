@@ -1,7 +1,9 @@
 require 'proxy_pac_rb'
 
 module ProxyPacRb
+  # RSpec matchers
   module RSpecMatchers
+    # Check if other proxy pac the same
     class BeTheSameProxyPacFile < BaseMatcher
       def initialize(expected)
         @file_a = begin
@@ -48,8 +50,14 @@ module ProxyPacRb
   end
 end
 
+# External documented
 module RSpec
+  # External documented
   module Matchers
+    # Check proxy pac
+    #
+    # @param [RSpec::Matcher] expected
+    #    The matcher
     def be_the_same_proxy_pac_file(expected)
       ProxyPacLoader::RSpecMatchers::BeTheSameProxyPacFile.new(expected)
     end

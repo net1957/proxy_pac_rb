@@ -21,7 +21,7 @@ module ProxyPacRb
       # @private
       attr_reader :actual, :expected, :rescued_exception
 
-      def initialize(expected=UNDEFINED)
+      def initialize(expected = UNDEFINED)
         @expected = expected unless UNDEFINED.equal?(expected)
       end
 
@@ -91,7 +91,7 @@ module ProxyPacRb
 
       # @private
       def self.matcher_name
-        @matcher_name ||= underscore(name.split("::").last)
+        @matcher_name ||= underscore(name.split('::').last)
       end
 
       # @private
@@ -100,7 +100,7 @@ module ProxyPacRb
         word = camel_cased_word.to_s.dup
         word.gsub!(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
         word.gsub!(/([a-z\d])([A-Z])/, '\1_\2')
-        word.tr!("-", "_")
+        word.tr!('-', '_')
         word.downcase!
         word
       end
@@ -111,17 +111,17 @@ module ProxyPacRb
       def assert_ivars(*expected_ivars)
         return unless (expected_ivars - present_ivars).any?
         ivar_list = EnglishPhrasing.list(expected_ivars)
-        raise "#{self.class.name} needs to supply#{ivar_list}"
+        fail "#{self.class.name} needs to supply#{ivar_list}"
       end
 
       if RUBY_VERSION.to_f < 1.9
         # :nocov:
         def present_ivars
-          instance_variables.map { |v| v.to_sym }
+          instance_variables.map(&:to_sym)
         end
         # :nocov:
       else
-        alias present_ivars instance_variables
+        alias_method :present_ivars, :instance_variables
       end
 
       # @private
@@ -165,12 +165,14 @@ module ProxyPacRb
         end
 
         # @private
+        # rubocop:disable Style/PredicateName
         def self.has_default_failure_messages?(matcher)
           matcher.method(:failure_message).owner == self &&
             matcher.method(:failure_message_when_negated).owner == self
         rescue NameError
           false
         end
+        # rubocop:enable Style/PredicateName
       end
 
       include DefaultFailureMessages
