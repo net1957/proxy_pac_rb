@@ -63,27 +63,3 @@ module RSpec
     end
   end
 end
-
-# RSpec::Matchers.define :be_the_same_proxy_pac_file do |expected|
-#   def loader
-#     @loader ||= ProxyPacRb::ProxyPacLoader.new
-#   end
-# 
-#   match do |actual|
-# 
-#     @file_b = begin
-#                 file = ProxyPacRb::ProxyPacFile.new(source: expected)
-#                 loader.load(file)
-# 
-#                 file
-#               end
-# 
-#     @actual = @file_a.content
-#     @expected = @file_b.content
-# 
-#     binding.pry
-# 
-#     values_match?(@expected, @actual)
-#   end
-# 
-# end
