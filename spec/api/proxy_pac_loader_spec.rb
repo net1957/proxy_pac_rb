@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe ProxyPacLoader do
+RSpec.describe ProxyPacLoader, type: :aruba do
   subject(:proxy_pac) { instance_double('ProxyPac::ProxyPacFile') }
 
   let(:content) do

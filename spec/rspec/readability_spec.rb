@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'proxy_pac_rb/rspec'
 
-RSpec.describe 'Readability', type: :proxy_pac do
+RSpec.describe 'Readability', type: [:proxy_pac, :aruba] do
   let(:content) do
     <<-EOS.strip_heredoc.chomp
       function FindProxyForURL(url, host) {
@@ -11,7 +11,7 @@ RSpec.describe 'Readability', type: :proxy_pac do
   end
 
   context 'when is file' do
-    let(:root_path) { current_directory }
+    let(:root_path) { expand_path('.') }
 
     subject { 'proxy.pac' }
 
