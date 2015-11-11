@@ -191,28 +191,27 @@ code snippet captured from the `middleman`-configuration file `config.rb`:
 * `config.rb`:
 
   ```ruby
-  # Important needs to come first
-  # See Warning above for a full explanation
-  require 'proxy_pac_rb/rack/proxy_pac_linter'
-  use ProxyPacRb::Rack::ProxyPacLinter
-
-  require 'proxy_pac_rb/rack/proxy_pac_compressor'
-  use ProxyPacRb::Rack::ProxyPacCompressor
-
+  # IMPORTANT: Needs to come first before compressor
+    require 'proxy_pac_rb/rack/proxy_pac_linter'
+    use ProxyPacRb::Rack::ProxyPacLinter
+  
+    require 'proxy_pac_rb/rack/proxy_pac_compressor'
+    use ProxyPacRb::Rack::ProxyPacCompressor
+  
   # The middleware works on content served with 
   # "Content-Type" 'application/x-ns-proxy-autoconfig'
-  page "*.pac", content_type: 'application/x-ns-proxy-autoconfig'
-
+    page "*.pac", content_type: 'application/x-ns-proxy-autoconfig', layout: false
+  
   # This provides an uncompressed copy of the proxy.pac to make it
   # possible for your support to review it by hand
-  Dir.glob(File.join(source_dir, '**', '*.pac')).each do |f|
+  Dir.glob(File.join(source_dir, '**', '*.pac*')).each do |f|
     # Path should be relative to source dir
     relative_path = Pathname.new(f).relative_path_from(Pathname.new(source_dir))
+    relative_path = relative_path.to_s.gsub(/(?<path>.*\.pac)\..*/, '\k<path>')
 
     # "text/plain" prevents the middlewares to handle it
-    proxy(format('%s.raw', relative_path), relative_path.to_s, content_type: 'text/plain')
+    proxy(format('%s.raw', relative_path), relative_path, content_type: 'text/plain', layout: false)
   end
-
   ```
 
 ### Ruby
