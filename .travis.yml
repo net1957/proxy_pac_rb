@@ -1,3 +1,4 @@
+sudo: false
 env:
   - CI=1
 language: ruby

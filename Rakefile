@@ -42,10 +42,12 @@ namespace :test do
   desc 'Setup test environment'
   task :before do
     @web_server = Process.spawn 'rackup -p 65535 script/config.ru'
+    puts "Started webserver with PID #{@web_server}."
   end
 
   desc 'Teardown test environment'
   task :after do
+    puts "Stopping webserver with PID #{@web_server}."
     sh "kill -9 #{@web_server}"
   end
 end

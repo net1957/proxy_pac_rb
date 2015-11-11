@@ -26,7 +26,6 @@ module ProxyPacRb
         remove_proxy_environment_variables unless options[:use_proxy]
 
         file = ProxyPacRb::Parser.new(environment: environment).parse(options[:proxy_pac])
-
         return if file.blank?
 
         $stderr.printf("%30s: %-s\n", 'url', 'result')
