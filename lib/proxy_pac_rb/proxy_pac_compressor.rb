@@ -28,12 +28,7 @@ module ProxyPacRb
           # width: 80,               # Specify line width when beautifier is used (only with beautifier)
           # preamble: nil            # Preamble for the generated JS file. Can be used to insert any code or comment.
         },
-        mangle: {
-          # eval: false,             # Mangle names when eval of when is used in scope
-          # except: ["$super"],      # Argument names to be excluded from mangling
-          # sort: false,             # Assign shorter names to most frequently used variables. Often results in bigger output after gzip.
-          # toplevel: false          # Mangle names declared in the toplevel scope
-        },
+        mangle: false,
         compress: {
           # sequences: false,      # Allow statements to be joined by commas
           # properties: true,     # Rewrite property access using the dot notation

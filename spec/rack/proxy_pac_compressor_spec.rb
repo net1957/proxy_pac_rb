@@ -3,7 +3,7 @@ require 'proxy_pac_rb/rack/proxy_pac_compressor'
 require 'rack/lint'
 
 RSpec.describe ProxyPacRb::Rack::ProxyPacCompressor, type: :rack_test do
-  let(:compressed_content) { %(function FindProxyForURL() {\n    return \"DIRECT\";\n}) }
+  let(:compressed_content) { %(function FindProxyForURL(url, host) {\n    return \"DIRECT\";\n}) }
 
   before(:each) { get '/' }
   subject(:body) { last_response.body }

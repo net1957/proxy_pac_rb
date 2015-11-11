@@ -15,7 +15,7 @@ Feature: Compress proxy pac
     When I successfully run `pprb compress pac_file -p proxy.pac.in`
     Then the file "proxy.pac" should contain:
     """
-    function FindProxyForURL() {
+    function FindProxyForURL(url, host) {
         return "PROXY localhost:3128";
     }
     """
@@ -31,7 +31,7 @@ Feature: Compress proxy pac
     When I successfully run `pprb compress pac_file -p proxy.pac`
     Then the file "proxy.pac.out" should contain:
     """
-    function FindProxyForURL() {
+    function FindProxyForURL(url, host) {
         return "PROXY localhost:3128";
     }
     """
@@ -75,19 +75,19 @@ Feature: Compress proxy pac
     When I successfully run `pprb compress pac_file -p proxy1.pac.in proxy2.pac.in proxy3.pac`
     Then the file "proxy1.pac" should contain:
     """
-    function FindProxyForURL() {
+    function FindProxyForURL(url, host) {
         return "PROXY localhost:3128";
     }
     """
     And the file "proxy2.pac" should contain:
     """
-    function FindProxyForURL() {
+    function FindProxyForURL(url, host) {
         return "PROXY localhost:3128";
     }
     """
     And the file "proxy3.pac.out" should contain:
     """
-    function FindProxyForURL() {
+    function FindProxyForURL(url, host) {
         return "PROXY localhost:3128";
     }
     """

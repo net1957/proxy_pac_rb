@@ -34,7 +34,7 @@ RSpec.describe ProxyPacDumper, type: :aruba do
 
     context 'when proxy pac is string' do
       before :each do
-        cd '.' do
+        cd('.') do
           dumper.dump(proxy_pac, type: :string)
         end
       end
@@ -51,7 +51,7 @@ RSpec.describe ProxyPacDumper, type: :aruba do
       end
 
       before :each do
-        cd '.' do
+        cd('.') do
           dumper.dump(proxy_pac, type: :template)
         end
       end
