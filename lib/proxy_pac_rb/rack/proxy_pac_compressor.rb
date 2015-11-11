@@ -45,10 +45,8 @@ module ProxyPacRb
         status, headers, body = @app.call(env)
 
         return [status, headers, body] if enabled == false
-        # rubocop:disable Style/SpaceAroundOperators
         return [status, headers, body] unless headers.key?('Content-Type') \
           && %r{application/x-ns-proxy-autoconfig} === headers['Content-Type']
-        # rubocop:enabled Style/SpaceAroundOperators
 
         content = ''
         body.each { |part| content << part }

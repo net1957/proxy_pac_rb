@@ -27,7 +27,7 @@ module ProxyPacRb
       private
 
       def _proxy_pac_source
-        url_host =  begin
+        url_host = begin
                       Addressable::URI.parse(subject).host
                     rescue
                       nil

@@ -16,12 +16,12 @@ module ProxyPacRb
           # inline_script: false,    # Escape occurrences of </script in strings
           # quote_keys: false,       # Quote keys in object literals
           # max_line_len: 32 * 1024, # Maximum line length in minified code
-          max_line_len: 1024,        # Maximum line length in minified code
+          max_line_len: 1024, # Maximum line length in minified code
           # bracketize: true,       # Bracketize if, for, do, while or with statements, even if their body is a single statement
           # semicolons: true,        # Separate statements with semicolons
           # preserve_line: false,    # Preserve line numbers in outputs
           # beautify: false,         # Beautify output
-          beautify: true,         # Beautify output
+          beautify: true, # Beautify output
           # indent_level: 4,         # Indent level in spaces
           # indent_start: 0,         # Starting indent level
           # space_colon: false,      # Insert space before colons (only with beautifier)
@@ -45,7 +45,7 @@ module ProxyPacRb
           # hoist_vars: false,    # Hoist var declarations
           # if_return: true,      # Optimizations for if/return and if/continue
           # join_vars: true,      # Join consecutive var statements
-          join_vars: false,      # Join consecutive var statements
+          join_vars: false, # Join consecutive var statements
           # cascade: true,        # Cascade sequences
           # negate_iife: true,    # Negate immediately invoked function expressions to avoid extra parens
           # pure_getters: false,  # Assume that object property access does not have any side-effects

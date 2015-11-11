@@ -53,7 +53,7 @@ module ProxyPacRb
   # Handle proxy pac == nil
   class ProxyPacNullLoader
     def load(proxy_pac)
-      proxy_pac.type    = :null
+      proxy_pac.type = :null
 
       fail StandardError
     end

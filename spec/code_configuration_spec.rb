@@ -17,7 +17,7 @@ RSpec.describe ProxyPacRb::CodeConfiguration do
       end
 
       context 'when invalid value' do
-        it { expect {  config.use_proxy = '' }.to raise_error ArgumentError }
+        it { expect { config.use_proxy = '' }.to raise_error ArgumentError }
       end
     end
   end

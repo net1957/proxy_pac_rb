@@ -28,7 +28,7 @@ RSpec.describe ProxyPacLinter do
   end
 
   describe '#lint' do
-    let(:linter) {  ProxyPacLinter.new(silent: true) }
+    let(:linter) { ProxyPacLinter.new(silent: true) }
     let(:result) { true }
 
     before(:each) do
