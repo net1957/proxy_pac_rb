@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name        = 'proxy_pac_rb'
   spec.version     = ProxyPacRb::VERSION
   spec.authors     = ['Dennis Günnewig']
-  spec.email       = ['dg1@vrnetze.de']
+  spec.email       = ['dg1@ratiodata.de']
   spec.homepage    = 'https://github.com/dg-vrnetze/proxy_pac_rb'
   spec.summary     = 'Compress, lint and parse proxy auto-config files from commandline, rack-compatible applications and custom ruby code.'
   spec.description = <<-DESC
@@ -28,5 +28,5 @@ DESC
   spec.add_runtime_dependency 'contracts', '~> 0.9'
   spec.add_runtime_dependency 'thor', '~> 0.19'
 
-  spec.required_ruby_version = '~> 2.1'
+  spec.required_ruby_version = '~> 2.3'
 end
