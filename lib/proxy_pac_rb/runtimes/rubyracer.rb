@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ProxyPacRb
   # Ruby Racer Runtime
   class RubyRacerRuntime < Runtime
@@ -91,7 +92,7 @@ module ProxyPacRb
         end
 
         if exception
-          fail exception
+          raise exception
         else
           result
         end

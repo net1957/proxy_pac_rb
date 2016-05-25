@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 require 'proxy_pac_rb/rack/proxy_pac_compressor'
 require 'rack/lint'

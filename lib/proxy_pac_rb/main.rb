@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 # Main
 module ProxyPacRb
   @debug_mode = false

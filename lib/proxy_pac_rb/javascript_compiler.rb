@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ProxyPacRb
   # Compile javascript
   class JavascriptCompiler
@@ -14,7 +15,7 @@ module ProxyPacRb
     end
 
     def compile(content:, environment:)
-      fail Exceptions::RuntimeUnavailable, "#{runtime.name} is unavailable on this system" unless runtime.available?
+      raise Exceptions::RuntimeUnavailable, "#{runtime.name} is unavailable on this system" unless runtime.available?
 
       proxy_pac_content = content.to_s.dup
 

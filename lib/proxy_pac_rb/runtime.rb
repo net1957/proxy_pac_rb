@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ProxyPacRb
   # Abstract base class for runtimes
   class Runtime
@@ -17,20 +18,20 @@ module ProxyPacRb
       end
 
       def exec(_source, _options = {})
-        fail NotImplementedError
+        raise NotImplementedError
       end
 
       def eval(_source, _options = {})
-        fail NotImplementedError
+        raise NotImplementedError
       end
 
       def call(_properties, *_args)
-        fail NotImplementedError
+        raise NotImplementedError
       end
     end
 
     def name
-      fail NotImplementedError
+      raise NotImplementedError
     end
 
     def context_class
@@ -56,7 +57,7 @@ module ProxyPacRb
     end
 
     def available?
-      fail NotImplementedError
+      raise NotImplementedError
     end
   end
 end

@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 module ProxyPacRb
   # Dump Proxy pac to file system
   class ProxyPacLinter
@@ -46,7 +47,7 @@ module ProxyPacRb
                     %(proxy.pac-file "#{proxy_pac.source}" does not contain "FindProxyForURL".)
                   end
 
-        fail LinterError, message unless proxy_pac.content.to_s.include?('FindProxyForURL')
+        raise LinterError, message unless proxy_pac.content.to_s.include?('FindProxyForURL')
 
         self
       end

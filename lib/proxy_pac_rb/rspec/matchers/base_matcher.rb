@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ProxyPacRb
   module RSpecMatchers
     # @api private
@@ -54,7 +55,7 @@ module ProxyPacRb
       # Generates a description using {EnglishPhrasing}.
       # @return [String]
       def description
-        desc = self.class.matcher_name.to_s.gsub(/_/, ' ')
+        desc = self.class.matcher_name.to_s.tr('_', ' ')
         desc << Array(@expected).join(', ') if defined?(@expected) && @expected.is_a?(Array)
         desc
       end
@@ -111,7 +112,7 @@ module ProxyPacRb
       def assert_ivars(*expected_ivars)
         return unless (expected_ivars - present_ivars).any?
         ivar_list = EnglishPhrasing.list(expected_ivars)
-        fail "#{self.class.name} needs to supply#{ivar_list}"
+        raise "#{self.class.name} needs to supply#{ivar_list}"
       end
 
       if RUBY_VERSION.to_f < 1.9
@@ -121,7 +122,7 @@ module ProxyPacRb
         end
         # :nocov:
       else
-        alias_method :present_ivars, :instance_variables
+        alias present_ivars instance_variables
       end
 
       # @private

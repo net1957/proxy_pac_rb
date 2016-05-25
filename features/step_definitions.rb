@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Given(/^a proxy\.pac named "([^"]*)" does not exist$/) do |name|
   FileUtils.rm_rf expand_path("#{name}.pac")
 end

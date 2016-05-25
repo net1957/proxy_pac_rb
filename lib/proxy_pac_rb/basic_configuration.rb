@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ProxyPacRb
   # Basic configuration for ProxyPacRb
   class BasicConfiguration
@@ -77,7 +78,7 @@ module ProxyPacRb
     private
 
     def find_option(name)
-      fail NotImplementedError, %(Unknown option "#{name}") unless option? name
+      raise NotImplementedError, %(Unknown option "#{name}") unless option? name
 
       local_options[name]
     end

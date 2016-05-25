@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ProxyPacRb
   # Validator for commandline options
   class CliValidator

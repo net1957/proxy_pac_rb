@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'proxy_pac_rb'
 
 RSpec::Matchers.define :be_downloaded_via do |expected|

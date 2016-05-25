@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 module ProxyPacRb
   # Dump Proxy pac to file system
   class ProxyPacDumper
@@ -58,7 +59,7 @@ module ProxyPacRb
       elsif ::File.exist? path
         return path + out_extension
       else
-        fail Errno::ENOENT, "Both paths \"#{path.gsub(/#{in_extension}*$/, '') + in_extension}\" and \"#{path}\" do not exist."
+        raise Errno::ENOENT, "Both paths \"#{path.gsub(/#{in_extension}*$/, '') + in_extension}\" and \"#{path}\" do not exist."
       end
     end
   end

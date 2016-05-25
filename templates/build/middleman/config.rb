@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'proxy_pac_rb/rack/proxy_pac_linter'
 use ProxyPacRb::Rack::ProxyPacLinter
 

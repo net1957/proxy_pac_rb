@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 module ProxyPacRb
   # Environment in which a proxy.pac will be evaluated
   class Environment
@@ -55,8 +56,8 @@ module ProxyPacRb
     end
 
     def isInNet(host, base_ip, mask)
-      fail ArgumentError, '<base ip> needs to be defined' if base_ip.nil? || base_ip.empty?
-      fail ArgumentError, '<mask> needs to be defined' if mask.nil? || mask.empty?
+      raise ArgumentError, '<base ip> needs to be defined' if base_ip.nil? || base_ip.empty?
+      raise ArgumentError, '<mask> needs to be defined' if mask.nil? || mask.empty?
 
       IPAddr.new(base_ip).mask(mask).include? resolve_host(host)
     end

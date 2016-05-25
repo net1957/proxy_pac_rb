@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ProxyPacRb
   module Rspec
     # Helpers for proxy.pac tests

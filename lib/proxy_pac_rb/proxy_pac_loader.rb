@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 module ProxyPacRb
   # Dump Proxy pac to file system
   class ProxyPacLoader
@@ -55,7 +56,7 @@ module ProxyPacRb
     def load(proxy_pac)
       proxy_pac.type = :null
 
-      fail StandardError
+      raise StandardError
     end
 
     def suitable_for?(proxy_pac)

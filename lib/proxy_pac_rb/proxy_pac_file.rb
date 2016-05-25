@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ProxyPacRb
   # Pac file
   class ProxyPacFile
@@ -53,9 +54,9 @@ module ProxyPacRb
 
     def find(url, fail_safe: true)
       if fail_safe == true
-        fail ProxyPacInvalidError, "The proxy.pac \"#{source}\" is not readable: #{message}. Stopping here." unless readable?
-        fail ProxyPacInvalidError, "The proxy.pac \"#{source}\" is not valid: #{message}. Stopping here." unless valid?
-        fail ProxyPacInvalidError, "The proxy.pac \"#{source}\" is could not be parsed. There's no compiled javascript to use to lookup a url: #{message}. Stopping here." unless javascript?
+        raise ProxyPacInvalidError, "The proxy.pac \"#{source}\" is not readable: #{message}. Stopping here." unless readable?
+        raise ProxyPacInvalidError, "The proxy.pac \"#{source}\" is not valid: #{message}. Stopping here." unless valid?
+        raise ProxyPacInvalidError, "The proxy.pac \"#{source}\" is could not be parsed. There's no compiled javascript to use to lookup a url: #{message}. Stopping here." unless javascript?
       end
 
       uri = Addressable::URI.heuristic_parse(url)
@@ -66,7 +67,7 @@ module ProxyPacRb
         uri.host = url
       end
 
-      fail UrlInvalidError, 'url is missing host' unless uri.host
+      raise UrlInvalidError, 'url is missing host' unless uri.host
 
       javascript.FindProxyForURL(uri.to_s, uri.host)
     end

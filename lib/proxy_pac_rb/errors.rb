@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ProxyPacRb
   # Raised if proxy pac is invalid
   class LinterError < StandardError; end
