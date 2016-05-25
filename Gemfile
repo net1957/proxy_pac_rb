@@ -8,13 +8,11 @@ group :debug do
   gem 'byebug'
 
   gem 'pry-doc', require: false
-  gem 'pry-stack_explorer', require: false
-  # gem 'pry-exception_explorer', require: false
-  # gem 'pry-rescue', require: false
   gem 'pry-byebug', require: false
 end
 
 group :development, :test do
+  gem 'middleman', '~> 4.0', require: false
   gem 'aruba', '~>0.10.0', require: false
   gem 'awesome_print', require: 'ap'
   gem 'bundler', '~> 1.3', require: false
