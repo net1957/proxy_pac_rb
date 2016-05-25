@@ -54,8 +54,8 @@ module ProxyPacRb
       # Generates a description using {EnglishPhrasing}.
       # @return [String]
       def description
-        desc = EnglishPhrasing.split_words(self.class.matcher_name)
-        desc << EnglishPhrasing.list(@expected) if defined?(@expected)
+        desc = self.class.matcher_name.to_s.gsub(/_/, ' ')
+        desc << Array(@expected).join(', ') if defined?(@expected) && @expected.is_a?(Array)
         desc
       end
 
