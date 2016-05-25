@@ -10,11 +10,9 @@ Gem::Specification.new do |spec|
   spec.email       = ['dg1@vrnetze.de']
   spec.homepage    = 'https://github.com/dg-vrnetze/proxy_pac_rb'
   spec.summary     = 'Compress, lint and parse proxy auto-config files from commandline, rack-compatible applications and custom ruby code.'
-  # rubocop:disable Metrics/LineLength
   spec.description = <<-DESC
 "proxy_pac_rb" is a gem to compress, lint and parse proxy auto-config files. It comes with a cli program, some rack middlewares and can be used from within ruby scripts as well. "proxy_pac_rb" uses a JavaScript runtime to evaulate a proxy auto-config file the same way a browser does to determine what proxy (if any at all) should a program use to connect to a server. You must install on of the supported JavaScript runtimes: therubyracer or therubyrhino
 DESC
-  # rubocop:enable Metrics/LineLength
 
   spec.license       = 'MIT'
 

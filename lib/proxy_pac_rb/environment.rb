@@ -80,7 +80,7 @@ module ProxyPacRb
       return nil if host.blank?
 
       Timeout.timeout(dns_timeout) do
-        Resolv.each_address(host.force_encoding('ASCII-8BIT')) do |address|
+        Resolv.each_address(host.dup.force_encoding('ASCII-8BIT')) do |address|
           begin
             return address if IPAddr.new(address).ipv4?
             # rubocop:disable Lint/HandleExceptions
@@ -101,24 +101,27 @@ module ProxyPacRb
     public
 
     def prepare(string)
+      str = []
+      str << string.to_s.chomp
+
       if client_ip
-        string << "\n\n"
-        string << javascript_function_templates.my_ip_address_template(client_ip)
+        str << "\n"
+        str << javascript_function_templates.my_ip_address_template(client_ip)
       end
 
       if time
-        string << javascript_function_templates.time_variables
-        string << "\n\n"
-        string << javascript_function_templates.week_day_range_template(time)
-        string << "\n\n"
-        string << javascript_function_templates.week_day_range_template(time)
-        string << "\n\n"
-        string << javascript_function_templates.date_range_template(time)
-        string << "\n\n"
-        string << javascript_function_templates.time_range_template(time)
+        str << javascript_function_templates.time_variables
+        str << "\n"
+        str << javascript_function_templates.week_day_range_template(time)
+        str << "\n"
+        str << javascript_function_templates.week_day_range_template(time)
+        str << "\n"
+        str << javascript_function_templates.date_range_template(time)
+        str << "\n"
+        str << javascript_function_templates.time_range_template(time)
       end
 
-      string
+      str.join("\n")
     end
   end
 end

@@ -39,3 +39,6 @@ Metrics/PerceivedComplexity:
 Style/MethodName:
   Exclude:
     - lib/proxy_pac_rb/environment.rb
+
+Style/GuardClause:
+  Enabled: false

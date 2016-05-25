@@ -49,8 +49,9 @@ module ProxyPacRb
         return [status, headers, body] unless headers.key?('Content-Type') \
           && %r{application/x-ns-proxy-autoconfig} === headers['Content-Type']
 
-        content = ''
+        content = []
         body.each { |part| content << part }
+        content = content.join
 
         begin
           proxy_pac = ProxyPacFile.new(source: content)

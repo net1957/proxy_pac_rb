@@ -19,7 +19,7 @@ module ProxyPacRb
 
       proxy_pac_content = content.to_s.dup
 
-      environment.prepare(proxy_pac_content)
+      proxy_pac_content = environment.prepare(proxy_pac_content)
 
       context = runtime.compile(proxy_pac_content)
       context.include environment

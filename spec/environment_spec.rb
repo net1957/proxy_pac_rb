@@ -210,9 +210,7 @@ RSpec.describe ProxyPacRb::Environment do
 
   describe '#prepare' do
     context 'when valid' do
-      let(:string) { '' }
-
-      before(:each) { environment.prepare(string) }
+      let(:string) { environment.prepare('') }
 
       %w(
         myIpAddress
