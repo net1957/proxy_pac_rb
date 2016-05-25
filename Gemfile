@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in local_pac.gemspec
 gemspec
 
+gem 'listen', '~> 3.0.0'
+
 group :debug do
   gem 'pry'
   gem 'byebug'
