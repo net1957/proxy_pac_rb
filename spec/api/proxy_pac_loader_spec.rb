@@ -51,7 +51,7 @@ RSpec.describe ProxyPacLoader, type: :aruba do
       it_behaves_like 'an un-readable proxy.pac'
     end
 
-    context 'when proxy pac is file' do
+    context 'when proxy pac is file', type: :aruba do
       let(:file) { 'proxy.pac' }
       let(:type) { :file }
       let(:source) { expand_path(file) }

@@ -27,7 +27,7 @@ RSpec.describe ProxyPacRb::Parser, type: :aruba do
     it { expect(proxy_pac).not_to be_nil }
   end
 
-  context 'when path is given' do
+  context 'when path is given', type: :aruba do
     let(:source) { expand_path('proxy.pac') }
     before(:each) { write_file(source, content) }
 

@@ -11,7 +11,7 @@ RSpec.describe 'Readability', type: [:proxy_pac, :aruba] do
     EOS
   end
 
-  context 'when is file' do
+  context 'when is file', type: :aruba do
     let(:root_path) { expand_path('.') }
 
     subject { 'proxy.pac' }

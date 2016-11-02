@@ -14,7 +14,7 @@ end
 
 group :development, :test do
   gem 'middleman', '~> 4.1', require: false
-  gem 'aruba', '~>0.10.0', require: false
+  gem 'aruba', '~>0.14.2', require: false
   gem 'awesome_print', require: 'ap'
   gem 'bundler', '~> 1.3', require: false
   gem 'command_exec', require: false
