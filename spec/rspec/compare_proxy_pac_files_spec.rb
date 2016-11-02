@@ -4,7 +4,7 @@ require 'proxy_pac_rb/rspec'
 
 RSpec.describe 'Compare to proxy.pac-files', type: :proxy_pac do
   subject do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -12,7 +12,7 @@ RSpec.describe 'Compare to proxy.pac-files', type: :proxy_pac do
   end
 
   let(:file_a) do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -20,7 +20,7 @@ RSpec.describe 'Compare to proxy.pac-files', type: :proxy_pac do
   end
 
   let(:file_b) do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -53,7 +53,7 @@ RSpec.describe 'Compare to proxy.pac-files', type: :proxy_pac do
 
     context 'when both are not eqal' do
       let(:file_a) do
-        <<-EOS.strip_heredoc.chomp
+        <<~EOS.chomp
         function FindProxyForURL(url, host) {
           return "DIRECT";
         }
@@ -61,7 +61,7 @@ RSpec.describe 'Compare to proxy.pac-files', type: :proxy_pac do
       end
 
       let(:file_b) do
-        <<-EOS.strip_heredoc.chomp
+        <<~EOS.chomp
         function FindProxyForURL(url, host) {
           return "PROXY localhost:8080";
         }

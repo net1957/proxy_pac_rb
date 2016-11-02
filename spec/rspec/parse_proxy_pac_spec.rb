@@ -5,7 +5,7 @@ require 'proxy_pac_rb/rspec'
 RSpec.describe 'Parse proxy.pac', type: :proxy_pac do
   describe 'Browse url' do
     subject do
-      <<-EOS.strip_heredoc.chomp
+      <<~EOS.chomp
       function FindProxyForURL(url, host) {
         if (dnsDomainIs(host, 'localhost')) {
           return "DIRECT";
@@ -29,7 +29,7 @@ RSpec.describe 'Parse proxy.pac', type: :proxy_pac do
 
   describe 'Change time' do
     subject do
-      <<-EOS.strip_heredoc.chomp
+      <<~EOS.chomp
       function FindProxyForURL(url, host) {
         if (weekdayRange("FRI", "SAT")) {
           return "PROXY localhost:8080";
@@ -59,7 +59,7 @@ RSpec.describe 'Parse proxy.pac', type: :proxy_pac do
 
   describe 'Change client ip' do
     subject do
-      <<-EOS.strip_heredoc.chomp
+      <<~EOS.chomp
       function FindProxyForURL(url, host) {
         if ( myIpAddress() == '127.0.0.2' ) {
           return "PROXY localhost:8080";

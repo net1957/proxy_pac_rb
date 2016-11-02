@@ -8,7 +8,7 @@ RSpec.describe ProxyPacCompressor do
   let(:modified_content) { %(function FindProxyForURL(url, host) {\n    return \"DIRECT\";\n}) }
 
   let(:content) do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       // comment
       function FindProxyForURL(url, host) {
         return "DIRECT";

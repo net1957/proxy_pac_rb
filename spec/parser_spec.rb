@@ -8,7 +8,7 @@ RSpec.describe ProxyPacRb::Parser, type: :aruba do
   let(:environment) { Environment.new }
 
   let(:content) do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -16,7 +16,7 @@ RSpec.describe ProxyPacRb::Parser, type: :aruba do
   end
 
   let(:source) do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -64,7 +64,7 @@ RSpec.describe ProxyPacRb::Parser, type: :aruba do
 
   context 'when ip address is given' do
     let(:source) do
-      <<-EOS
+      <<~EOS
       function FindProxyForURL(url, host) {
         if ( myIpAddress() == '127.0.0.2' ) {
           return "DIRECT";
@@ -88,7 +88,7 @@ RSpec.describe ProxyPacRb::Parser, type: :aruba do
 
   context 'when date is given' do
     let(:source) do
-      <<-EOS
+      <<~EOS
       function FindProxyForURL(url, host) {
         if (weekdayRange("FRI", "SAT")) {
           return "PROXY localhost:8080";
@@ -112,7 +112,7 @@ RSpec.describe ProxyPacRb::Parser, type: :aruba do
 
   context 'when time range is used' do
     let(:source) do
-      <<-EOS
+      <<~EOS
       function FindProxyForURL(url, host) {
         if (timeRange(8, 18)) {
           return "PROXY localhost:8080";
@@ -136,7 +136,7 @@ RSpec.describe ProxyPacRb::Parser, type: :aruba do
 
   context 'when date range is used' do
     let(:source) do
-      <<-EOS
+      <<~EOS
       function FindProxyForURL(url, host) {
         if (dateRange("JUL", "SEP")) {
           return "PROXY localhost:8080";

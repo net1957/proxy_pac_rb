@@ -4,7 +4,7 @@ require 'proxy_pac_rb/rspec'
 
 RSpec.describe 'Readability', type: [:proxy_pac, :aruba] do
   let(:content) do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -45,7 +45,7 @@ RSpec.describe 'Readability', type: [:proxy_pac, :aruba] do
   context 'when is string' do
     context 'it is always readable' do
       subject do
-        <<-EOS.strip_heredoc.chomp
+        <<~EOS.chomp
         function FindProxyForURL(url, host) {
           return "DIRECT";
         }

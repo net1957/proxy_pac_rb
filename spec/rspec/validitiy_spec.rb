@@ -4,7 +4,7 @@ require 'proxy_pac_rb/rspec'
 
 RSpec.describe 'Validity', type: :proxy_pac do
   subject do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -16,7 +16,7 @@ RSpec.describe 'Validity', type: :proxy_pac do
 
     context 'although it makes URI to raise invalid url error' do
       subject do
-        <<-EOS.strip_heredoc.chomp
+        <<~EOS.chomp
         function FindProxyForURL(url, host) {
           // comment
           if ( dnsDomainIs ( host, "example.org") ) {
@@ -39,7 +39,7 @@ RSpec.describe 'Validity', type: :proxy_pac do
 
     context 'when contains gargabe' do
       subject do
-        <<-EOS.strip_heredoc.chomp
+        <<~EOS.chomp
         function FindProxyForURL(url, host) {
           return $§"% "DIRECT";
         }
@@ -51,7 +51,7 @@ RSpec.describe 'Validity', type: :proxy_pac do
 
     context 'when undefined variable is referenced' do
       subject do
-        <<-EOS.strip_heredoc.chomp
+        <<~EOS.chomp
         function FindProxyForURL(url, host) {
           return asdf;
         }

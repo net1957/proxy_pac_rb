@@ -29,7 +29,7 @@ module ProxyPacRb
 
         directory 'test_framework/rspec/', 'spec'
 
-        append_file 'Gemfile', <<-EOS.strip_heredoc
+        append_file 'Gemfile', <<~EOS
         group :development, :test do
           gem 'aruba', require: false
 
@@ -43,7 +43,7 @@ module ProxyPacRb
         end
         EOS
 
-        append_file 'Rakefile', <<-EOS.strip_heredoc
+        append_file 'Rakefile', <<~EOS
         desc 'Run tests'
         task test: 'test:local'
 
@@ -71,12 +71,12 @@ module ProxyPacRb
 
         directory 'build/middleman', './'
 
-        append_file 'Gemfile', <<-EOS.strip_heredoc
+        append_file 'Gemfile', <<~EOS
         gem 'middleman', '~>3.3.10'
         gem 'therubyracer'
         EOS
 
-        append_file 'Rakefile', <<-EOS.strip_heredoc
+        append_file 'Rakefile', <<~EOS
         desc 'Build site'
         task :build do
           sh 'bundle exec middleman build --verbose'

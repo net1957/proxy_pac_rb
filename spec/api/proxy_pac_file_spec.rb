@@ -5,7 +5,7 @@ RSpec.describe ProxyPacFile do
   subject(:proxy_pac) { ProxyPacFile.new source: source }
 
   let(:source) do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }

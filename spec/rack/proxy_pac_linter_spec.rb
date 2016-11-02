@@ -5,7 +5,7 @@ require 'rack/lint'
 
 RSpec.describe ProxyPacRb::Rack::ProxyPacLinter, type: :rack_test do
   let(:content) do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
     function FindProxyForURL(url, host) {
       return "DIRECT";
     }
@@ -23,7 +23,7 @@ RSpec.describe ProxyPacRb::Rack::ProxyPacLinter, type: :rack_test do
         end
 
         get '/' do
-          <<-EOS.strip_heredoc.chomp
+          <<~EOS.chomp
           function FindProxyForURL(url, host) {
             return "DIRECT";
           }
@@ -51,7 +51,7 @@ RSpec.describe ProxyPacRb::Rack::ProxyPacLinter, type: :rack_test do
         end
 
         get '/' do
-          <<-EOS.strip_heredoc.chomp
+          <<~EOS.chomp
           function FindProxyForURL(url, host) {
             return $"§$ "DIRECT";
           }

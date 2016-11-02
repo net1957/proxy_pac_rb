@@ -5,7 +5,7 @@ RSpec.describe ProxyPacLinter do
   subject(:proxy_pac) { instance_double('ProxyPac::ProxyPacFile') }
 
   let(:content) do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -13,7 +13,7 @@ RSpec.describe ProxyPacLinter do
   end
 
   let(:source) do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -50,7 +50,7 @@ RSpec.describe ProxyPacLinter do
     context 'when is proxy.pac cannot be compiled' do
       let(:result) { false }
       let(:content) do
-        <<-EOS.strip_heredoc.chomp
+        <<~EOS.chomp
           function FindProxyForURL(url, host) {
            asdfasf $$ SDF
           }

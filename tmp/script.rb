@@ -3,7 +3,7 @@ require 'pry'
 
 require 'proxy_pac_rb'
 
-string = <<-EOS
+string = <<~EOS
 function FindProxyForURL(url, host) {
   if ( myIpAddress() == '127.0.0.2' ) {
     return "DIRECT";

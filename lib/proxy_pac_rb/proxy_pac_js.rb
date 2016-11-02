@@ -5,7 +5,7 @@ module ProxyPacRb
   class ProxyPacJs
     class << self
       def my_ip_address_template(value)
-        <<-EOS.strip_heredoc
+        <<~EOS
           function myIpAddress() {
             return "#{value}";
           }
@@ -15,7 +15,7 @@ module ProxyPacRb
       # taken from  releases-mozilla-release / netwerk / base / src / ProxyAutoConfig.cpp @ bitbucket.org
       # https://bitbucket.org/mozilla/releases-mozilla-release/raw/dece38633cf1adcab2071d69fea264580d24cc9e/netwerk/base/src/ProxyAutoConfig.cpp
       def time_variables
-        <<-EOS.strip_heredoc
+        <<~EOS
         var wdays = {SUN: 0, MON: 1, TUE: 2, WED: 3, THU: 4, FRI: 5, SAT: 6};
         var months = {JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5, JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11};
         EOS
@@ -24,7 +24,7 @@ module ProxyPacRb
       def week_day_range_template(value = nil)
         value = %("#{value}") if value
 
-        <<-EOS.strip_heredoc
+        <<~EOS
         function getDay(weekday) {
             if (weekday in wdays) {
                 return wdays[weekday];
@@ -55,7 +55,7 @@ module ProxyPacRb
       def date_range_template(value = nil)
         value = %("#{value}") if value
 
-        <<-EOS.strip_heredoc
+        <<~EOS
         function getMonth(name) {
             if (name in months) {
                 return months[name];
@@ -137,7 +137,7 @@ module ProxyPacRb
       def time_range_template(value = nil)
         value = %("#{value}") if value
 
-        <<-EOS.strip_heredoc
+        <<~EOS
         function timeRange() {
             var argc = arguments.length;
             var date = new Date(#{value});

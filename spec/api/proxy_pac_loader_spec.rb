@@ -5,7 +5,7 @@ RSpec.describe ProxyPacLoader, type: :aruba do
   subject(:proxy_pac) { instance_double('ProxyPac::ProxyPacFile') }
 
   let(:content) do
-    <<-EOS.strip_heredoc
+    <<~EOS
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -13,7 +13,7 @@ RSpec.describe ProxyPacLoader, type: :aruba do
   end
 
   let(:source) do
-    <<-EOS.strip_heredoc
+    <<~EOS
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }

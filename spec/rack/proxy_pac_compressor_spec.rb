@@ -17,7 +17,7 @@ RSpec.describe ProxyPacRb::Rack::ProxyPacCompressor, type: :rack_test do
         end
 
         get '/' do
-          <<-EOS.strip_heredoc.chomp
+          <<~EOS.chomp
           // comment
           function FindProxyForURL(url, host) {
             return "DIRECT";
@@ -46,7 +46,7 @@ RSpec.describe ProxyPacRb::Rack::ProxyPacCompressor, type: :rack_test do
         end
 
         get '/' do
-          <<-EOS.strip_heredoc.chomp
+          <<~EOS.chomp
           function FindProxyForURL(url, host) {
             return $"§$ "DIRECT";
           }

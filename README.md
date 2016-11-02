@@ -271,7 +271,7 @@ file.find('https://github.com')        # => "DIRECT"
 ```ruby
 require 'proxy_pac_rb'
 
-string = <<-EOS
+string = <<~EOS
 function FindProxyForURL(url, host) {
   if (dateRange("JUL", "SEP")) {
     return "PROXY localhost:8080";                                                                                                          
@@ -379,7 +379,7 @@ RSpec.describe 'proxy.pac', type: :proxy_pac do
 ```ruby
 RSpec.describe 'String', type: :proxy_pac do
   subject do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -439,7 +439,7 @@ require 'proxy_pac_rb/rspec'
 
 RSpec.describe 'proxy.pac', type: :proxy_pac do
   subject do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -490,7 +490,7 @@ require 'proxy_pac_rb/rspec'
 
 RSpec.describe 'proxy.pac', type: :proxy_pac do
   subject do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -503,7 +503,7 @@ RSpec.describe 'proxy.pac', type: :proxy_pac do
 
     context 'when proxy.pac is not valid' do
       subject do
-        <<-EOS.strip_heredoc.chomp
+        <<~EOS.chomp
           function FindProxyForURL(url, host) {
             return adsf;
           }
@@ -524,7 +524,7 @@ the proxy.pac and returns the proxy to be used for a given url.
 require 'proxy_pac_rb/rspec'
 RSpec.describe 'proxy.pac', type: :proxy_pac do
   subject do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         if (dnsDomainIs(host, 'www1.example.com'')) {
           return "PROXY proxy1.example.com:8080";

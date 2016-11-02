@@ -5,7 +5,7 @@ RSpec.describe ProxyPacParser do
   subject(:proxy_pac) { instance_double('ProxyPac::ProxyPacFile') }
 
   let(:content) do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -13,7 +13,7 @@ RSpec.describe ProxyPacParser do
   end
 
   let(:source) do
-    <<-EOS.strip_heredoc.chomp
+    <<~EOS.chomp
       function FindProxyForURL(url, host) {
         return "DIRECT";
       }
@@ -39,7 +39,7 @@ RSpec.describe ProxyPacParser do
 
     context 'when is invalid' do
       let(:content) do
-        <<-EOS.strip_heredoc.chomp
+        <<~EOS.chomp
           function FindProxyForURL(url, host) {
            asdfasf $$ SDF
           }
