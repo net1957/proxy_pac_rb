@@ -164,3 +164,27 @@ Feature: Resolve proxy
     """
     proxy.example.com
     """
+
+  Scenario: Missing scheme in proxy.pac
+    Given a file named "proxy.pac" with:
+    """
+    function FindProxyForURL(url, host) {
+      if (dnsDomainIs(host,"in.example.com")) {
+        return "DIRECT";
+      }
+
+      if (dnsDomainIs(host,"ex.example.com")) return "PROXY localhost:8080";
+
+      return 'PROXY localhost:3128';
+    }
+    """
+    When I successfully run `pprb find proxy -p proxy.pac -u www.in.example.com`
+    Then the output should contain:
+    """
+    DIRECT
+    """
+    When I successfully run `pprb find proxy -p proxy.pac -u www.ex.example.com`
+    Then the output should contain:
+    """
+    PROXY localhost:8080
+    """

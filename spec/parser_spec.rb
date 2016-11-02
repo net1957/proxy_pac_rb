@@ -34,6 +34,34 @@ RSpec.describe ProxyPacRb::Parser, type: :aruba do
     it { expect(proxy_pac).not_to be_nil }
   end
 
+  context 'when input is given' do
+    let(:source) do
+      <<~EOS.chomp
+        function FindProxyForURL(url, host) {
+          if (dnsDomainIs(host,"in.example.com")) {
+            return "DIRECT";
+          }
+
+          if (dnsDomainIs(host,"ex.example.com")) return "PROXY localhost:8080";
+
+          return 'PROXY localhost:3128';
+        }
+      EOS
+    end
+
+    context 'when url' do
+      it { expect(proxy_pac.find('http://www.in.example.com')).to eq('DIRECT') }
+      it { expect(proxy_pac.find('http://www.ex.example.com')).to eq('PROXY localhost:8080') }
+      it { expect(proxy_pac.find('http://www.other.example.de')).to eq('PROXY localhost:3128') }
+    end
+
+    context 'when hostname' do
+      it { expect(proxy_pac.find('www.in.example.com')).to eq('DIRECT') }
+      it { expect(proxy_pac.find('www.ex.example.com')).to eq('PROXY localhost:8080') }
+      it { expect(proxy_pac.find('www.other.example.de')).to eq('PROXY localhost:3128') }
+    end
+  end
+
   context 'when ip address is given' do
     let(:source) do
       <<-EOS
