@@ -13,8 +13,10 @@ module ProxyPacRb
       @context = context
     end
 
+    # rubocop:disable Style/MethodMissing
     def method_missing(*args, &_block)
       context.call(args.shift, *args)
     end
+    # rubocop:enable Style/MethodMissing
   end
 end

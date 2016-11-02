@@ -55,9 +55,9 @@ module ProxyPacRb
 
     def output_path(path)
       if ::File.exist?(path.gsub(/#{in_extension}*$/, '') + in_extension)
-        return path.gsub(/#{in_extension}*$/, '')
+        path.gsub(/#{in_extension}*$/, '')
       elsif ::File.exist? path
-        return path + out_extension
+        path + out_extension
       else
         raise Errno::ENOENT, "Both paths \"#{path.gsub(/#{in_extension}*$/, '') + in_extension}\" and \"#{path}\" do not exist."
       end
