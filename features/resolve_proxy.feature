@@ -11,7 +11,7 @@ Feature: Resolve proxy
       return 'PROXY localhost:3128';
     }
     """
-    When I successfully run `pprb find proxy -p proxy.pac -u www.example.org`
+    When I successfully run `pprb find proxy -p proxy.pac -u http://www.example.org`
     Then the output should contain:
     """
     PROXY localhost:3128
@@ -22,7 +22,7 @@ Feature: Resolve proxy
     """
     function FindProxyForURL(){return"PROXY localhost:3128"}
     """
-    When I successfully run `pprb find proxy -p proxy.pac -u www.example.org`
+    When I successfully run `pprb find proxy -p proxy.pac -u http://www.example.org`
     Then the output should contain:
     """
     PROXY localhost:3128
@@ -35,7 +35,7 @@ Feature: Resolve proxy
       return 'PROXY localhost:3128';
     }
     """
-    When I successfully run `pprb find proxy -p ./proxy.pac -u www.example.org`
+    When I successfully run `pprb find proxy -p ./proxy.pac -u http://www.example.org`
     Then the output should contain:
     """
     PROXY localhost:3128
@@ -48,14 +48,14 @@ Feature: Resolve proxy
       return 'PROXY localhost:3128';
     }
     """
-    When I successfully run `pprb find proxy -p http://127.0.0.1:65535/proxy.pac -u www.example.org`
+    When I successfully run `pprb find proxy -p http://127.0.0.1:65535/proxy.pac -u http://www.example.org`
     Then the output should contain:
     """
     PROXY localhost:3128
     """
 
   Scenario: Non-Existing proxy.pac
-    When I run `pprb find proxy -p proxy.pac -u www.example.org`
+    When I run `pprb find proxy -p proxy.pac -u http://www.example.org`
     Then the output should contain:
     """
     You need to provide a path to an existing proxy pac file. The file "proxy.pac" does not exist.
@@ -81,7 +81,7 @@ Feature: Resolve proxy
       return 'PROXY localhost:3128';
     }
     """
-    When I run `pprb find proxy -u www.example.org`
+    When I run `pprb find proxy -u http://www.example.org`
     Then the output should contain:
     """
     No value provided for required options '--proxy-pac'
@@ -98,12 +98,12 @@ Feature: Resolve proxy
       }
     }
     """
-    When I successfully run `pprb find proxy -p proxy.pac -c 10.0.0.1 -u www.example.org`
+    When I successfully run `pprb find proxy -p proxy.pac -c 10.0.0.1 -u http://www.example.org`
     Then the output should contain:
     """
     PROXY localhost:3128
     """
-    When I successfully run `pprb find proxy -p proxy.pac -c 192.0.0.1 -u www.example.org`
+    When I successfully run `pprb find proxy -p proxy.pac -c 192.0.0.1 -u http://www.example.org`
     Then the output should contain:
     """
     DIRECT
@@ -120,12 +120,12 @@ Feature: Resolve proxy
       }
     }
     """
-    When I successfully run `pprb find proxy -p proxy.pac -t 2014-04-09 -u www.example.org`
+    When I successfully run `pprb find proxy -p proxy.pac -t 2014-04-09 -u http://www.example.org`
     Then the output should contain:
     """
     PROXY localhost:3128
     """
-    When I successfully run `pprb find proxy -p proxy.pac -t 2014-12-07 -u www.example.org`
+    When I successfully run `pprb find proxy -p proxy.pac -t 2014-12-07 -u http://www.example.org`
     Then the output should contain:
     """
     DIRECT
