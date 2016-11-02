@@ -164,3 +164,46 @@ Feature: Resolve proxy
     """
     proxy.example.com
     """
+
+  Scenario: dnsResolve + isInNet
+    Given a file named "proxy.pac" with:
+    """
+    function FindProxyForURL(host, url) {
+      if (
+        isPlainHostName(host)
+          || isInNet(host, "10.0.0.0", "255.0.0.0")
+          || isInNet(host, "172.16.0.0", "255.240.0.0")
+          || isInNet(host, "192.168.0.0", "255.255.0.0")
+          || dnsDomainIs(host,"in.example.com")
+      ) {
+        return "DIRECT";
+      }
+
+      return "PROXY 172.17.0.1:3128";
+    }
+    """
+    When I successfully run `pprb find proxy -p proxy.pac -u http://www.in.example.com`
+    Then the output should contain:
+    """
+    DIRECT
+    """
+    When I successfully run `pprb find proxy -p proxy.pac -u http://10.0.0.1`
+    Then the output should contain:
+    """
+    DIRECT
+    """
+    When I successfully run `pprb find proxy -p proxy.pac -u http://172.16.0.1`
+    Then the output should contain:
+    """
+    DIRECT
+    """
+    When I successfully run `pprb find proxy -p proxy.pac -u http://192.168.1.1`
+    Then the output should contain:
+    """
+    DIRECT
+    """
+    When I successfully run `pprb find proxy -p proxy.pac -u http://www.ex.example.com`
+    Then the output should contain:
+    """
+    PROXY 172.17.0.1:3128
+    """
