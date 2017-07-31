@@ -17,9 +17,9 @@ module ProxyPacRb
 
         return nil unless /\S/ =~ source
 
-        # rubocop:disable Lint/Eval
+        # rubocop:disable Security/Eval
         eval "(function(){#{source}})()", options
-        # rubocop:enable Lint/Eval
+        # rubocop:enable Security/Eval
       end
 
       def eval(source, _options = {})

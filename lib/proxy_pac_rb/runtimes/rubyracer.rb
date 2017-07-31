@@ -16,9 +16,9 @@ module ProxyPacRb
       def exec(source, options = {})
         source = encode(source)
 
-        # rubocop:disable Lint/Eval
+        # rubocop:disable Security/Eval
         eval "(function(){#{source}})()", options if /\S/ =~ source
-        # rubocop:enable Lint/Eval
+        # rubocop:enable Security/Eval
       end
 
       def eval(source, _options = {})
