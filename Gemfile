@@ -56,4 +56,9 @@ group :runtimes do
   group :therubyrhino do
     gem 'therubyrhino', require: 'rhino'
   end
+
+  group :mini_racer do
+    gem 'mini_racer', require: 'mini_racer'
+  end
+
 end
