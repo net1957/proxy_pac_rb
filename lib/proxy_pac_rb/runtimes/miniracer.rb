@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 module ProxyPacRb
   # Mini Racer Runtime
+  # little adaptation from execjs gem.
+  # All credits go to execjs gem author
   class MiniRacerRuntime < Runtime
     # Context
     class Context < Runtime::Context
@@ -8,7 +10,7 @@ module ProxyPacRb
         source = encode(source)
 
         self.context = ::MiniRacer::Context.new
-        context.eval(source)
+        translate { context.eval(source) }
       end
 
       def include(environment)
@@ -30,26 +32,22 @@ module ProxyPacRb
 
         return nil unless /\S/ =~ source
 
-        begin
-          unbox context.eval("(#{source})")
-        rescue MiniRacer::Error => e
-          raise ProgramError, e
-        end
+        translate { context.eval("(#{source})") }
       end
 
       def call(properties, *args)
-        unbox context.eval("#{properties}.apply(this, #{::JSON.generate(args)})")
-      rescue MiniRacer::Error => e
-        raise ProgramError, e
+        translate { context.eval("#{properties}.apply(this, #{::JSON.generate(args)})") }
       end
 
-      def unbox(value)
+      private
+
+      def strip_functions!(value)
         if Array === value
           value.map! do |v|
             if MiniRacer::JavaScriptFunction === value
               nil
             else
-              unbox(v)
+              strip_functions!(v)
             end
           end
         elsif Hash === value
@@ -57,7 +55,7 @@ module ProxyPacRb
             if MiniRacer::JavaScriptFunction === v
               value.delete k
             else
-              value[k] = unbox(v)
+              value[k] = strip_functions!(v)
             end
           end
           value
@@ -66,6 +64,29 @@ module ProxyPacRb
         else
           value
         end
+      end
+
+      def translate
+        strip_functions! yield
+      rescue MiniRacer::RuntimeError => e
+        ex = ProgramError.new e.message
+        if backtrace = e.backtrace # rubocop:disable Lint/AssignmentInCondition
+          backtrace = backtrace.map do |line|
+            if line =~ /JavaScript at/
+              line.sub('JavaScript at ', '')
+                  .sub('<anonymous>', '(proxypac)')
+                  .strip
+            else
+              line
+            end
+          end
+          ex.set_backtrace backtrace
+        end
+        raise ex
+      rescue MiniRacer::ParseError => e
+        ex = RuntimeError.new e.message
+        ex.set_backtrace(['(proxypac):1'] + e.backtrace)
+        raise ex
       end
     end
 
