@@ -28,5 +28,5 @@ DESC
   spec.add_runtime_dependency 'contracts'
   spec.add_runtime_dependency 'thor'
 
-  spec.required_ruby_version = '~> 2.3'
+  spec.required_ruby_version = '>= 2.3'
 end
