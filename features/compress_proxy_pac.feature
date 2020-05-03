@@ -47,7 +47,7 @@ Feature: Compress proxy pac
     When I run `pprb compress pac_file -p proxy.pac.in`
     Then the output should contain:
     """
-    Unexpected string
+    I'm going to ignore that file
     """
 
   Scenario: Use multiple proxy.pac.in

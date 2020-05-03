@@ -42,7 +42,7 @@ RSpec.describe ProxyPacRb::Rack::ProxyPacLinter, type: :rack_test do
   end
 
   context 'when invalid proxy pac is given' do
-    let(:content) { 'Unexpected string' }
+    let(:content) { /Unexpected string|cannot be parsed:/ }
 
     let(:app) do
       a = Class.new(Sinatra::Base) do
@@ -66,6 +66,6 @@ RSpec.describe ProxyPacRb::Rack::ProxyPacLinter, type: :rack_test do
       a.new
     end
 
-    it { expect(body).to include content }
+    it { expect(body).to match content }
   end
 end

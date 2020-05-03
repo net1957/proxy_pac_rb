@@ -49,6 +49,10 @@ group :profile do
 end
 
 group :runtimes do
+  group :duktape do
+    gem 'duktape'
+  end
+
   # mini_racer & therubyracer can't sit in the same gemfile
   # uncomment the needed one and comment the other
   #
