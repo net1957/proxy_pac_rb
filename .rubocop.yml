@@ -4,7 +4,8 @@ AllCops:
     - 'tmp/**/*'
     - Gemfile
   DisplayCopNames: true
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 3.4
+  NewCops: enable
 
 Style/GuardClause:
   Enabled: false
@@ -13,7 +14,7 @@ Metrics/AbcSize:
   Max: 38
 
 # Configuration parameters: AllowURI.
-Metrics/LineLength:
+Layout/LineLength:
   Max: 225
 
 # Configuration parameters: CountKeywordArgs.
@@ -31,7 +32,7 @@ Metrics/ClassLength:
   Max: 174
 
 Metrics/CyclomaticComplexity:
-  Max: 7
+  Max: 9
 
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
@@ -41,9 +42,6 @@ Metrics/PerceivedComplexity:
   Max: 9
 
 # Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/MethodName:
+Naming/MethodName:
   Exclude:
     - lib/proxy_pac_rb/environment.rb
-
-Style/GuardClause:
-  Enabled: false
